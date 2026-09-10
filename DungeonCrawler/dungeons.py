@@ -31,6 +31,10 @@ class dungeon:
             ["E", "E", "E"] #escape and heal
             ]
 
+
+
+
+
     def randomizeSet(self):
         for s in self.set:
             random.shuffle(s)

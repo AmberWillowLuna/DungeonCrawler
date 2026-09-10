@@ -80,3 +80,46 @@ class Player:
             d.draw(screen)
         for h in self.HandButtons:
             h.draw(screen)
+
+    def SaveToJson(self):
+        #file: player.json
+        import json
+        player_data = {
+            "name": self.name,
+            "deck": [card.name for card in self.deck],
+            "hand": [card.name for card in self.hand],
+            "field": [card.name for card in self.field],
+            "graveyard": [card.name for card in self.graveyard],
+            "life_points": self.life_points,
+            "level": self.level,
+            "DungeonLevel": self.DungeonLevel,
+            "AdvLevel": self.AdvLevel,
+            "gold": self.gold,
+            "kills": self.kills,
+            "curD": self.curD
+        }
+
+        with open('player.json', 'w') as f:
+            json.dump(player_data, f, indent=4)
+
+
+def LoadPlayerFromJson():
+    import json
+    with open('player.json', 'r') as f:
+        player_data = json.load(f)
+
+    player = Player(player_data["name"])
+    # Assuming you have a way to convert card names back to card objects
+    player.deck = [Cards.get_card_by_name(name) for name in player_data["deck"]]
+    player.hand = [Cards.get_card_by_name(name) for name in player_data["hand"]]
+    player.field = [Cards.get_card_by_name(name) for name in player_data["field"]]
+    player.graveyard = [Cards.get_card_by_name(name) for name in player_data["graveyard"]]
+    player.life_points = player_data["life_points"]
+    player.level = player_data["level"]
+    player.DungeonLevel = player_data["DungeonLevel"]
+    player.AdvLevel = player_data["AdvLevel"]
+    player.gold = player_data["gold"]
+    player.kills = player_data["kills"]
+    player.curD = player_data["curD"]
+
+    return player

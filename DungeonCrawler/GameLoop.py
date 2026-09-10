@@ -20,7 +20,7 @@ def GameLoop(screen, player1):
     # Battle - in a battle
     # Trap - in a trap 
     # Merchant - in a merchant
-    # Empty room - a few miliseconds to skip
+    # Empty - a few miliseconds to skip cuz the room was empty
     move=""
 
     backgroundImg = None
@@ -41,7 +41,9 @@ def GameLoop(screen, player1):
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                # Exit the game not the loop # CHANGE ########################################
                 running = False
+                
 
             # Handle player movement
             if event.type == pygame.KEYDOWN:
@@ -99,6 +101,28 @@ def GameLoop(screen, player1):
 
                 #### get the dependency of the dungeon and the player and make a logic to move the player in the dungeon
                 sign = dungeons[player1.AdvLevel][player1.DungeonLevel].set[player1.level][Dir]
+
+                #CAPSULATE EVERY STATE!!!!!!!!!! IN A DIFFERENT FILES!
+
+                if sign == "P":
+                    State="Empty"
+                    #capsulate the fact that room is empty
+                elif sign == "T":
+                    State="Trap"
+                    #when it is trap player should have time to choose his set before trap setts off - so
+                    #example traps - destroy a random card in hand / deal light / heavy damage / reduce eq until the end of dungeon / reduce max hp till the end 
+                    # for damage - you can have a lot of traps dealing dmg like a spike trap (light axe damage) or a heavy trap (halbard damage) 
+                    # also an arrow trap with 3 arrows or 2 arrows - generally traps should be in a dungeon class as Traps [] and u should get a random one
+                elif sign == "TR":
+                    State = "Trinket"
+                    pass #trinket
+                elif sign == "M":
+                    State = "Merchant"
+                    pass #merchant
+                elif sign == "L1" or sign == "L2" or sign == "L3" or sign == "L4":
+                    State="Battle"
+                    #start a fight with a random enemy from the dungeon class
+                    #ALSO YOU GET TO CHOOSE YOUR SET BEFORE THE FIGHT STARTS - so you can choose a set of 3 cards from your deck to fight with
 
                 # if L1-L4 start a fight, L5 boss fight, T trap, P empty, M merchant, E escape, TR trinket - depending on this make a button that informs what happens and then if it is a fight then start a fight
 

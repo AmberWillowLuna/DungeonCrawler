@@ -163,6 +163,9 @@ class WeaponCards(CardButton):
         base_width = 174//2
         base_height = 347//2
 
+        self.Lclicked = False
+        self.Rclicked = False
+
         # Scale dimensions
         width = int(base_width * scale)
         height = int(base_height * scale)

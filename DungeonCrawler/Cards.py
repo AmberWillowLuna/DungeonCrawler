@@ -21,6 +21,8 @@ class Card:
         self.D2val = D2val #heavy
         self.Hval = Hval
         self.Tval = Tval
+
+
         #cards can be heavy or light
         #Tval describes the trick value of the card - when is it triggered maybe?
     def attack(self,  oc, player, enemy):
@@ -249,6 +251,18 @@ class Club(Card):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
         #here also trick trigger
+
+
+
+
+# TRAP CARDS #################################################################
+'''class Spike(Card):
+    def __init__(self):
+        super().__init__("Spike", "Light", 10, "ATK: 1, DEF: L0, H0",1,0,0,0,0) 
+    def attack(self, oc, player, enemy):
+        dmg = oc.defend(self, player, enemy)
+        enemy.take_damage(dmg)
+        #THIS IS A TRAP CARD ###################'''
 
 
 # to add:

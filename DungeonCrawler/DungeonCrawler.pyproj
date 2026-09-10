@@ -21,6 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Battle.py" />
     <Compile Include="button.py" />
     <Compile Include="Cards.py" />
     <Compile Include="colors.py" />
@@ -28,12 +29,17 @@
     <Compile Include="DungeonCrawler.py" />
     <Compile Include="DungeonLoader.py" />
     <Compile Include="dungeons.py" />
+    <Compile Include="Empty.py" />
     <Compile Include="enemies.py" />
+    <Compile Include="Escape.py" />
     <Compile Include="GameLoop.py" />
+    <Compile Include="Merchant.py" />
+    <Compile Include="PickAndAccept.py" />
     <Compile Include="player.py" />
     <Compile Include="SetPicker.py" />
     <Compile Include="SettingHelp.py" />
     <Compile Include="start.py" />
+    <Compile Include="Trap.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="player.json" />
