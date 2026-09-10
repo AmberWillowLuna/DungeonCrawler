@@ -1,7 +1,9 @@
 import pygame
+from GameLoop import GameLoop
 import SettingHelp
 import button
 import SetPicker
+import player
 
 def start(screen):
     '''Start the game loop
@@ -19,6 +21,9 @@ def start(screen):
 
 
     running=True
+    
+    #PLAYER INITIALIZATION
+    player1 = player.Player("Aurelius")
 
     while running:
         mouse_pos = pygame.mouse.get_pos()
@@ -29,7 +34,11 @@ def start(screen):
 
             # Check button clicks
             if newGameButton.is_clicked(mouse_pos, event):
-                SetPicker.ChooseSet(screen)
+                SetPicker.ChooseSet(screen, player)
+                #main game loader
+                running=False
+
+
                 # Add your new game logic here
             elif continueButton.is_clicked(mouse_pos, event):
                 print("Continue button clicked")
@@ -42,6 +51,10 @@ def start(screen):
         continueButton.draw(screen)
         pygame.display.flip()
 
+
+
+    #HERE THE MAIN LOOP
+    GameLoop(screen, player1)
           
 
 

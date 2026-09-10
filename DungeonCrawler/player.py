@@ -7,7 +7,11 @@ class Player:
         self.field = [] # cards that will come back
         self.graveyard = [] # cards that are out of fight 
         self.life_points = 5
-        self.gold=100
+        self.level = 1
+        self.DungeonLevel = 1
+        self.gold = 0
+        self.kills = 0
+        self.curD = ""
 
 
     def take_damage(self, amount):

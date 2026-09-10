@@ -26,8 +26,10 @@
     <Compile Include="colors.py" />
     <Compile Include="continue.py" />
     <Compile Include="DungeonCrawler.py" />
+    <Compile Include="DungeonLoader.py" />
     <Compile Include="dungeons.py" />
     <Compile Include="enemies.py" />
+    <Compile Include="GameLoop.py" />
     <Compile Include="player.py" />
     <Compile Include="SetPicker.py" />
     <Compile Include="SettingHelp.py" />
