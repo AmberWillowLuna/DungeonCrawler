@@ -3,15 +3,16 @@ from DungeonLoader import LoadDungeon
 import SettingHelp
 import button
 
+
 def GameLoop(screen, player1):
     '''Main game loop for the dungeon crawler'''
     scale = SettingHelp.get_scale()
     clock = pygame.time.Clock()
 
     #buttons for going in driections if someone want to play only with mouse
-    GoLeft = button.Button(100*scale, 500*scale, 100*scale, 100*scale, "Left", (0, 0, 128), (0, 255, 0))
-    GoForward = button.Button(300*scale, 300*scale, 100*scale, 100*scale, "Forward", (0, 0, 128), (0, 255, 0))
-    GoRight = button.Button(500*scale, 500*scale, 100*scale, 100*scale, "Right", (0, 0, 128), (0, 255, 0))
+    GoLeft = button.Button(200*scale, 500*scale, 300*scale, 200*scale, "Left", (0, 0, 128), (0, 255, 0))
+    GoForward = button.Button(800*scale, 150*scale, 300*scale, 200*scale, "Forward", (0, 0, 128), (0, 255, 0))
+    GoRight = button.Button(1500*scale, 500*scale, 300*scale, 200*scale, "Right", (0, 0, 128), (0, 255, 0))
 
     State = "Free"
     #States 
@@ -22,6 +23,7 @@ def GameLoop(screen, player1):
     # Empty room - a few miliseconds to skip
     move=""
 
+    backgroundImg = None
 
 
     running = True
@@ -30,6 +32,8 @@ def GameLoop(screen, player1):
 
         if player1.curD=="":
             dungeons = LoadDungeon(screen, player1)
+            player1.curD=dungeons[player1.AdvLevel][player1.DungeonLevel].name
+            backgroundImg = pygame.image.load(dungeons[player1.AdvLevel][player1.DungeonLevel].background).convert()
             '''
             dungeons - array of an arrays of dungeons so dungeons[0] is an array of EASY dungeons and dungeons[0][0] is first dungeon
             '''
@@ -53,16 +57,23 @@ def GameLoop(screen, player1):
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if State=="Free":
-                        if GoLeft.is_clicked(mouse_pos):
+                        if GoLeft.is_clicked(mouse_pos, event):
                             move="Left"
-                        elif GoForward.is_clicked(mouse_pos):
+                        elif GoForward.is_clicked(mouse_pos, event):
                             move="Forward"
-                        elif GoRight.is_clicked(mouse_pos):
+                        elif GoRight.is_clicked(mouse_pos, event):
                             move="Right"
+
+                #if state is free - you can swap two cards 
+                # the clicked card - get clicked status
+                # when two where clicked - swap them in the hand and set clicked status to false
 
         ###########################DRAW#########################################
         # Clear the screen
         screen.fill((0, 0, 0))
+                        
+        if backgroundImg is not None:
+            screen.blit(backgroundImg, (0, 0))
 
         if State=="Free":
             # Draw movement buttons
@@ -76,19 +87,23 @@ def GameLoop(screen, player1):
                 # Here you would implement the logic to move the player in the dungeon
                 #print(f"Player moves {move}")
                 if move=="Forward":
-                    player1.currentDungeon.move_forward()
+                    Dir=1
                 elif move=="Left":
-                    player1.currentDungeon.move_left()
+                    Dir=0
                 elif move=="Right":
-                    player1.currentDungeon.move_right()
+                    Dir=2
                 
                 #IMPLEMENT THIS PLAYER MOVE PART
                 
                 move=""
-                
+
+                #### get the dependency of the dungeon and the player and make a logic to move the player in the dungeon
+                sign = dungeons[player1.AdvLevel][player1.DungeonLevel].set[player1.level][Dir]
+
+                # if L1-L4 start a fight, L5 boss fight, T trap, P empty, M merchant, E escape, TR trinket - depending on this make a button that informs what happens and then if it is a fight then start a fight
 
 
-
+        player1.displayDeck(screen)
 
         # Update the display
         pygame.display.flip()

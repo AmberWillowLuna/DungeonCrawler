@@ -1,6 +1,7 @@
 import pygame
 import colors
 import os
+import Cards
 
 font = pygame.font.SysFont("Arial", 36)
 small_font = pygame.font.SysFont("Arial", 30)
@@ -45,12 +46,14 @@ class Button:
         #resize the font based on the new size
 
 
+import SettingHelp
 
 class CardButton(Button):
-    def __init__(self, x, y, name, color, hover_color, card_type="default"):
+    def __init__(self, x, y, name, color, hover_color, card, card_type="default"):
+        scale = SettingHelp.get_scale()
         # Define base dimensions (unscaled)
-        base_width = 144
-        base_height = 192
+        base_width = 144*scale
+        base_height = 192*scale
 
         # Scale dimensions
         width = int(base_width * scale)
@@ -62,8 +65,10 @@ class CardButton(Button):
         # Card properties
         self.name = name
         self.card_type = card_type
+        self.card=card #store card
         self.stats = self._load_stats()  # Load stats for the card
         self.image = self._load_image()  # Load the card image
+
 
         # Scale the image
         if self.image:
@@ -89,10 +94,7 @@ class CardButton(Button):
         """Load stats for the card (example: replace with your logic)"""
         # Example stats, replace with actual logic
         return {
-            "attack": 1,
-            "defense": 0,
-            "health": 5,
-            "description": "A basic card."
+            self.card.desc,
         }
 
     def draw(self, surface):
@@ -115,7 +117,7 @@ class CardButton(Button):
 
         # Draw the card stats below the name
         stats_text = (
-            f"ATK: {self.stats['attack']} | DEF: {self.stats['defense']} | HP: {self.stats['health']}"
+            self.card.desc
         )
         stats_surface = self.small_font.render(stats_text, True, colors.WHITE)
         stats_rect = stats_surface.get_rect(
@@ -123,14 +125,6 @@ class CardButton(Button):
             top=name_rect.bottom + 5
         )
         surface.blit(stats_surface, stats_rect)
-
-        # Draw the card description below the stats
-        desc_surface = self.small_font.render(self.stats["description"], True, colors.LIGHT_GRAY)
-        desc_rect = desc_surface.get_rect(
-            centerx=self.rect.centerx,
-            top=stats_rect.bottom + 5
-        )
-        surface.blit(desc_surface, desc_rect)
 
     def setText(self, text):
         # Override if you want to set custom text

@@ -1,10 +1,9 @@
 import pygame
 import button
 import SettingHelp
-import player
 import Cards
 
-def ChooseSet(screen, player):
+def ChooseSet(screen, player1):
     '''Choose a starting set for the game'''
     scale = SettingHelp.get_scale()
 
@@ -32,13 +31,15 @@ def ChooseSet(screen, player):
             # Check button clicks
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if set1Button.is_clicked(mouse_pos, event):
-                    player.deck = [Cards.LongSword()]
+                    player1.addItem(Cards.LongSword())
                     running = False
                 elif set2Button.is_clicked(mouse_pos, event):
-                    player.deck = [Cards.Halbard(), Cards.Crown()]
+                    player1.addItem(Cards.Halbard())
+                    player1.addItem(Cards.Crown())
                     running = False
                 elif set3Button.is_clicked(mouse_pos, event):
-                    player.deck = [Cards.Spear(), Cards.LightAxe()]
+                    player1.addItem(Cards.Spear())
+                    player1.addItem(Cards.LightAxe())
                     running = False
 
         # Draw everything

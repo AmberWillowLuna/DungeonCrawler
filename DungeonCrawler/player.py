@@ -1,3 +1,7 @@
+import pygame
+import button
+import SettingHelp
+import Cards
 
 class Player:
     def __init__(self, name):
@@ -7,11 +11,33 @@ class Player:
         self.field = [] # cards that will come back
         self.graveyard = [] # cards that are out of fight 
         self.life_points = 5
-        self.level = 1
-        self.DungeonLevel = 1
+        self.level = 0
+        self.DungeonLevel = 0
+        self.AdvLevel = 0
         self.gold = 0
         self.kills = 0
         self.curD = ""
+
+        #buttons for displaying the deck
+        #at the beggining 9 nothing cards and 3 nothing cards in hand!
+        scale = SettingHelp.get_scale()
+        self.DeckButtons = [
+            button.CardButton(40*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(260*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(470*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(690*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(910*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1130*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1350*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1570*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1790*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            ]
+        self.HandButtons = [
+            button.CardButton(690*scale, 750*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(910*scale, 750*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1130*scale, 750*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")            
+            ]
+
 
 
     def take_damage(self, amount):
@@ -27,6 +53,16 @@ class Player:
             self.graveyard.append(card)
             #print(f"{card} has fallen off the hand and is lost for the fight.")
 
+    def addItem(self, card):
+        if len(self.deck)<9:
+            self.deck.append(card)
+            #put in the first nothing card button the card
+            for i in range(len(self.DeckButtons)):
+                if self.DeckButtons[i].card.name=="Nothing":
+                    self.DeckButtons[i] = button.CardButton(self.DeckButtons[i].rect.x, self.DeckButtons[i].rect.y, card.name, (200, 200, 200), (150, 150, 150), card, card_type=card.card_type)
+                    break
+        #print(f"{card} has been added to {self.name}'s deck.")
+
     def PlayCards(self, order):
         new_hand = []
         for o in order:
@@ -37,3 +73,10 @@ class Player:
             elif o == "d":
                 new_hand.append(self.hand[2])
         self.hand = new_hand
+
+
+    def displayDeck(self, screen):
+        for d in self.DeckButtons:
+            d.draw(screen)
+        for h in self.HandButtons:
+            h.draw(screen)

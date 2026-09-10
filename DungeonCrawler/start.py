@@ -34,7 +34,7 @@ def start(screen):
 
             # Check button clicks
             if newGameButton.is_clicked(mouse_pos, event):
-                SetPicker.ChooseSet(screen, player)
+                SetPicker.ChooseSet(screen, player1)
                 #main game loader
                 running=False
 

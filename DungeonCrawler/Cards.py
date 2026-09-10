@@ -52,7 +52,7 @@ Trick list:
 
 class LongSword(Card):
     def __init__(self):
-        super().__init__("Long Sword", "Heavy", 5, "ATK: 2, DEF: L1, H0.5", 2, 1, 0.5, 0, 0)
+        super().__init__("Long Sword", "Heavy", 5, "'H': 5, ATK: 2, DEF: L1, H0.5", 2, 1, 0.5, 0, 0)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -65,13 +65,13 @@ class LongSword(Card):
 
 class Shield(Card):
     def __init__(self):
-        super().__init__("Shield", "Light", 5, "DEF: 1", 0, 1, 1, 0, 0)
+        super().__init__("Shield", "Light", 5, "'L': 5, DEF: 1", 0, 1, 1, 0, 0)
     def defend(self, oc, player, enemy):
         return halved(oc)
 
 class Halbard(Card):
     def __init__(self):
-        super().__init__("Halbard", "Heavy", 4, "ATK: 2, DEF: L1, H0", 2, 1, 0, 0, 0)
+        super().__init__("Halbard", "Heavy", 4, "'H': 4, ATK: 2, DEF: L1, H0", 2, 1, 0, 0, 0)
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -84,14 +84,14 @@ class Halbard(Card):
 
 class LightAxe(Card):
     def __init__(self):
-        super().__init__("Light Axe", "Light", 3, "ATK: 1", 1, 0, 0, 0, 0)
+        super().__init__("Light Axe", "Light", 3, "'L': 3, ATK: 1", 1, 0, 0, 0, 0)
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
 
 class Bow(Card):
     def __init__(self):
-        super().__init__("Bow", "Heavy", 6, "ATK: 2 (-1 arrow for 2 rounds) - even if halved!, DEF: L1, H0.5", 2, 0, 0, 0,)
+        super().__init__("Bow", "Heavy", 6, "'H': 6, ATK: 2 (-1 arrow for 2 rounds) - even if halved!, DEF: L1, H0.5", 2, 0, 0, 0,)
     def attack(self, oc, player, enemy):
         #if an arrow is in player eq then return 2
         #then throw out arrow out of eq for one round!
@@ -118,7 +118,7 @@ class Bow(Card):
 
 class Arrow(Card):
     def __init__(self):
-        super().__init__("Arrow", "Light", 2, "DEF: 0, L: recoile 1dmg atk, TRK: returns to hand after two rounds", 0, -1, 0, 0,3)
+        super().__init__("Arrow", "Light", 2, "'L': 2, DEF: 0, L: recoile 1dmg atk, TRK: returns to hand after two rounds", 0, -1, 0, 0,3)
     def defend(self, oc, player, enemy):
         #find a way for recoil dmg - i dunno maybe put a player class for this function
         if oc.card_type=="light":

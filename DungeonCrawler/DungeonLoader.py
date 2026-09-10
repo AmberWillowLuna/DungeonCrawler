@@ -8,7 +8,7 @@ import random
 
 def DefineEasyDungeon(player):
     # Define a low level dungeon
-    D1 = dungeons.dungeon("Orc's dungeon", "Dungeon with some green and grey creatures", [enemies.Goblin(), enemies.Orc(), enemies.ArmoredOrc(), enemies.OrcWizard(), enemies.Ogre()], [Cards.Bandage(), Cards.Bandage(), Cards.Bandage(), Cards.Shield(), Cards.ChainMail(), Cards.Dagger(), Cards.Knife(), Cards.Knife()], ["Ring of life", "Lucky coin", "Regeneration necklace"])
+    D1 = dungeons.dungeon("Orc's dungeon", "Dungeon with some green and grey creatures", [enemies.Goblin(), enemies.Orc(), enemies.ArmoredOrc(), enemies.OrcWizard(), enemies.Ogre()], [Cards.Bandage(), Cards.Bandage(), Cards.Bandage(), Cards.Shield(), Cards.ChainMail(), Cards.Dagger(), Cards.Knife(), Cards.Knife()], ["Ring of life", "Lucky coin", "Regeneration necklace"], "orcdungeon")
 
     Dungeons=[D1]
     
@@ -44,3 +44,4 @@ def LoadDungeon(screen, player):
         elif player.DungeonLevel == 6:
             pass
    
+    return Dungeons
