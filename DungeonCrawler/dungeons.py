@@ -27,13 +27,14 @@ class dungeon:
             ["L3","L3","L2"],
             ["T", "L3","L4"], #level 4 enemy should be basicly same level enemy as boss fight but i dunno
             ["M","M","M"], 
-            ["B","B","B"],
+            ["L5","L5","L5"],
             ["E", "E", "E"] #escape and heal
             ]
 
 
-
-
+    def get_random_enemy(self, level):
+        #the second symbol in the set is the level of the enemy - so if it is L1 then get a random enemy from the enemies list with level 1
+        return self.enemies[int(level[1])-1]
 
     def randomizeSet(self):
         for s in self.set:

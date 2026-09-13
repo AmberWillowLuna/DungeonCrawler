@@ -17,6 +17,9 @@ class Player:
         self.gold = 0
         self.kills = 0
         self.curD = ""
+        self.maxweight=10
+
+
 
         #buttons for displaying the deck
         #at the beggining 9 nothing cards and 3 nothing cards in hand!
@@ -81,6 +84,9 @@ class Player:
         for h in self.HandButtons:
             h.draw(screen)
 
+        #DRAW HEARTS as hp - empty as lost and full as existing
+
+
     def SaveToJson(self):
         #file: player.json
         import json
@@ -101,6 +107,66 @@ class Player:
 
         with open('player.json', 'w') as f:
             json.dump(player_data, f, indent=4)
+
+    def handle_equipment_click(self, mouse_pos, event):
+        """Call this once per event in your main loop."""
+        all_buttons = self.DeckButtons + self.HandButtons
+
+        for btn in all_buttons:
+            if btn.is_clicked(mouse_pos, event):
+                # clicking an already-selected button unclicks it
+                if btn.selected:
+                    btn.selected = False
+                    return
+
+                already_selected = [b for b in all_buttons if b.selected]
+
+                if not already_selected:
+                    btn.selected = True
+                    return
+                else:
+                    other = already_selected[0]
+                    self._try_swap(other, btn)
+                    other.selected = False
+                    btn.selected = False
+                    return
+
+    def _try_swap(self, btn1, btn2):
+        """Attempt to swap the cards held by two buttons, enforcing hand rules."""
+        card1 = btn1.card
+        card2 = btn2.card
+
+        in_hand_1 = btn1 in self.HandButtons
+        in_hand_2 = btn2 in self.HandButtons
+
+        # If either button lives in the hand, check what the hand would look like after the swap
+        if in_hand_1 or in_hand_2:
+            hypothetical_hand = [b.card for b in self.HandButtons]
+            if in_hand_1:
+                hypothetical_hand[self.HandButtons.index(btn1)] = card2
+            if in_hand_2:
+                hypothetical_hand[self.HandButtons.index(btn2)] = card1
+
+            if not self._hand_is_valid(hypothetical_hand):
+                #print("Swap rejected: hand would exceed weight or heavy-card limit.")
+                return False
+
+        # Passed checks (or doesn't touch the hand at all) -> perform swap
+        btn1.set_card(card2)
+        btn2.set_card(card1)
+
+        self._sync_lists_from_buttons()
+        return True
+
+    def _hand_is_valid(self, hand_cards):
+        total_weight = sum(c.weight for c in hand_cards if c.name != "Nothing")
+        heavy_count = sum(1 for c in hand_cards if c.card_type == "heavy")
+        return total_weight <= self.maxweight and heavy_count <= 1
+
+    def _sync_lists_from_buttons(self):
+        """Keep self.deck / self.hand consistent with what the buttons now show."""
+        self.deck = [b.card for b in self.DeckButtons if b.card.name != "Nothing"]
+        self.hand = [b.card for b in self.HandButtons if b.card.name != "Nothing"]
 
 
 def LoadPlayerFromJson():

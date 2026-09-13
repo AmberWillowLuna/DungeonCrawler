@@ -50,6 +50,7 @@ import SettingHelp
 
 class CardButton(Button):
     def __init__(self, x, y, name, color, hover_color, card, card_type="default"):
+        self.selected = False
         scale = SettingHelp.get_scale()
         # Define base dimensions (unscaled)
         base_width = 144*scale
@@ -125,17 +126,37 @@ class CardButton(Button):
             top=name_rect.bottom + 5
         )
         surface.blit(stats_surface, stats_rect)
+        self.drawBorder(surface)
 
     def setText(self, text):
         # Override if you want to set custom text
         self.name = text
 
-    def setStats(self, stats):
-        """Update the card's stats"""
-        self.stats = stats
+    def set_card(self, card):
+        """Swap out the card this button represents, refreshing name/type/stats/image."""
+        scale = SettingHelp.get_scale()
+        self.card = card
+        self.name = card.name
+        self.card_type = card.card_type
+        self.stats = self._load_stats()
+
+        raw_image = self._load_image()
+        if raw_image:
+            self.image = pygame.transform.scale(
+                raw_image, (self.rect.width, self.rect.height)
+            )
+        else:
+            self.image = None
+
+    def drawBorder(self, screen):
+        if self.selected:
+            pygame.draw.rect(screen, (255, 215, 0), self.rect, width=4)  # gold border
+        else:
+            pygame.draw.rect(screen, colors.GREEN, self.rect, 2, border_radius=10)
+
 
 class EntityCards(CardButton):
-    def __init__(self, x, y, name, color, hover_color):
+    def __init__(self, x, y, name, color, hover_color, card):
         # Entity cards are 3x wider than default cards
         base_width = 468//2
         base_height = 458//2
@@ -145,7 +166,7 @@ class EntityCards(CardButton):
         height = int(base_height * scale)
 
         # Initialize with scaled dimensions
-        super().__init__(x, y, name, color, hover_color, card_type="entity")
+        super().__init__(x, y, name, color, hover_color, card,card_type="entity")
 
         # Override rect with new dimensions
         self.rect = pygame.Rect(x, y, width, height)

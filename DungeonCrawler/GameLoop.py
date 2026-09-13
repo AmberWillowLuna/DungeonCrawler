@@ -2,6 +2,7 @@ import pygame
 from DungeonLoader import LoadDungeon
 import SettingHelp
 import button
+import EncounterLoops
 
 
 def GameLoop(screen, player1):
@@ -66,6 +67,8 @@ def GameLoop(screen, player1):
                         elif GoRight.is_clicked(mouse_pos, event):
                             move="Right"
 
+                player1.handle_equipment_click(mouse_pos, event)
+
                 #if state is free - you can swap two cards 
                 # the clicked card - get clicked status
                 # when two where clicked - swap them in the hand and set clicked status to false
@@ -108,7 +111,19 @@ def GameLoop(screen, player1):
                     State="Empty"
                     #capsulate the fact that room is empty
                 elif sign == "T":
-                    State="Trap"
+                    State = "Trap"
+                    trap = dungeons[player1.AdvLevel][player1.DungeonLevel].get_random_trap()
+                    EncounterLoops.TrapLoop(screen, player1, trap)
+                    State = "Free"
+
+                elif sign in ("L1", "L2", "L3", "L4"):
+                    State = "Battle"
+                    enemy = dungeons[player1.AdvLevel][player1.DungeonLevel].get_random_enemy(sign)
+                    enemy.ShuffleHand()
+                    won = EncounterLoops.BattleLoop(screen, player1, enemy)
+                    # TODO: actual turn-based combat resolution goes here, using
+                    # player1.hand vs enemy.hand — BattleLoop only handles setup/Ready.
+                    State = "Free"
                     #when it is trap player should have time to choose his set before trap setts off - so
                     #example traps - destroy a random card in hand / deal light / heavy damage / reduce eq until the end of dungeon / reduce max hp till the end 
                     # for damage - you can have a lot of traps dealing dmg like a spike trap (light axe damage) or a heavy trap (halbard damage) 
@@ -119,8 +134,6 @@ def GameLoop(screen, player1):
                 elif sign == "M":
                     State = "Merchant"
                     pass #merchant
-                elif sign == "L1" or sign == "L2" or sign == "L3" or sign == "L4":
-                    State="Battle"
                     #start a fight with a random enemy from the dungeon class
                     #ALSO YOU GET TO CHOOSE YOUR SET BEFORE THE FIGHT STARTS - so you can choose a set of 3 cards from your deck to fight with
 

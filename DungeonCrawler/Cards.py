@@ -223,7 +223,7 @@ class Dagger(Card):
 
 class Knife(Card):
     def __init__(self):
-        super().__init__("Knife", "Light", 1, "ATK: 1, DEF: L0, H0",1,0,0,0,2) 
+        super().__init__("Knife", "Light", 1, "ATK: 1, DEF: L0, H0, TRK: falls off after atack",1,0,0,0,2) 
     def attack(self, oc, player, enemy):
         self.trick(self, player, enemy)
         dmg = oc.defend(self, player, enemy)

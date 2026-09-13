@@ -1,4 +1,7 @@
 import Cards
+import os
+from random import shuffle
+import pygame
 
 def shuffle(lst):
     import random
@@ -14,7 +17,18 @@ class enemy:
         self.hand = hand  # List of card objects
         self.DungeonName = DungeonName
         self.level = level
-
+        self.icon = self._load_icon()
+    def _load_icon(self, size=None):
+        """Load assets/{name}.png as the enemy's display icon."""
+        image_path = os.path.join("assets", f"{self.name}.png")
+        if os.path.exists(image_path):
+            img = pygame.image.load(image_path).convert_alpha()
+            if size:
+                img = pygame.transform.scale(img, size)
+            return img
+        else:
+            print(f"Warning: Enemy icon not found at {image_path}")
+            return None
 
     def ShuffleHand(self):
         curHand=self.hand
