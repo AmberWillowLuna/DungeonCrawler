@@ -18,7 +18,11 @@ class Player:
         self.kills = 0
         self.curD = ""
         self.maxweight=10
-
+        self.HeartIcon = pygame.image.load("assets/heart.png")
+        self.EmptyHeartIcon = pygame.image.load("assets/Eheart.png")
+        #prescale icons by the scale factor
+        self.HeartIcon = pygame.transform.scale(self.HeartIcon, (80*SettingHelp.get_scale(), 80*SettingHelp.get_scale()))
+        self.EmptyHeartIcon = pygame.transform.scale(self.EmptyHeartIcon, (80*SettingHelp.get_scale(), 80*SettingHelp.get_scale()))
 
 
         #buttons for displaying the deck
@@ -41,7 +45,32 @@ class Player:
             button.CardButton(1130*scale, 750*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")            
             ]
 
+    def displayHp(self, screen):
+        scale = SettingHelp.get_scale()
+        for i in range(5):
+            if i < self.life_points:
+                screen.blit(self.HeartIcon, (40*scale + i*75*scale, 800*scale))
+            else:
+                screen.blit(self.EmptyHeartIcon, (40*scale + i*75*scale, 800*scale))
 
+    def ascend(self):
+        self.level += 1
+        if self.level==15:
+            self.level=0
+            self.DungeonLevel += 1
+            if self.DungeonLevel==5:
+                self.DungeonLevel=0
+                self.AdvLevel += 1
+                if self.AdvLevel==3:
+                    self.AdvLevel=0
+                    #game won!
+
+
+        self.life_points +=1
+        if self.life_points > 5:
+            self.life_points = 5
+        self.curD = ""
+        #print(f"{self.name} has ascended to level {self.level}!")
 
     def take_damage(self, amount):
         self.life_points -= amount
@@ -83,6 +112,7 @@ class Player:
             d.draw(screen)
         for h in self.HandButtons:
             h.draw(screen)
+        self.displayHp(screen)
 
         #DRAW HEARTS as hp - empty as lost and full as existing
 
@@ -111,6 +141,34 @@ class Player:
     def handle_equipment_click(self, mouse_pos, event):
         """Call this once per event in your main loop."""
         all_buttons = self.DeckButtons + self.HandButtons
+
+        for btn in all_buttons:
+            if btn.is_clicked(mouse_pos, event):
+                # clicking an already-selected button unclicks it
+                if btn.selected:
+                    btn.selected = False
+                    return
+
+                already_selected = [b for b in all_buttons if b.selected]
+
+                if not already_selected:
+                    btn.selected = True
+                    return
+                else:
+                    other = already_selected[0]
+                    self._try_swap(other, btn)
+                    other.selected = False
+                    btn.selected = False
+                    return
+
+    def deselectAll(self):
+        """Deselect all buttons in the deck and hand."""
+        for btn in self.DeckButtons + self.HandButtons:
+            btn.selected = False
+
+    def handle_hand_click(self, mouse_pos, event):
+        """Call this once per event in your main loop."""
+        all_buttons = self.HandButtons
 
         for btn in all_buttons:
             if btn.is_clicked(mouse_pos, event):
@@ -190,8 +248,8 @@ class Player:
 
     def _sync_lists_from_buttons(self):
         """Keep self.deck / self.hand consistent with what the buttons now show."""
-        self.deck = [b.card for b in self.DeckButtons if b.card.name != "Nothing"]
-        self.hand = [b.card for b in self.HandButtons if b.card.name != "Nothing"]
+        #self.deck = [b.card for b in self.DeckButtons if b.card.name != "Nothing"]
+        #self.hand = [b.card for b in self.HandButtons if b.card.name != "Nothing"]
 
 
 def LoadPlayerFromJson():

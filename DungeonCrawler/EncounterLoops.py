@@ -16,24 +16,6 @@ def _build_enemy_display(enemy):
     start_x = 680 * scale
     spacing = 220 * scale
     y = 240 * scale
-    # EncounterLoops.py
-import pygame
-import button
-import colors
-import SettingHelp
-import Cards
-
-font = pygame.font.SysFont("Arial", 40)
-desc_font = pygame.font.SysFont("Arial", 26)
-
-
-def _build_enemy_display(enemy):
-    """Build read-only CardButtons to show the enemy's hand, laid out in a row."""
-    scale = SettingHelp.get_scale()
-    buttons = []
-    start_x = 680 * scale
-    spacing = 220 * scale
-    y = 240 * scale
 
     for i, card in enumerate(enemy.hand):
         cb = button.CardButton(
@@ -168,6 +150,8 @@ def BattleLoop(screen, player1, enemy):
         clock.tick(60)
 
     # Player confirmed their set -> hand off to actual combat resolution
+    player1.deselectAll()
+
     Battle(screen, player1, enemy)
     return True
 
@@ -205,7 +189,7 @@ def _safe_call(fn, *args, label=""):
         return None
 
 
-def _resolve_round(player, enemy, log):
+def _resolve_round(player1, enemy, log):
     """
     Resolves one full clash of player.hand vs enemy.hand, lane by lane
     (slot 0 vs 0, 1 vs 1, 2 vs 2). Uses each card's own attack/heal/trick
@@ -220,17 +204,17 @@ def _resolve_round(player, enemy, log):
     mid-fight, since the hand is chosen beforehand and locked in for the fight.
     """
     for i in range(3):
-        p_card = player.HandButtons[i].card if i < len(player.HandButtons) else Cards.Nothing()
-        e_card = enemy.hand[i] if i < len(enemy.hand) else Cards.Nothing()
+        p_card = player1.HandButtons[i].card
+        e_card = enemy.hand[i]
 
-        _ensure_trick_state(p_card)
-        _ensure_trick_state(e_card)
+        #_ensure_trick_state(p_card)
+        #_ensure_trick_state(e_card)
 
         p_active = p_card.disarmed_rounds <= 0
         e_active = e_card.disarmed_rounds <= 0
 
         e_hp_before = enemy.hp
-        p_hp_before = player.life_points
+        p_hp_before = player1.life_points
 
         # --- attacks ---
         # NOTE: attack(oc, player, target) - "target" is whichever side
@@ -238,41 +222,41 @@ def _resolve_round(player, enemy, log):
         # method is already written (e.g. LongSword.attack does
         # enemy.take_damage(dmg) on whatever object is passed as the 3rd arg).
         if p_active and p_card.Aval > 0:
-            _safe_call(p_card.attack, e_card, player, enemy, label=f"{p_card.name}.attack")
+            _safe_call(p_card.attack, e_card, player1, enemy, label=f"{p_card.name}.attack")
 
         if e_active and e_card.Aval > 0:
-            _safe_call(e_card.attack, p_card, player, player, label=f"{e_card.name}.attack")
+            _safe_call(e_card.attack, p_card, player1, player1, label=f"{e_card.name}.attack")
 
         if enemy.hp < e_hp_before:
             log.append(f"{p_card.name} hits {enemy.name} for {e_hp_before - enemy.hp}.")
-        if player.life_points < p_hp_before:
-            log.append(f"{e_card.name} hits you for {p_hp_before - player.life_points}.")
+        if player1.life_points < p_hp_before:
+            log.append(f"{e_card.name} hits you for {p_hp_before - player1.life_points}.")
 
         # --- healing ---
         if p_card.Hval > 0:
-            healed = _safe_call(p_card.heal, e_card, player, enemy, label=f"{p_card.name}.heal")
+            healed = _safe_call(p_card.heal, e_card, player1, enemy, label=f"{p_card.name}.heal")
             if healed:
-                player.life_points += healed
+                player1.life_points += healed
                 log.append(f"{p_card.name} heals you for {healed}.")
         if e_card.Hval > 0:
-            healed = _safe_call(e_card.heal, p_card, player, enemy, label=f"{e_card.name}.heal")
+            healed = _safe_call(e_card.heal, p_card, player1, enemy, label=f"{e_card.name}.heal")
             if healed:
                 enemy.hp += healed
                 log.append(f"{e_card.name} heals {enemy.name} for {healed}.")
 
         # --- tricks (Tval used as the trick id, 1-6) ---
         if p_card.Tval in Cards.TRICKS:
-            _safe_call(Cards.TRICKS[p_card.Tval], p_card, e_card, player, enemy,
+            _safe_call(Cards.TRICKS[p_card.Tval], p_card, e_card, player1, enemy,
                        label=f"{p_card.name}.trick_{p_card.Tval}")
         if e_card.Tval in Cards.TRICKS:
-            _safe_call(Cards.TRICKS[e_card.Tval], e_card, p_card, player, enemy,
+            _safe_call(Cards.TRICKS[e_card.Tval], e_card, p_card, player1, enemy,
                        label=f"{e_card.name}.trick_{e_card.Tval}")
-
-        if enemy.hp <= 0 or player.life_points <= 0:
+            
+        if enemy.hp <= 0 or player1.life_points <= 0:
             break
 
     # --- tick disarm timers for everything still in play ---
-    for hb in player.HandButtons:
+    for hb in player1.HandButtons:
         _ensure_trick_state(hb.card)
         if hb.card.disarmed_rounds > 0:
             hb.card.disarmed_rounds -= 1
@@ -282,14 +266,14 @@ def _resolve_round(player, enemy, log):
             c.disarmed_rounds -= 1
 
     # --- bring back any cards whose pending_return has expired ---
-    for c in list(player.graveyard):
+    for c in list(player1.graveyard):
         if getattr(c, "pending_return", 0) > 0:
             c.pending_return -= 1
             if c.pending_return <= 0:
-                for hb in player.HandButtons:
+                for hb in player1.HandButtons:
                     if hb.card.name == "Nothing":
                         hb.set_card(c)
-                        player.graveyard.remove(c)
+                        player1.graveyard.remove(c)
                         break
     if hasattr(enemy, "graveyard"):
         for c in list(enemy.graveyard):
@@ -307,7 +291,7 @@ def _resolve_round(player, enemy, log):
     # off mid-fight, that slot just stays Nothing() for the rest of the
     # battle. Equipment swapping only happens outside of Battle().
 
-    player._sync_lists_from_buttons()
+    player1._sync_lists_from_buttons()
 
 
 def Battle(screen, player1, enemy):
@@ -365,7 +349,7 @@ def Battle(screen, player1, enemy):
                     # their hand - re-hide the enemy so the next Fight is
                     # a blind placement again. Deck/equipment is NOT
                     # touchable here - that's locked in for the fight.
-                    player1.handle_hand_reorder_click(mouse_pos, event)
+                    player1.handle_hand_click(mouse_pos, event)
                     revealed = False
 
         FightButton.check_hover(mouse_pos)
@@ -681,14 +665,7 @@ def _resolve_round(player, enemy, log):
                             enemy.graveyard.remove(c)
                             break
 
-    # --- refill any empty player hand slots straight from the deck ---
-    for hb in player.HandButtons:
-        if hb.card.name == "Nothing":
-            for db in player.DeckButtons:
-                if db.card.name != "Nothing":
-                    hb.set_card(db.card)
-                    db.set_card(Cards.Nothing())
-                    break
+
 
     player._sync_lists_from_buttons()
 
@@ -744,7 +721,7 @@ def Battle(screen, player1, enemy):
                     # any click that isn't Fight is the player managing
                     # their hand/deck - re-hide the enemy so the next
                     # Fight is a blind placement again
-                    player1.handle_equipment_click(mouse_pos, event)
+                    player1.handle_hand_reorder_click(mouse_pos, event)
                     revealed = False
 
         FightButton.check_hover(mouse_pos)
