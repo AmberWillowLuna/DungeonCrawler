@@ -40,6 +40,90 @@ class Card:
     def disp(self):
         print(f"Name: {self.name}, Type: {self.card_type}, Weight: {self.weight}, Description: {self.desc}, Attack Value: {self.Aval}, Defense Value (Light): {self.Dval}, Defense Value (Heavy): {self.D2val}, Heal Value: {self.Hval}, Trick Value: {self.Tval}")
 
+    def _owner_hand(self, player, enemy):
+        """Returns (index, is_player) for self's slot in whichever hand it's in."""
+        for i, hb in enumerate(player.HandButtons):
+            if hb.card is self:
+                return i, True
+        for i, c in enumerate(enemy.hand):
+            if c is self:
+                return i, False
+        return None, None
+
+    def _set_slot(self, player, enemy, is_player, idx, card):
+        if is_player:
+            player.HandButtons[idx].set_card(card)
+        else:
+            enemy.hand[idx] = card
+
+    def _move_to_graveyard(self, player, enemy):
+        idx, is_player = self._owner_hand(player, enemy)
+        if idx is None:
+            return
+        if is_player:
+            player.graveyard.append(self)
+        else:
+            if not hasattr(enemy, 'graveyard'):
+                enemy.graveyard = []
+            enemy.graveyard.append(self)
+        self._set_slot(player, enemy, is_player, idx, Nothing())
+
+    def _empty_slot(self, player, enemy):
+        """Find an empty slot on self's own side. Returns (idx, is_player) or (None, None)."""
+        _, is_player = self._owner_hand(player, enemy)
+        hand = player.HandButtons if is_player else enemy.hand
+        for i, c in enumerate(hand):
+            card = c.card if is_player else c
+            if card.name == "Nothing":
+                return i, is_player
+        return None, None
+
+    # ---- the six tricks ----
+
+    def trick_1_falls_off_after_action(self, oc, player, enemy):
+        if self.Aval > 0 or oc.Aval > 0:
+            self._move_to_graveyard(player, enemy)
+
+    def trick_2_disarm(self, oc, player, enemy):
+        if oc.name != "Nothing":
+            oc.disarmed_rounds = max(oc.disarmed_rounds, 2)
+            self.disarmed_rounds = max(self.disarmed_rounds, 2)
+
+    def trick_3_returns_after_two_rounds(self, oc, player, enemy):
+        self.pending_return = 2
+        self._move_to_graveyard(player, enemy)
+
+    def trick_4_breaks_after_second_heavy_hit(self, oc, player, enemy):
+        if oc.card_type == "heavy" and oc.Aval > 0:
+            self.heavy_hits += 1
+            if self.heavy_hits >= 2:
+                self._move_to_graveyard(player, enemy)
+
+    def trick_5_falls_off_after_dealing_damage(self, oc, player, enemy):
+        if self.Aval > 0:
+            defense = oc.get_defense(self.card_type == "heavy")
+            if self.Aval > defense:
+                self._move_to_graveyard(player, enemy)
+
+    def trick_6_spawn_knife(self, oc, player, enemy):
+        idx, is_player = self._empty_slot(player, enemy)
+        if idx is not None:
+            self._set_slot(player, enemy, is_player, idx, Knife())
+
+
+TRICKS = {
+    1: Card.trick_1_falls_off_after_action,
+    2: Card.trick_2_disarm,
+    3: Card.trick_3_returns_after_two_rounds,
+    4: Card.trick_4_breaks_after_second_heavy_hit,
+    5: Card.trick_5_falls_off_after_dealing_damage,
+    6: Card.trick_6_spawn_knife,
+}
+
+
+
+
+
 
 '''
 Trick list:

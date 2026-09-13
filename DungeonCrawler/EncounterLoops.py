@@ -160,3 +160,8 @@ def Battle(screen, player1, enemy):
     #tricks are resolved
     # healing may be resolved but new logic for healing is needed
 
+
+
+
+
+
