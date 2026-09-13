@@ -41,22 +41,7 @@ class Player:
             button.CardButton(1130*scale, 750*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")            
             ]
 
-    def ascend(self):
-        self.level +=1
-        if self.level==15:
-            self.DungeonLevel += 1
-            self.level==0
-            self.curD = ""
-            if self.DungeonLevel==5:
-                    self.DungeonLevel=0
-                    self.AdvLevel += 1
-                    if self.AdvLevel==3:
-                        self.AdvLevel=3
-                        #you theoreticly win the game
-                    
-        
 
-        #print(f"{self.name} has ascended to Adventure Level {self.AdvLevel}!)
 
     def take_damage(self, amount):
         self.life_points -= amount
@@ -177,6 +162,31 @@ class Player:
         total_weight = sum(c.weight for c in hand_cards if c.name != "Nothing")
         heavy_count = sum(1 for c in hand_cards if c.card_type == "heavy")
         return total_weight <= self.maxweight and heavy_count <= 1
+
+    def handle_hand_reorder_click(self, mouse_pos, event):
+        """
+        For use DURING a fight: only lets you swap two cards within the
+        hand itself. Deck (equipment) buttons are ignored here on purpose -
+        swapping equipment in/out of the hand is only allowed outside of
+        battle (via handle_equipment_click, e.g. in TrapLoop or the free
+        Ready screen).
+        """
+        for btn in self.HandButtons:
+            if btn.is_clicked(mouse_pos, event):
+                if btn.selected:
+                    btn.selected = False
+                    return
+                already = [b for b in self.HandButtons if b.selected]
+                if not already:
+                    btn.selected = True
+                else:
+                    other = already[0]
+                    c1, c2 = other.card, btn.card
+                    other.set_card(c2)
+                    btn.set_card(c1)
+                    other.selected = False
+                    btn.selected = False
+                return
 
     def _sync_lists_from_buttons(self):
         """Keep self.deck / self.hand consistent with what the buttons now show."""
