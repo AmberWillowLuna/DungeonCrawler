@@ -50,3 +50,8 @@ def ChooseSet(screen, player1):
 
         pygame.display.flip()
 
+    # add three bandages
+    player1.addItem(Cards.Bandage())
+    player1.addItem(Cards.Bandage())
+    player1.addItem(Cards.Bandage())
+

@@ -17,16 +17,8 @@ def DefineEasyDungeon(player):
     return Dungeons
 
 
-def DefineEasyMediumDungeon():
-    # Define a lower medium level dungeon
-    pass
-
 def DefineMediumDungeon():
     # Define a medium level dungeon
-    pass
-
-def DefineMediumHardDungeon():
-    # Define a medium to hard level dungeon
     pass
 
 def DefineHardDungeon():

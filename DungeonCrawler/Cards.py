@@ -1,6 +1,4 @@
-
-
-from re import L
+ï»¿from re import L
 
 
 def halved(oc):
@@ -56,17 +54,32 @@ class Card:
         else:
             enemy.hand[idx] = card
 
-    def _move_to_graveyard(self, player, enemy):
+    def _fall_off(self, player, enemy):
+        """
+        Simple fall-off: the card leaves its hand slot, which becomes a
+        Nothing() card - full stop, that's the general rule.
+        For the player specifically, try to swap the falling card into the
+        first empty ('Nothing') slot in the deck, so it's just returned to
+        storage rather than destroyed. If the deck has no empty slot to
+        receive it, buffer it into player.graveyard instead so it isn't
+        lost outright. The enemy has no deck, so its slot just becomes
+        Nothing() directly.
+        """
         idx, is_player = self._owner_hand(player, enemy)
         if idx is None:
             return
+
         if is_player:
+            for db in player.DeckButtons:
+                if db.card.name == "Nothing":
+                    db.set_card(self)
+                    player.HandButtons[idx].set_card(Nothing())
+                    return
+            # no empty deck slot available - buffer it in the graveyard
             player.graveyard.append(self)
+            player.HandButtons[idx].set_card(Nothing())
         else:
-            if not hasattr(enemy, 'graveyard'):
-                enemy.graveyard = []
-            enemy.graveyard.append(self)
-        self._set_slot(player, enemy, is_player, idx, Nothing())
+            enemy.hand[idx] = Nothing()
 
     def _empty_slot(self, player, enemy):
         """Find an empty slot on self's own side. Returns (idx, is_player) or (None, None)."""
@@ -82,7 +95,7 @@ class Card:
 
     def trick_1_falls_off_after_action(self, oc, player, enemy):
         if self.Aval > 0 or oc.Aval > 0:
-            self._move_to_graveyard(player, enemy)
+            self._fall_off(player, enemy)
 
     def trick_2_disarm(self, oc, player, enemy):
         if oc.name != "Nothing":
@@ -91,19 +104,19 @@ class Card:
 
     def trick_3_returns_after_two_rounds(self, oc, player, enemy):
         self.pending_return = 2
-        self._move_to_graveyard(player, enemy)
+        self._fall_off(player, enemy)
 
     def trick_4_breaks_after_second_heavy_hit(self, oc, player, enemy):
         if oc.card_type == "heavy" and oc.Aval > 0:
             self.heavy_hits += 1
             if self.heavy_hits >= 2:
-                self._move_to_graveyard(player, enemy)
+                self._fall_off(player, enemy)
 
     def trick_5_falls_off_after_dealing_damage(self, oc, player, enemy):
         if self.Aval > 0:
             defense = oc.get_defense(self.card_type == "heavy")
             if self.Aval > defense:
-                self._move_to_graveyard(player, enemy)
+                self._fall_off(player, enemy)
 
     def trick_6_spawn_knife(self, oc, player, enemy):
         idx, is_player = self._empty_slot(player, enemy)
@@ -307,7 +320,7 @@ class Dagger(Card):
 
 class Knife(Card):
     def __init__(self):
-        super().__init__("Knife", "Light", 1, "ATK: 1, DEF: L0, H0, TRK: falls off after atack",1,0,0,0,2) 
+        super().__init__("Knife", "Light", 1, "ATK: 1, DEF: L0, H0, TRK: falls off after atack",1,0,0,0,1) 
     def attack(self, oc, player, enemy):
         self.trick(self, player, enemy)
         dmg = oc.defend(self, player, enemy)
@@ -325,7 +338,7 @@ class WizardHat(Card):
         else:
             return oc.Aval
     def trick(self, oc, player, enemy):
-        #tu cos ten ze spawnem knifeów
+        #tu cos ten ze spawnem knifeï¿½w
         pass
     
 class Club(Card):
@@ -360,4 +373,4 @@ class Club(Card):
 
 class Nothing(Card):
     def __init__(self):
-        super().__init__("Nothing", "Light", 0, "DEF: 0", 0,0,0,0,0) 
+        super().__init__("Nothing", "Light", 0, "DEF: 0", 0,0,0,0,0)

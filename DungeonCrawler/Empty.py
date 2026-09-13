@@ -10,7 +10,7 @@ def LetsNotStopHere(screen, player1, backgroundImg, State):
     scale = SettingHelp.get_scale()
     clock = pygame.time.Clock()
 
-    LesGo = button.Button(800*scale, 150*scale, 300*scale, 200*scale, "Lets not stop here!", (0, 0, 128), (0, 255, 0))
+    LesGo = button.Button(700*scale, 150*scale, 800*scale, 300*scale, "Empty room... lets not stop here!", (0, 0, 128), (0, 255, 0))
 
 
 

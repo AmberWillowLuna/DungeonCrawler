@@ -41,7 +41,22 @@ class Player:
             button.CardButton(1130*scale, 750*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")            
             ]
 
+    def ascend(self):
+        self.level +=1
+        if self.level==15:
+            self.DungeonLevel += 1
+            self.level==0
+            self.curD = ""
+            if self.DungeonLevel==5:
+                    self.DungeonLevel=0
+                    self.AdvLevel += 1
+                    if self.AdvLevel==3:
+                        self.AdvLevel=3
+                        #you theoreticly win the game
+                    
+        
 
+        #print(f"{self.name} has ascended to Adventure Level {self.AdvLevel}!)
 
     def take_damage(self, amount):
         self.life_points -= amount

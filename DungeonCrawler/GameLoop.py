@@ -3,6 +3,8 @@ from DungeonLoader import LoadDungeon
 import SettingHelp
 import button
 import EncounterLoops
+import Empty
+import copy
 
 
 def GameLoop(screen, player1):
@@ -109,8 +111,13 @@ def GameLoop(screen, player1):
 
                 if sign == "P":
                     State="Empty"
+                    Empty.LetsNotStopHere(screen, player1, backgroundImg, State)
+                    player1.ascend()
+                    State="Free"
+
                     #capsulate the fact that room is empty
                 elif sign == "T":
+                    # TO IMPLEMENT
                     State = "Trap"
                     trap = dungeons[player1.AdvLevel][player1.DungeonLevel].get_random_trap()
                     EncounterLoops.TrapLoop(screen, player1, trap)
@@ -118,9 +125,10 @@ def GameLoop(screen, player1):
 
                 elif sign in ("L1", "L2", "L3", "L4"):
                     State = "Battle"
-                    enemy = dungeons[player1.AdvLevel][player1.DungeonLevel].get_random_enemy(sign)
+                    enemy = copy.copy(dungeons[player1.AdvLevel][player1.DungeonLevel].get_random_enemy(sign))
                     enemy.ShuffleHand()
                     won = EncounterLoops.BattleLoop(screen, player1, enemy)
+                    player1.ascend()
                     # TODO: actual turn-based combat resolution goes here, using
                     # player1.hand vs enemy.hand — BattleLoop only handles setup/Ready.
                     State = "Free"
