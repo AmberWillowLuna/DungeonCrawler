@@ -40,6 +40,7 @@
     <Compile Include="SettingHelp.py" />
     <Compile Include="start.py" />
     <Compile Include="Trap.py" />
+    <Compile Include="Trinkets.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="player.json" />

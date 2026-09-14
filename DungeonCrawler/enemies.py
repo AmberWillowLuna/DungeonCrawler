@@ -14,10 +14,15 @@ class enemy:
         self.name = name
         self.description = description
         self.hp = hp
+        self.maxhp = hp
         self.hand = hand  # List of card objects
+        self.lootTable = hand
+        self.field = []
         self.DungeonName = DungeonName
         self.level = level
         self.icon = self._load_icon()
+        self.type="enemy"
+
     def _load_icon(self, size=None):
         """Load assets/{name}.png as the enemy's display icon."""
         image_path = os.path.join("assets", f"{self.name}.png")
@@ -34,6 +39,11 @@ class enemy:
         curHand=self.hand
         #make random order of cards in hand
         self.hand = shuffle(curHand)
+
+    def heal(self, amount):
+        self.hp += amount
+        if hp>self.maxhp:
+            self.hp = self.maxhp
 
     def take_damage(self, damage):
         self.hp -= damage

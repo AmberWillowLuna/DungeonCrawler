@@ -85,6 +85,12 @@ class Player:
             self.graveyard.append(card)
             #print(f"{card} has fallen off the hand and is lost for the fight.")
 
+    def heal(self, amount):
+        self.life_points += amount
+        if self.life_points > 5:
+            self.life_points = 5
+        #print(f"{self.name} has healed {amount} points! Life points: {self.life_points}")
+
     def addItem(self, card):
         if len(self.deck)<9:
             self.deck.append(card)

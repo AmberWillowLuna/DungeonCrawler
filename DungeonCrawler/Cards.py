@@ -19,6 +19,7 @@ class Card:
         self.D2val = D2val #heavy
         self.Hval = Hval
         self.Tval = Tval
+        self.disarmed_rounds = 0
 
 
         #cards can be heavy or light
@@ -131,6 +132,7 @@ TRICKS = {
     4: Card.trick_4_breaks_after_second_heavy_hit,
     5: Card.trick_5_falls_off_after_dealing_damage,
     6: Card.trick_6_spawn_knife,
+    7: None,  # Active ability - handled separately
 }
 
 
@@ -147,6 +149,8 @@ Trick list:
 4 - breaks after second hit from heavy weapon
 5 - falls of after hitting and dealing damage
 6 - spawns knives if there is an empty spot 
+7 - active ability
+8 - only off battle item (healing potion) TO ADD LATER MAYBE
 '''
 
 class LongSword(Card):
@@ -234,23 +238,22 @@ class Crown(Card):
         self.trick(self, player, enemy)
         return 0
     def trick(self, oc, player, enemy):
-        #breaks player.falls()
-        pass
+        self.disarmed_rounds=-1 # -1 means it will be removed FOREVER from hand being hit
 
 class HealingAmulet(Card):
     def __init__(self):
-        super().__init__("Healing Amulet", "Light", 2, "DEF: 1, TRK: falls off after being attakced",0,0,0,1,1) #or falls of and gets back to player eq
+        super().__init__("Healing Amulet", "Light", 2, "DEF: 1, TRK: falls off after being attakced",0,0,0,1,9) #or falls of and gets back to player eq
     def defend(self, oc, player, enemy):
         self.trick(self, player, enemy)
     def heal(self, oc, player, enemy):
-        return 1
+        player.heal(1)
     def trick(self, oc, player, enemy):
-        #tu cos ten player.fall
-        pass
+        self.disarmed_rounds=-1 # -1 means it will be removed FOREVER from hand being hit
 
 class Bandage(Card):
     def __init__(self):
         super().__init__("Bandage", "Light", 3, "HEAL: 2 TRK: falls after being used",0,0,0,2,1) #or falls of and gets back to player eq
+        self.CanHeal=False
     def heal():
         return 2
     def trick():
@@ -263,10 +266,9 @@ class FishingRod(Card):
 
     def attack(self, oc, player, enemy):
         if oc.name!="Nothing":
-            self.trick(self, player, enemy)
-    def trick():
-        #tu cos ten oc.disarm, player.fall off 
-        pass
+            self.trick(self, oc, player, enemy)
+    def trick(oc, player, enemy):
+        oc.disarmed_rounds=3
 
 class Helmet(Card):
     def __init__(self):
@@ -293,10 +295,13 @@ class ShoulderPlate(Card):
 class ChainMail(Card):
     def __init__(self):
         super().__init__("Chain Mail", "Light", 4, "DEF: L1, H0.5",0,1,0.5,0,4) 
+        self.durability=2
     def defend(self, oc, player, enemy):
+
         if oc.card_type=="light":
             return 0
         else:
+            self.durability-=1
             return oc.Aval
 
 class Spear(Card):
@@ -312,21 +317,21 @@ class Dagger(Card):
         super().__init__("Dagger", "Light", 2, "ATK: 1, DEF: L0, H0",2,0,0,0,5) 
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
-        oc.take_damage(dmg)
+        enemy.take_damage(dmg)
+        if oc.Dval==0:
+            self.trick(self, oc, player, enemy)
         #here also disarm trigger
     def trick(self, oc, player, enemy):
-        #tu cos ten oc.disarm, player.fall off 
-        pass
+        self.disarmed_rounds=-1
 
 class Knife(Card):
     def __init__(self):
         super().__init__("Knife", "Light", 1, "ATK: 1, DEF: L0, H0, TRK: falls off after atack",1,0,0,0,5) 
     def attack(self, oc, player, enemy):
-        self.trick(self, player, enemy)
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
     def trick(self, oc, player, enemy):
-        #tu cos ten oc.disarm, player.fall off 
+        self.disarmed_rounds=-1 # -1 means it will be removed FOREVER from hand after attack
         pass
 
 class WizardHat(Card):
