@@ -1,6 +1,8 @@
 
 import Cards
 import random
+import EncounterLoops
+from button import Button
 
 class Trap:
     def __init__(self, name, description, hand, DungeonName,  trick):
@@ -48,6 +50,46 @@ class DestroyItem(Trap):
     def trick(self, player1):
         player1.hand[self.Index]= Cards.Nothing()
 
+
+
+
+
+
+
+
+
+import pygame
+def trigger(player1, trap,screen):
+    #make a one turn battle with the trap - player should have a chance to play cards and then the trap will play its cards
+    #if trap.trick == 0 then it is a one turn battle
+    if trap.trick==0:
+        #one round battle
+        OkayButton = Button(screen.get_width() // 2 - 50, screen.get_height() - 100, 100, 50, "Okay")
+        running = True
+        while running:
+
+
+
+
+            # Clear the screen
+            screen.fill((0, 0, 0))
+            
+            # Draw the trap's hand and the player's hand
+            EncounterLoops.draw_hands(screen, player1.hand, trap.hand)
+            #resolve round i guess!
+            EncounterLoops._resolve_round(player1, trap)
+
+
+            # Handle events
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
+                if OkayButton.is_clicked(pygame.mouse.get_pos(), event):
+                    running = False
+            
+            # Update the display
+            pygame.display.flip()
 
 
 

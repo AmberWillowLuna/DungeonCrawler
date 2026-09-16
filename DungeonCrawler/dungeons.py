@@ -2,7 +2,7 @@
 import random
 
 class dungeon:
-    def __init__(self, name, description, enemies, rewards, trinkets, imagname):
+    def __init__(self, name, description, enemies, rewards, trinkets, imagname, traps):
         self.name = name
         self.description = description
         self.enemies = enemies  # List of enemy objects
@@ -10,6 +10,7 @@ class dungeon:
         self. trinkets = trinkets
         #load background image
         self.background = "assets/"+imagname+".png"
+        self.traps = traps
         # each round you choose one of the three ways to go - and you get random enemies and rewards
         self.set=[
             ["L1","L1","L1"],
@@ -39,3 +40,7 @@ class dungeon:
     def randomizeSet(self):
         for s in self.set:
             random.shuffle(s)
+
+    def get_random_trap(self):
+        # Return a random trap from the dungeon's enemies list that is of type "trap"
+        return self.traps[random.randint(0, len(self.traps)-1)]

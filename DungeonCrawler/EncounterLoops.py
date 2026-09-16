@@ -5,6 +5,7 @@ import button
 import colors
 import SettingHelp
 import Cards
+import Trap
 
 font = pygame.font.SysFont("Arial", 40)
 desc_font = pygame.font.SysFont("Arial", 26)
@@ -201,16 +202,21 @@ def Battle(screen, player1, enemy):
     clock = pygame.time.Clock()
 
     FightButton = button.Button(
-        800 * scale, 550 * scale, 300 * scale, 100 * scale,
+        800 * scale, 500 * scale, 300 * scale, 100 * scale,
         "Fight", (100, 0, 0), (200, 0, 0)
+    )
+    WinButton = button.Button(
+        800 * scale, 650 * scale, 300 * scale, 100 * scale,
+        "Victory!", (100, 125, 0), (10, 155, 155)
     )
 
     enemy_buttons = _build_enemy_display(enemy)
     revealed = False
     log = []
     result = None
+    end = True
 
-    while result is None:
+    while end:
         mouse_pos = pygame.mouse.get_pos()
 
         for event in pygame.event.get():
@@ -225,11 +231,14 @@ def Battle(screen, player1, enemy):
                     _resolve_round(player1, enemy, log)
                     enemy_buttons = _build_enemy_display(enemy)
                     revealed = True
-
                     if enemy.hp <= 0:
                         result = "win"
                     elif player1.life_points <= 0:
                         result = "lose"
+
+
+                elif WinButton.is_clicked(mouse_pos, event):
+                        end = False
                 else:
                     # any click that isn't Fight is the player reordering
                     # their hand - re-hide the enemy so the next Fight is
@@ -258,8 +267,11 @@ def Battle(screen, player1, enemy):
         for j, line in enumerate(log[-8:]):
             surf = desc_font.render(line, True, colors.WHITE)
             screen.blit(surf, (150 * scale, (500 + j * 26) * scale))
-
-        FightButton.draw(screen)
+        
+        if result == None:
+            FightButton.draw(screen)
+        else:
+            WinButton.draw(screen)
         player1.displayDeck(screen)
 
         pygame.display.flip()
@@ -356,9 +368,6 @@ def TrapLoop(screen, player1, trap):
         title_surf = font.render("A trap! Adjust your equipment.", True, colors.WHITE)
         screen.blit(title_surf, (400 * scale, 10 * scale))
 
-        desc_surf = desc_font.render(trap.description, True, colors.WHITE)
-        screen.blit(desc_surf, (400 * scale, 60 * scale))
-
         ReadyButton.draw(screen)
         player1.displayDeck(screen)
 
@@ -366,7 +375,7 @@ def TrapLoop(screen, player1, trap):
         clock.tick(60)
 
     # Player confirmed -> apply the trap's effect
-    trap.trigger(player1)  # assumes Trap has a .trigger(player) method; adjust to your Trap class
+    Trap.trigger(player1, trap, screen)  # assumes Trap has a .trigger(player) method; adjust to your Trap class
 
 
 def BattleLoop(screen, player1, enemy):

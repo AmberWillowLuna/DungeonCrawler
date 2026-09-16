@@ -5,10 +5,11 @@ import player
 import dungeons
 import Cards
 import random
+import Trap
 
 def DefineEasyDungeon(player):
     # Define a low level dungeon
-    D1 = dungeons.dungeon("Orc's dungeon", "Dungeon with some green and grey creatures", [enemies.Goblin(), enemies.Orc(), enemies.ArmoredOrc(), enemies.OrcWizard(), enemies.Ogre()], [Cards.Bandage(), Cards.Bandage(), Cards.Bandage(), Cards.Shield(), Cards.ChainMail(), Cards.Dagger(), Cards.Knife(), Cards.Knife()], ["Ring of life", "Lucky coin", "Regeneration necklace"], "orcdungeon")
+    D1 = dungeons.dungeon("Orc's dungeon", "Dungeon with some green and grey creatures", [enemies.Goblin(), enemies.Orc(), enemies.ArmoredOrc(), enemies.OrcWizard(), enemies.Ogre()], [Cards.Bandage(), Cards.Bandage(), Cards.Bandage(), Cards.Shield(), Cards.ChainMail(), Cards.Dagger(), Cards.Knife(), Cards.Knife()], ["Ring of life", "Lucky coin", "Regeneration necklace"], "orcdungeon", [Trap.KnifeTrap(), Trap.ArrowTrap()])
 
     Dungeons=[D1]
     

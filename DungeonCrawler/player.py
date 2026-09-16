@@ -23,7 +23,7 @@ class Player:
         #prescale icons by the scale factor
         self.HeartIcon = pygame.transform.scale(self.HeartIcon, (80*SettingHelp.get_scale(), 80*SettingHelp.get_scale()))
         self.EmptyHeartIcon = pygame.transform.scale(self.EmptyHeartIcon, (80*SettingHelp.get_scale(), 80*SettingHelp.get_scale()))
-
+        self.regeneration = 0
 
         #buttons for displaying the deck
         #at the beggining 9 nothing cards and 3 nothing cards in hand!
@@ -53,6 +53,16 @@ class Player:
             else:
                 screen.blit(self.EmptyHeartIcon, (40*scale + i*75*scale, 800*scale))
 
+
+    def MoveNextRoom(self):
+        self.heal(self.regeneration)
+        #if you have trinkets earn gold
+
+    def earn_gold(self, amount):
+        #make trinket bonuses!
+        self.gold += amount
+        #print(f"{self.name} earned {amount} gold! Total gold: {self.gold}")
+
     def ascend(self):
         self.level += 1
         if self.level==15:
@@ -71,6 +81,12 @@ class Player:
             self.life_points = 5
         self.curD = ""
         #print(f"{self.name} has ascended to level {self.level}!")
+
+
+    def graveyardToDeck(self):
+        self.deck.extend(self.graveyard)
+        self.graveyard.clear()
+        #print(f"{self.name}'s graveyard has been returned to the deck.")
 
     def take_damage(self, amount):
         self.life_points -= amount
