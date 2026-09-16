@@ -2,6 +2,8 @@
 import Cards
 import random
 import EncounterLoops
+
+import colors
 from button import Button
 
 class Trap:
@@ -64,7 +66,7 @@ def trigger(player1, trap,screen):
     #if trap.trick == 0 then it is a one turn battle
     if trap.trick==0:
         #one round battle
-        OkayButton = Button(screen.get_width() // 2 - 50, screen.get_height() - 100, 100, 50, "Okay")
+        OkayButton = Button(screen.get_width() // 2 - 50, screen.get_height() - 100, 100, 50, "Okay", colors.GRAY, colors.WHITE)
         running = True
         while running:
 
@@ -75,7 +77,7 @@ def trigger(player1, trap,screen):
             screen.fill((0, 0, 0))
             
             # Draw the trap's hand and the player's hand
-            EncounterLoops.draw_hands(screen, player1.hand, trap.hand)
+            #EncounterLoops.draw_hands(screen, player1.hand, trap.hand)
             #resolve round i guess!
             EncounterLoops._resolve_round(player1, trap)
 

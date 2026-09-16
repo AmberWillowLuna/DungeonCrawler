@@ -130,8 +130,9 @@ def GameLoop(screen, player1):
                     won = EncounterLoops.BattleLoop(screen, player1, enemy)
                     player1.ascend()
                     #get graveyard back to deck
+                    print(len(player1.graveyard))
                     player1.graveyardToDeck()
-
+                    print(len(player1.graveyard))
                     # TODO: actual turn-based combat resolution goes here, using
                     # player1.hand vs enemy.hand — BattleLoop only handles setup/Ready.
                     State = "Free"

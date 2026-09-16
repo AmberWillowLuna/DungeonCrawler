@@ -67,6 +67,7 @@ class Player:
         self.level += 1
         if self.level==15:
             self.level=0
+            self.curD = ""
             self.DungeonLevel += 1
             if self.DungeonLevel==5:
                 self.DungeonLevel=0
@@ -76,15 +77,13 @@ class Player:
                     #game won!
 
 
-        self.life_points +=1
-        if self.life_points > 5:
-            self.life_points = 5
-        self.curD = ""
         #print(f"{self.name} has ascended to level {self.level}!")
 
 
     def graveyardToDeck(self):
-        self.deck.extend(self.graveyard)
+        for g in self.graveyard:
+            g.disarmed = 0
+            self.addItem(g)
         self.graveyard.clear()
         #print(f"{self.name}'s graveyard has been returned to the deck.")
 

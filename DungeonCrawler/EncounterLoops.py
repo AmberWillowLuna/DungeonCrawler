@@ -231,10 +231,11 @@ def Battle(screen, player1, enemy):
                     _resolve_round(player1, enemy, log)
                     enemy_buttons = _build_enemy_display(enemy)
                     revealed = True
-                    if enemy.hp <= 0:
-                        result = "win"
-                    elif player1.life_points <= 0:
+                   
+                    if player1.life_points <= 0:
                         result = "lose"
+                    elif enemy.hp <= 0:
+                        result = "win"
 
 
                 elif WinButton.is_clicked(mouse_pos, event):
