@@ -42,7 +42,7 @@ class enemy:
 
     def heal(self, amount):
         self.hp += amount
-        if hp>self.maxhp:
+        if self.hp>self.maxhp:
             self.hp = self.maxhp
 
     def take_damage(self, damage):

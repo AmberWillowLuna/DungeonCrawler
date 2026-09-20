@@ -207,7 +207,7 @@ class Bow(Card):
                 player.Hand.remove(q)
                 #Eq.append(Nothing())
                 dmg = oc.defend(self, player, enemy)
-                oc.take_damage(dmg)
+                enemy.take_damage(dmg)
             else:
                 return 0
                 
@@ -228,8 +228,9 @@ class Arrow(Card):
             self.trick(self, player, enemy) # 
         return oc.Aval # negative will mean 1 recoil dmg? - risky but it is a way to do it
     def trick(self, oc, player, enemy):
-                #tu cos ten
-        pass
+        dmg = 1
+        if oc.Dval==0 and oc.Aval>0:
+            enemy.take_damage(dmg)
 
 class Crown(Card):
     def __init__(self):
@@ -252,13 +253,19 @@ class HealingAmulet(Card):
 
 class Bandage(Card):
     def __init__(self):
-        super().__init__("Bandage", "Light", 3, "HEAL: 2 TRK: falls after being used",0,0,0,2,1) #or falls of and gets back to player eq
+        super().__init__("Bandage", "Light", 3, "HEAL: 2 TRK: falls after being used",0,0,0,3,1) #or falls of and gets back to player eq
         self.CanHeal=False
-    def heal():
-        return 2
-    def trick():
-        #tu cos ten zniszczyc player.falls
-        pass
+    def heal(self, oc, player, enemy):
+        if oc==None:
+            player.heal(self.Hval)
+            self.trick(oc, player, enemy)
+            return True
+        return False
+    def trick(self, oc, player, enemy):
+        self.disarmed_rounds=-1
+        player.fallOff(self)
+
+        
 
 class FishingRod(Card):
     def __init__(self):
@@ -311,6 +318,9 @@ class Spear(Card):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
         #here also trick trigger
+        self.trick(oc, player, enemy)
+    def trick(self, oc, player, enemy):
+        self.disarmed_rounds=-1
 
 class Dagger(Card):
     def __init__(self):
@@ -319,7 +329,7 @@ class Dagger(Card):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
         if oc.Dval==0:
-            self.trick(self, oc, player, enemy)
+            self.trick(oc, player, enemy)
         #here also disarm trigger
     def trick(self, oc, player, enemy):
         self.disarmed_rounds=-1
@@ -329,6 +339,7 @@ class Knife(Card):
         super().__init__("Knife", "Light", 1, "ATK: 1, DEF: L0, H0, TRK: falls off after atack",1,0,0,0,5) 
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
+        self.trick(oc, player, enemy)
         enemy.take_damage(dmg)
     def trick(self, oc, player, enemy):
         self.disarmed_rounds=-1 # -1 means it will be removed FOREVER from hand after attack
@@ -348,14 +359,33 @@ class WizardHat(Card):
     
 class Club(Card):
     def __init__(self):
-        super().__init__("Club", "Heavy", 6, "ATK: 3, DEF: L0, H0",3,0,0,0,0) 
+        super().__init__("Club", "Heavy", 7, "ATK: 3, DEF: L0, H0",3,0,0,0,0) 
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
         #here also trick trigger
 
+#we will be adding them simultaniously with enemies and dungeons
+#but first I need to fix traps and knife falling off
 
-
+# to add:
+#magic mirror - reflecs stats of opposing cards - very rare item
+#healing potion - heal 2hp but cannot be used in fight
+# spell book - if heavy dmg then blok and recoil 1 heavy dmg (item is light) (does not block light dmg)
+# spell shield - blocks heavy dmg BUT NOT LIGHT
+#boomerang - 1 light dmg, def light dmg then falls out for one round
+# magic eye - 3 dmg and if you hit it it has -1dmg when in defence (i dunno wether light or heavy tho maybe heavy)
+#ritual knife - light axe but recover 1hp when oc is nothing
+# knife pack - magic hat but when hit it falls off
+# sword - long sword but 1 dmg
+# poisonous gas - 1 dmg light bypassing everything
+# gas buuble - recoil all things that attacks you
+# magic mirror - stats same as oc
+# fire - knife but heavy dmg (item is i dunno i would say heavy for fun)
+#fireball - shield but spawns fire like magic hat
+# rogi - 2 heavy dmg and shield
+#trójząb - 3 light dmg
+#sword of darkness - heavy item with 8 weightness but it a firery sword with shield defence with ritual dagger effect and 
 
 # TRAP CARDS #################################################################
 '''class Spike(Card):
@@ -367,12 +397,7 @@ class Club(Card):
         #THIS IS A TRAP CARD ###################'''
 
 
-# to add:
-#magic mirror - reflecs stats of opposing cards - very rare item
-#magic wand - rotates card for one round after reveal before resolution - then falls off, very rare item
-#crown of thorns - takes 1dmg from player when opposing attacks (so def) but if enemy hits it it takes 4 dmg of light dmg recoil - very rare item
-#machet and basic sword - to be added - basic items
-#firery sword - rare item
+
 
 #additional things - trinkets will be added in another file
 

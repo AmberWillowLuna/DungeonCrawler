@@ -1,3 +1,4 @@
+
 import pygame
 import button
 import SettingHelp
@@ -10,7 +11,7 @@ class Player:
         self.hand = [] #3 cards in fight
         self.field = [] # cards that will come back
         self.graveyard = [] # cards that are out of fight 
-        self.life_points = 5
+        self.life_points = 8
         self.level = 0
         self.DungeonLevel = 0
         self.AdvLevel = 0
@@ -21,8 +22,8 @@ class Player:
         self.HeartIcon = pygame.image.load("assets/heart.png")
         self.EmptyHeartIcon = pygame.image.load("assets/Eheart.png")
         #prescale icons by the scale factor
-        self.HeartIcon = pygame.transform.scale(self.HeartIcon, (80*SettingHelp.get_scale(), 80*SettingHelp.get_scale()))
-        self.EmptyHeartIcon = pygame.transform.scale(self.EmptyHeartIcon, (80*SettingHelp.get_scale(), 80*SettingHelp.get_scale()))
+        self.HeartIcon = pygame.transform.scale(self.HeartIcon, (60*SettingHelp.get_scale(), 60*SettingHelp.get_scale()))
+        self.EmptyHeartIcon = pygame.transform.scale(self.EmptyHeartIcon, (60*SettingHelp.get_scale(), 60*SettingHelp.get_scale()))
         self.regeneration = 0
 
         #buttons for displaying the deck
@@ -47,7 +48,7 @@ class Player:
 
     def displayHp(self, screen):
         scale = SettingHelp.get_scale()
-        for i in range(5):
+        for i in range(8):
             if i < self.life_points:
                 screen.blit(self.HeartIcon, (40*scale + i*75*scale, 800*scale))
             else:
@@ -82,10 +83,19 @@ class Player:
 
     def graveyardToDeck(self):
         for g in self.graveyard:
+            g.disarmed_rounds = 0
             g.disarmed = 0
             self.addItem(g)
+
+            self.sync_deck()
+
         self.graveyard.clear()
         #print(f"{self.name}'s graveyard has been returned to the deck.")
+
+    def sync_deck(self):
+        for i in range(min(len(self.DeckButtons), len(self.deck))):
+            self.DeckButtons[i].set_card(self.deck[i])
+
 
     def take_damage(self, amount):
         self.life_points -= amount
@@ -98,12 +108,13 @@ class Player:
         if card in self.hand:
             self.hand.remove(card)
             self.graveyard.append(card)
+            self._sync_lists_from_buttons()
             #print(f"{card} has fallen off the hand and is lost for the fight.")
 
     def heal(self, amount):
         self.life_points += amount
-        if self.life_points > 5:
-            self.life_points = 5
+        if self.life_points > 8:
+            self.life_points = 8
         #print(f"{self.name} has healed {amount} points! Life points: {self.life_points}")
 
     def addItem(self, card):
@@ -187,8 +198,8 @@ class Player:
         for btn in self.DeckButtons + self.HandButtons:
             btn.selected = False
 
-    def handle_hand_click(self, mouse_pos, event):
-        """Call this once per event in your main loop."""
+    def handle_hand_click(self, mouse_pos, event, enemy):
+        """Call this once per event in your fight loop."""
         all_buttons = self.HandButtons
 
         for btn in all_buttons:
@@ -196,6 +207,17 @@ class Player:
                 # clicking an already-selected button unclicks it
                 if btn.selected:
                     btn.selected = False
+                    if btn.card.name == "Bandage" and self.life_points < 8:
+                        # Find the index of the clicked Bandage card in HandButtons
+                        clicked_index = self.HandButtons.index(btn)
+                        # Check if enemy.hand has a card at the same index
+                        if clicked_index < len(enemy.hand):
+                            oc = enemy.hand[clicked_index]
+                            if oc.Aval <= 0:
+                                DidItHeal = btn.card.heal(None, self, None)
+                                if DidItHeal:
+                                    btn.set_card(Cards.Nothing())
+                                    self.hand[clicked_index]=Cards.Nothing()
                     return
 
                 already_selected = [b for b in all_buttons if b.selected]
@@ -204,7 +226,7 @@ class Player:
                     btn.selected = True
                     return
                 else:
-                    other = already_selected[0]
+                    other = already_selected
                     self._try_swap(other, btn)
                     other.selected = False
                     btn.selected = False
@@ -269,8 +291,11 @@ class Player:
 
     def _sync_lists_from_buttons(self):
         """Keep self.deck / self.hand consistent with what the buttons now show."""
-        #self.deck = [b.card for b in self.DeckButtons if b.card.name != "Nothing"]
-        #self.hand = [b.card for b in self.HandButtons if b.card.name != "Nothing"]
+
+        
+        
+        self.deck = [b.card for b in self.DeckButtons if b.card.name != "Nothing"]
+        self.hand = [b.card for b in self.HandButtons if b.card.name != "Nothing"]
 
 
 def LoadPlayerFromJson():

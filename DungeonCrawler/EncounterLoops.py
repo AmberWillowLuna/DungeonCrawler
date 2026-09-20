@@ -224,6 +224,18 @@ def Battle(screen, player1, enemy):
                 pygame.quit()
                 raise SystemExit
 
+
+
+
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_b:
+                    print(player1.hand)
+                    print(player1.deck)
+                    print(player1.graveyard)
+                    print(player1.field)
+                    print("####################")
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if FightButton.is_clicked(mouse_pos, event):
                     enemy.ShuffleHand()
@@ -245,7 +257,7 @@ def Battle(screen, player1, enemy):
                     # their hand - re-hide the enemy so the next Fight is
                     # a blind placement again. Deck/equipment is NOT
                     # touchable here - that's locked in for the fight.
-                    player1.handle_hand_click(mouse_pos, event)
+                    player1.handle_hand_click(mouse_pos, event, enemy)
                     revealed = False
 
         FightButton.check_hover(mouse_pos)
@@ -281,6 +293,9 @@ def Battle(screen, player1, enemy):
     # ---- end-of-battle screen ----
     end_msg = "VICTORY!" if result == "win" else "DEFEATED..."
     end_color = colors.GREEN if result == "win" else colors.RED
+
+    player1.graveyardToDeck()
+
     waiting = True
     while waiting:
         for event in pygame.event.get():
@@ -298,14 +313,7 @@ def Battle(screen, player1, enemy):
         clock.tick(60)
 
     return result
-    for i, card in enumerate(enemy.hand):
-        cb = button.CardButton(
-            start_x + i * spacing, y,
-            card.name, (200, 200, 200), (150, 150, 150),
-            card, card_type=card.card_type
-        )
-        buttons.append(cb)
-    return buttons
+
 
 
 def _draw_enemy_header(screen, enemy):
@@ -341,13 +349,18 @@ def TrapLoop(screen, player1, trap):
     """
     scale = SettingHelp.get_scale()
     clock = pygame.time.Clock()
-
+    log = []
     ReadyButton = button.Button(
         800 * scale, 50 * scale, 300 * scale, 100 * scale,
         "Ready", (0, 100, 0), (0, 200, 0)
     )
-
     running = True
+        # Player confirmed -> apply the trap's effect
+    Trap.trigger(player1, trap ,screen)  # assumes Trap has a .trigger(player) method; adjust to your Trap class
+    #after trap is set 
+
+    trap_buttons = _build_enemy_display(trap)
+
     while running:
         mouse_pos = pygame.mouse.get_pos()
 
@@ -355,9 +368,10 @@ def TrapLoop(screen, player1, trap):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
-
+            
+            _resolve_round(player1, trap, log)
             if event.type == pygame.MOUSEBUTTONDOWN:
-                player1.handle_equipment_click(mouse_pos, event)
+                #player1.handle_equipment_click(mouse_pos, event)
                 if ReadyButton.is_clicked(mouse_pos, event):
                     running = False
 
@@ -365,9 +379,9 @@ def TrapLoop(screen, player1, trap):
 
         # ---- draw ----
         screen.fill((30, 0, 0))  # dim red backdrop to signal danger
+        for eb in trap_buttons:
+            eb.draw(screen)
 
-        title_surf = font.render("A trap! Adjust your equipment.", True, colors.WHITE)
-        screen.blit(title_surf, (400 * scale, 10 * scale))
 
         ReadyButton.draw(screen)
         player1.displayDeck(screen)
@@ -375,8 +389,9 @@ def TrapLoop(screen, player1, trap):
         pygame.display.flip()
         clock.tick(60)
 
-    # Player confirmed -> apply the trap's effect
-    Trap.trigger(player1, trap, screen)  # assumes Trap has a .trigger(player) method; adjust to your Trap class
+    player1.graveyardToDeck()
+
+
 
 
 def BattleLoop(screen, player1, enemy):
@@ -407,6 +422,16 @@ def BattleLoop(screen, player1, enemy):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
+
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_b:
+                    print(player1.hand)
+                    print(player1.deck)
+                    print(player1.graveyard)
+                    print(player1.field)
+                    print("####################")
+
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 player1.handle_equipment_click(mouse_pos, event)

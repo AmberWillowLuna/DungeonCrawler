@@ -22,6 +22,8 @@ class Trap:
         curHand=self.hand
         #make random order of cards in hand
         self.hand = random.sample(curHand, len(curHand))
+    def take_damage(self, dmg):
+        pass
 
 ''' 
 trick lists:
@@ -61,35 +63,37 @@ class DestroyItem(Trap):
 
 
 import pygame
+import SettingHelp
 def trigger(player1, trap,screen):
     #make a one turn battle with the trap - player should have a chance to play cards and then the trap will play its cards
     #if trap.trick == 0 then it is a one turn battle
+    scale = SettingHelp.get_scale()
     if trap.trick==0:
         #one round battle
-        OkayButton = Button(screen.get_width() // 2 - 50, screen.get_height() - 100, 100, 50, "Okay", colors.GRAY, colors.WHITE)
+        OkayButton = Button(screen.get_width() // 2 - 50, 400*scale, 300*scale, 150*scale, "Okay", colors.PINK, colors.WHITE)
         running = True
         while running:
-
-
-
-
-            # Clear the screen
-            screen.fill((0, 0, 0))
-            
-            # Draw the trap's hand and the player's hand
-            #EncounterLoops.draw_hands(screen, player1.hand, trap.hand)
-            #resolve round i guess!
-            EncounterLoops._resolve_round(player1, trap)
+            mouse_pos = pygame.mouse.get_pos()
 
 
             # Handle events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    pygame.quit()
+                    raise SystemExit
 
-                if OkayButton.is_clicked(pygame.mouse.get_pos(), event):
-                    running = False
-            
+                if event.type == pygame.MOUSEBUTTONDOWN:
+
+                    player1.handle_equipment_click(mouse_pos, event)
+                    if OkayButton.is_clicked(mouse_pos, event):
+                        
+                        running = False
+
+            OkayButton.check_hover(mouse_pos)
+            # Clear the screen
+            screen.fill((0, 0, 0))       
+            OkayButton.draw(screen)
+            player1.displayDeck(screen)
             # Update the display
             pygame.display.flip()
 
