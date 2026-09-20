@@ -1,10 +1,11 @@
+
 import pygame
 import colors
 import os
 import Cards
 
 font = pygame.font.SysFont("Arial", 36)
-small_font = pygame.font.SysFont("Arial", 30)
+small_font = pygame.font.SysFont("Arial", 24)
 
 #to get from setting help
 scale = 1.0 
@@ -35,6 +36,11 @@ class Button:
             return self.rect.collidepoint(pos)
         return False
 
+    def is_Rclicked(self, pos, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+            return self.rect.collidepoint(pos)
+        return False
+
     def setText(self, text):
         self.text = text
 
@@ -51,6 +57,7 @@ import SettingHelp
 class CardButton(Button):
     def __init__(self, x, y, name, color, hover_color, card, card_type="default"):
         self.selected = False
+        self.Rselected = False
         scale = SettingHelp.get_scale()
         # Define base dimensions (unscaled)
         base_width = 144*scale
@@ -69,7 +76,7 @@ class CardButton(Button):
         self.card=card #store card
         self.stats = self._load_stats()  # Load stats for the card
         self.image = self._load_image()  # Load the card image
-
+        self.DescText = small_font.render(card.name+" "+card.desc, True, (255, 255, 255))
 
         # Scale the image
         if self.image:
@@ -81,6 +88,11 @@ class CardButton(Button):
         # Set up font for stats
         self.font = pygame.font.SysFont("Arial", int(24 * scale))
         self.small_font = pygame.font.SysFont("Arial", int(16 * scale))
+
+    def check_hover(self, pos, screen):
+        self.is_hovered = self.rect.collidepoint(pos)
+        if self.is_hovered:
+            screen.blit(self.DescText, (500 * scale, 600 * scale))
 
     def _load_image(self):
         """Load the card image from assets/{name}.png"""
@@ -149,7 +161,9 @@ class CardButton(Button):
             self.image = None
 
     def drawBorder(self, screen):
-        if self.selected:
+        if self.Rselected:
+            pygame.draw.rect(screen, (255, 0, 0), self.rect, width=4) 
+        elif self.selected:
             pygame.draw.rect(screen, (255, 215, 0), self.rect, width=4)  # gold border
         else:
             pygame.draw.rect(screen, colors.GREEN, self.rect, 2, border_radius=10)

@@ -1,5 +1,4 @@
-﻿from re import L
-
+﻿
 
 def halved(oc):
         if oc.name != "Bow":
@@ -20,6 +19,7 @@ class Card:
         self.Hval = Hval
         self.Tval = Tval
         self.disarmed_rounds = 0
+        self.price=5
 
 
         #cards can be heavy or light
@@ -109,14 +109,14 @@ class Card:
         self._fall_off(player, enemy)
 
     def trick_4_breaks_after_second_heavy_hit(self, oc, player, enemy):
-        if oc.card_type == "heavy" and oc.Aval > 0:
+        if oc.card_type == "Heavy" and oc.Aval > 0:
             self.heavy_hits += 1
             if self.heavy_hits >= 2:
                 self._fall_off(player, enemy)
 
     def trick_5_falls_off_after_dealing_damage(self, oc, player, enemy):
         if self.Aval > 0:
-            defense = oc.get_defense(self.card_type == "heavy")
+            defense = oc.get_defense(self.card_type == "Heavy")
             if self.Aval > defense:
                 self._fall_off(player, enemy)
 
@@ -161,7 +161,7 @@ class LongSword(Card):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
     def defend(self,  oc, player, enemy):
-        if oc.card_type=="light":
+        if oc.card_type=="Light":
             return 0
         else:
             return  halved(oc)
@@ -180,7 +180,7 @@ class Halbard(Card):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
     def defend(self, oc, player, enemy):
-        if oc.card_type=="light":
+        if oc.card_type=="Light":
             return 0
         else:
             return oc.Aval
@@ -195,7 +195,7 @@ class LightAxe(Card):
 
 class Bow(Card):
     def __init__(self):
-        super().__init__("Bow", "Heavy", 6, "'H': 6, ATK: 2 (-1 arrow for 2 rounds) - even if halved!, DEF: L1, H0.5", 2, 0, 0, 0,)
+        super().__init__("Bow", "Heavy", 6, "'H': 6, ATK: 2 (-1 arrow for 2 rounds) - even if halved!, DEF: L1, H0.5", 2, 0, 0, 0,0)
     def attack(self, oc, player, enemy):
         #if an arrow is in player eq then return 2
         #then throw out arrow out of eq for one round!
@@ -214,7 +214,7 @@ class Bow(Card):
                 
 
     def defend(self, oc, player, enemy):
-        if oc.card_type=="light":
+        if oc.card_type=="Light":
             return 0
         else:
             return  halved(oc)
@@ -225,7 +225,7 @@ class Arrow(Card):
         super().__init__("Arrow", "Light", 2, "'L': 2, DEF: 0, L: recoile 1dmg atk, TRK: returns to hand after two rounds", 0, -1, 0, 0,3)
     def defend(self, oc, player, enemy):
         #find a way for recoil dmg - i dunno maybe put a player class for this function
-        if oc.card_type=="light":
+        if oc.card_type=="Light":
             self.trick(self, player, enemy) # 
         return oc.Aval # negative will mean 1 recoil dmg? - risky but it is a way to do it
     def trick(self, oc, player, enemy):
@@ -254,7 +254,7 @@ class HealingAmulet(Card):
 
 class Bandage(Card):
     def __init__(self):
-        super().__init__("Bandage", "Light", 3, "HEAL: 2 TRK: falls after being used",0,0,0,3,1) #or falls of and gets back to player eq
+        super().__init__("Bandage", "Light", 3, "HEAL: 2 TRK: falls after being used",0,0,0,2,1) #or falls of and gets back to player eq
         self.CanHeal=False
     def heal(self, oc, player, enemy):
         if oc==None:
@@ -264,8 +264,6 @@ class Bandage(Card):
         return False
     def trick(self, oc, player, enemy):
         player.fallOff(self)
-
-        
 
 class FishingRod(Card):
     def __init__(self):
@@ -281,7 +279,7 @@ class Helmet(Card):
     def __init__(self):
         super().__init__("Helmet", "Light", 3, "DEF: L1, H0", 0,1,0,0,0) 
     def defend(self, oc, player, enemy):
-        if oc.card_type=="light":
+        if oc.card_type=="Light":
             return 0
         else:
             return oc.Aval
@@ -290,7 +288,7 @@ class ShoulderPlate(Card):
     def __init__(self):
         super().__init__("Shoulder Plate", "Light", 1, "DEF: L1, H0 TRK: falls off after defending",0,1,0,0,1) 
     def defend(self, oc, player, enemy):
-        if oc.card_type=="light":
+        if oc.card_type=="Light":
             self.trick(self, oc, player, enemy)
             return 0
         else:
@@ -305,7 +303,7 @@ class ChainMail(Card):
         self.durability=2
     def defend(self, oc, player, enemy):
 
-        if oc.card_type=="light":
+        if oc.card_type=="Light":
             return 0
         else:
             self.durability-=1
@@ -349,7 +347,7 @@ class WizardHat(Card):
     def __init__(self):
         super().__init__("Wizard Hat", "Heavy", 3, "ATK: 0, DEF: L0, H0",0,1,0.5,0,6) 
     def defend(self, oc, player, enemy):
-        if oc.card_type=="light":
+        if oc.card_type=="Light":
             return 0
         else:
             return oc.Aval
@@ -384,7 +382,22 @@ class Sword(Card):
         else:
             return  oc.Aval
 
+class Boomerang(Card):
+    def __init__(self):
+        super().__init__("Light Axe", "Light", 2, "'L': 3, ATK: 1", 1, 0, 0, 0, 0)
+    def attack(self,  oc, player, enemy):
+        dmg = oc.defend(self, player, enemy)
+        enemy.take_damage(dmg)
+        self.trick()
 
+    def defend(self,  oc, player, enemy):
+        if oc.card_type=="Light":
+            return 0
+        else:
+            return  oc.Aval
+
+    def trick(self,  oc, player, enemy):
+        self.disarmed_rounds=2
 
 #we will be adding them simultaniously with enemies and dungeons
 #but first I need to fix traps and knife falling off

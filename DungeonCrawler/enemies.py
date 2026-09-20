@@ -9,6 +9,14 @@ def shuffle(lst):
     random.shuffle(shuffled_lst)
     return shuffled_lst
 
+def Fibbonaci(n):
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return Fibbonaci(n - 1) + Fibbonaci(n - 2)
+
 class enemy:
     def __init__(self, name, description, hp, hand, DungeonName, level):
         self.name = name
@@ -20,6 +28,7 @@ class enemy:
         self.field = []
         self.DungeonName = DungeonName
         self.level = level
+        self.prize = Fibbonaci(level+3)
         self.icon = self._load_icon()
         self.type="enemy"
 

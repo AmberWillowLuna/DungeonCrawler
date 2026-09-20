@@ -263,7 +263,13 @@ def Battle(screen, player1, enemy):
 
         FightButton.check_hover(mouse_pos)
         for eb in enemy_buttons:
-            eb.check_hover(mouse_pos)
+            eb.check_hover(mouse_pos, screen)
+
+        for hb in player1.DeckButtons:
+            hb.check_hover(mouse_pos, screen)
+
+        for hb in player1.HandButtons:
+            hb.check_hover(mouse_pos, screen)
 
         # ---- draw ----
         screen.fill((0, 0, 30))
@@ -294,7 +300,7 @@ def Battle(screen, player1, enemy):
     loot = Cards.Nothing()
     if random.randint(0,1)==1:
         loot = enemy.lootTable[random.randint(0,2)]
-
+    player1.earn(enemy.prize)
 
     # ---- end-of-battle screen ----
     end_msg = f"VICTORY! You won: {loot.name}" if result == "win" else "DEFEATED..."
@@ -418,8 +424,7 @@ def BattleLoop(screen, player1, enemy):
 
     enemy_buttons = _build_enemy_display(enemy)
     # asset/enemy.name+"png"
-    
-
+    player1.stripDeck()
 
     running = True
     while running:
@@ -442,19 +447,27 @@ def BattleLoop(screen, player1, enemy):
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 player1.handle_equipment_click(mouse_pos, event)
+                player1.handle_equipment_delete(mouse_pos, event)
                 if ReadyButton.is_clicked(mouse_pos, event):
                     running = False
 
         ReadyButton.check_hover(mouse_pos)
         for eb in enemy_buttons:
-            eb.check_hover(mouse_pos)  # purely cosmetic, they aren't clickable for swaps
+            eb.check_hover(mouse_pos, screen)  # purely cosmetic, they aren't clickable for swaps
 
+        for hb in player1.DeckButtons:
+            hb.check_hover(mouse_pos, screen)
+
+        for hb in player1.HandButtons:
+            hb.check_hover(mouse_pos, screen)
         # ---- draw ----
         screen.fill((0, 0, 30))  # dim blue backdrop for battle
 
         _draw_enemy_header(screen, enemy)
         for eb in enemy_buttons:
             eb.draw(screen)
+
+
 
         ReadyButton.draw(screen)
         player1.displayDeck(screen)

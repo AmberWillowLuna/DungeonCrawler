@@ -34,10 +34,12 @@
     <Compile Include="enemies.py" />
     <Compile Include="Escape.py" />
     <Compile Include="GameLoop.py" />
+    <Compile Include="GetTrinkets.py" />
     <Compile Include="Merchant.py" />
     <Compile Include="player.py" />
     <Compile Include="SetPicker.py" />
     <Compile Include="SettingHelp.py" />
+    <Compile Include="Shop.py" />
     <Compile Include="start.py" />
     <Compile Include="Trap.py" />
     <Compile Include="Trinkets.py" />

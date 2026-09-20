@@ -5,7 +5,8 @@ import button
 import EncounterLoops
 import Empty
 import copy
-
+import Merchant
+import GetTrinkets
 
 def GameLoop(screen, player1):
     '''Main game loop for the dungeon crawler'''
@@ -70,12 +71,17 @@ def GameLoop(screen, player1):
                             move="Right"
 
                 player1.handle_equipment_click(mouse_pos, event)
-
+                player1.handle_equipment_delete(mouse_pos, event)
                 #if state is free - you can swap two cards 
                 # the clicked card - get clicked status
                 # when two where clicked - swap them in the hand and set clicked status to false
 
         ###########################DRAW#########################################
+
+
+
+
+
         # Clear the screen
         screen.fill((0, 0, 0))
                         
@@ -131,6 +137,7 @@ def GameLoop(screen, player1):
                     player1.ascend()
                     #get graveyard back to deck                 
                     player1.graveyardToDeck()
+                    player1.stripDeck()
 
                     # TODO: actual turn-based combat resolution goes here, using
                     # player1.hand vs enemy.hand — BattleLoop only handles setup/Ready.
@@ -141,10 +148,22 @@ def GameLoop(screen, player1):
                     # also an arrow trap with 3 arrows or 2 arrows - generally traps should be in a dungeon class as Traps [] and u should get a random one
                 elif sign == "TR":
                     State = "Trinket"
-                    pass #trinket
+                    
+
+                    GetTrinkets.GetTrinket(screen, player1)
+
+                    player1.ascend()
+                    State = "Free"
+
                 elif sign == "M":
                     State = "Merchant"
-                    pass #merchant
+                    Merchant.MerchantLoop(screen, player1)
+                    player1.ascend()
+                    player1.earn(0) #to update gold amount on screen
+
+
+                    player1.stripDeck()
+                    State = "Free"
                     #start a fight with a random enemy from the dungeon class
                     #ALSO YOU GET TO CHOOSE YOUR SET BEFORE THE FIGHT STARTS - so you can choose a set of 3 cards from your deck to fight with
 
@@ -152,6 +171,8 @@ def GameLoop(screen, player1):
 
 
         player1.displayDeck(screen)
+        for hb in player1.DeckButtons:
+            hb.check_hover(mouse_pos, screen)
 
         # Update the display
         pygame.display.flip()
