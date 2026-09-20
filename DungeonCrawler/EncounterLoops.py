@@ -6,6 +6,7 @@ import colors
 import SettingHelp
 import Cards
 import Trap
+import random
 
 font = pygame.font.SysFont("Arial", 40)
 desc_font = pygame.font.SysFont("Arial", 26)
@@ -285,16 +286,22 @@ def Battle(screen, player1, enemy):
             FightButton.draw(screen)
         else:
             WinButton.draw(screen)
-        player1.displayDeck(screen)
+        player1.displayHand(screen)
 
         pygame.display.flip()
         clock.tick(60)
 
+    loot = Cards.Nothing()
+    if random.randint(0,1)==1:
+        loot = enemy.lootTable[random.randint(0,2)]
+
+
     # ---- end-of-battle screen ----
-    end_msg = "VICTORY!" if result == "win" else "DEFEATED..."
+    end_msg = f"VICTORY! You won: {loot.name}" if result == "win" else "DEFEATED..."
     end_color = colors.GREEN if result == "win" else colors.RED
 
     player1.graveyardToDeck()
+    player1.addItem(loot)
 
     waiting = True
     while waiting:
@@ -356,7 +363,7 @@ def TrapLoop(screen, player1, trap):
     )
     running = True
         # Player confirmed -> apply the trap's effect
-    Trap.trigger(player1, trap ,screen)  # assumes Trap has a .trigger(player) method; adjust to your Trap class
+    Trap.trigger(player1, trap, screen)  # assumes Trap has a .trigger(player) method; adjust to your Trap class
     #after trap is set 
 
     trap_buttons = _build_enemy_display(trap)
@@ -384,7 +391,7 @@ def TrapLoop(screen, player1, trap):
 
 
         ReadyButton.draw(screen)
-        player1.displayDeck(screen)
+        player1.displayHand(screen)
 
         pygame.display.flip()
         clock.tick(60)
@@ -451,6 +458,7 @@ def BattleLoop(screen, player1, enemy):
 
         ReadyButton.draw(screen)
         player1.displayDeck(screen)
+        player1.displayHand(screen)
 
 
         pygame.display.flip()

@@ -47,11 +47,9 @@ class enemy:
 
     def take_damage(self, damage):
         self.hp -= damage
-        print(f"{self.name} took {damage} damage! Life points: {self.hp}")
         if self.hp < 0:
             self.hp = 0
-            # Logic for when the enemy is defeated would go here
-            print(f"{self.name} has been defeated!")
+
 
 
 class Goblin(enemy):
@@ -73,3 +71,29 @@ class Ogre(enemy):
 class OrcWizard(enemy):
     def __init__(self):
         super().__init__("Orc Wizard", "A powerful mystical creature.", 3, [Cards.Knife(), Cards.LightAxe(), Cards.Nothing()], "Orc's dungeon", 5)
+
+
+class Slime(enemy):
+        def __init__(self):
+            super().__init__("slime", "A goo that seems to be agresive", 3, [Cards.Sword(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 1)
+
+class Skeleton(enemy):
+        def __init__(self):
+            super().__init__("Skeleton", "Archer that looks like death", 4, [Cards.Bow(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 2)
+
+class DarkCreature(enemy):
+        def __init__(self):
+            super().__init__("DarkCreature", "Gives nightmares if you look too much at him", 5, [Cards.Halbard(), Cards.ShoulderPlate(), Cards.ShoulderPlate()], "Misty dungeon", 3)
+
+class Ghoul(enemy):
+        def __init__(self):
+            super().__init__("Ghoul", "Very dangerous spirit", 5, [Cards.Spear(), Cards.LightAxe(), Cards.Shield()], "Misty dungeon", 4)
+
+class MistyGhost(enemy):
+        def __init__(self):
+            super().__init__("MistyGhost", "Agressive spirit of this dungeon", 7, [Cards.HealingAmulet(), Cards.Crown(), Cards.LongSword()], "Misty dungeon", 5)
+
+
+
+
+

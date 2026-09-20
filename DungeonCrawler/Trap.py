@@ -94,6 +94,7 @@ def trigger(player1, trap,screen):
             screen.fill((0, 0, 0))       
             OkayButton.draw(screen)
             player1.displayDeck(screen)
+            player1.displayHand(screen)
             # Update the display
             pygame.display.flip()
 

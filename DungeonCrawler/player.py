@@ -8,10 +8,12 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.deck = [] #eq
-        self.hand = [] #3 cards in fight
+        self.hand = [Cards.Nothing(), Cards.Nothing(), Cards.Nothing()] #3 cards in fight
         self.field = [] # cards that will come back
         self.graveyard = [] # cards that are out of fight 
-        self.life_points = 8
+        self.trinkets = []
+        self.maxHp = 8
+        self.life_points = self.maxHp
         self.level = 0
         self.DungeonLevel = 0
         self.AdvLevel = 0
@@ -31,15 +33,24 @@ class Player:
         scale = SettingHelp.get_scale()
         self.DeckButtons = [
             button.CardButton(40*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(260*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(470*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(690*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(910*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1130*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1350*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1570*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1790*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            ]
+            button.CardButton(156*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(272*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(388*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(504*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(620*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(736*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(852*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(968*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1084*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1200*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1316*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1432*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1548*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1669*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1790*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")
+        ]
+
+
         self.HandButtons = [
             button.CardButton(690*scale, 750*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
             button.CardButton(910*scale, 750*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
@@ -48,7 +59,7 @@ class Player:
 
     def displayHp(self, screen):
         scale = SettingHelp.get_scale()
-        for i in range(8):
+        for i in range(self.maxHp):
             if i < self.life_points:
                 screen.blit(self.HeartIcon, (40*scale + i*75*scale, 800*scale))
             else:
@@ -80,6 +91,18 @@ class Player:
 
         #print(f"{self.name} has ascended to level {self.level}!")
 
+    def HandToDeck(self):
+        for i in range(3):  # Loop from 0 to 2
+            if i < len(self.hand):  # Ensure the index is within bounds
+                card = self.hand[i]
+                card.disarmed_rounds = 0
+                #card.disarmed = 0
+                self.addItem(card)
+                self.hand[i] = Cards.Nothing()
+        self.sync_hand()
+        self.sync_deck()
+
+
 
     def graveyardToDeck(self):
         for g in self.graveyard:
@@ -87,14 +110,21 @@ class Player:
             g.disarmed = 0
             self.addItem(g)
 
-            self.sync_deck()
+        self.sync_deck()
 
         self.graveyard.clear()
+
+        self.HandToDeck()
+
         #print(f"{self.name}'s graveyard has been returned to the deck.")
 
     def sync_deck(self):
         for i in range(min(len(self.DeckButtons), len(self.deck))):
             self.DeckButtons[i].set_card(self.deck[i])
+
+    def sync_hand(self):
+        for i in range(min(len(self.HandButtons), len(self.hand))):
+            self.HandButtons[i].set_card(self.hand[i])
 
 
     def take_damage(self, amount):
@@ -106,15 +136,22 @@ class Player:
 
     def fallOff(self, card):
         if card in self.hand:
-            self.hand.remove(card)
+            # Add the card to self.graveyard
             self.graveyard.append(card)
-            self._sync_lists_from_buttons()
-            #print(f"{card} has fallen off the hand and is lost for the fight.")
+
+            # Find the index of the card in self.hand
+            index = self.hand.index(card)
+            # Remove the card from self.hand
+            self.hand[index]= Cards.Nothing()
+            self.sync_hand()
+
+
+
 
     def heal(self, amount):
         self.life_points += amount
-        if self.life_points > 8:
-            self.life_points = 8
+        if self.life_points > self.maxHp:
+            self.life_points = self.maxHp
         #print(f"{self.name} has healed {amount} points! Life points: {self.life_points}")
 
     def addItem(self, card):
@@ -142,11 +179,14 @@ class Player:
     def displayDeck(self, screen):
         for d in self.DeckButtons:
             d.draw(screen)
-        for h in self.HandButtons:
-            h.draw(screen)
         self.displayHp(screen)
 
         #DRAW HEARTS as hp - empty as lost and full as existing
+
+    def displayHand(self, screen):
+        for h in self.HandButtons:
+            h.draw(screen)
+        self.displayHp(screen)
 
 
     def SaveToJson(self):
@@ -208,16 +248,17 @@ class Player:
                 if btn.selected:
                     btn.selected = False
                     if btn.card.name == "Bandage" and self.life_points < 8:
-                        # Find the index of the clicked Bandage card in HandButtons
                         clicked_index = self.HandButtons.index(btn)
-                        # Check if enemy.hand has a card at the same index
-                        if clicked_index < len(enemy.hand):
-                            oc = enemy.hand[clicked_index]
-                            if oc.Aval <= 0:
-                                DidItHeal = btn.card.heal(None, self, None)
-                                if DidItHeal:
-                                    btn.set_card(Cards.Nothing())
-                                    self.hand[clicked_index]=Cards.Nothing()
+                        print(clicked_index)
+                        # Check if clicked_index is within bounds of self.hand
+                        if clicked_index < len(self.hand):
+                            if clicked_index < len(enemy.hand):
+                                oc = enemy.hand[clicked_index]
+                                if oc.Aval <= 0:
+                                    DidItHeal = btn.card.heal(None, self, None)
+                                    if DidItHeal:
+                                        btn.set_card(Cards.Nothing())
+                                        self.hand[clicked_index] = Cards.Nothing()
                     return
 
                 already_selected = [b for b in all_buttons if b.selected]

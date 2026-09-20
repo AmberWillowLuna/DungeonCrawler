@@ -37,7 +37,8 @@ class Card:
         # triggers when a special condition is met - may be triggered by player
         pass
     def disp(self):
-        print(f"Name: {self.name}, Type: {self.card_type}, Weight: {self.weight}, Description: {self.desc}, Attack Value: {self.Aval}, Defense Value (Light): {self.Dval}, Defense Value (Heavy): {self.D2val}, Heal Value: {self.Hval}, Trick Value: {self.Tval}")
+        #print(f"Name: {self.name}, Type: {self.card_type}, Weight: {self.weight}, Description: {self.desc}, Attack Value: {self.Aval}, Defense Value (Light): {self.Dval}, Defense Value (Heavy): {self.D2val}, Heal Value: {self.Hval}, Trick Value: {self.Tval}")
+        pass
 
     def _owner_hand(self, player, enemy):
         """Returns (index, is_player) for self's slot in whichever hand it's in."""
@@ -262,7 +263,6 @@ class Bandage(Card):
             return True
         return False
     def trick(self, oc, player, enemy):
-        self.disarmed_rounds=-1
         player.fallOff(self)
 
         
@@ -364,6 +364,27 @@ class Club(Card):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
         #here also trick trigger
+
+class HealingPotion(Card):
+    def __init__(self):
+        super().__init__("HealingPotion", "Heavy", 25, "HEAL: MAX",0,0,0,10,0) 
+    def heal(self, player):
+        player.heal(10)
+
+
+class Sword(Card):
+    def __init__(self):
+        super().__init__("Sword", "Heavy", 3, "'H': 5, ATK: 1, DEF: L1, H0", 1, 1, 0, 0, 0)
+    def attack(self, oc, player, enemy):
+        dmg = oc.defend(self, player, enemy)
+        enemy.take_damage(dmg)
+    def defend(self,  oc, player, enemy):
+        if oc.card_type=="light":
+            return 0
+        else:
+            return  oc.Aval
+
+
 
 #we will be adding them simultaniously with enemies and dungeons
 #but first I need to fix traps and knife falling off
