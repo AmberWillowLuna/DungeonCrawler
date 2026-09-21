@@ -4,7 +4,9 @@ import random
 import EncounterLoops
 
 import colors
-from button import Button
+import button
+import button
+import SettingHelp
 
 class Trap:
     def __init__(self, name, description, hand, DungeonName,  trick):
@@ -17,6 +19,12 @@ class Trap:
         self.description = description
         self.DungeonName = DungeonName
         self.type="trap"
+        scale = SettingHelp.get_scale()
+        self.HandButtons = [
+            button.CardButton(690*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(910*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1130*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")   
+        ]
     #if trick == 0 it is just a one round battle like three arrows or sth
     def shuffleHand(self):
         curHand=self.hand

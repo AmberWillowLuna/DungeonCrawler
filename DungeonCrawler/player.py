@@ -13,8 +13,8 @@ class Player:
         self.graveyard = [] # cards that are out of fight 
         self.trinkets = []
         self.maxHp = 8
-        self.life_points = self.maxHp
-        self.level = 13
+        self.hp = self.maxHp
+        self.level = 0
         self.et = "p"
         self.DungeonLevel = 0
         self.AdvLevel = 0
@@ -115,7 +115,7 @@ class Player:
     def displayHp(self, screen):
         scale = SettingHelp.get_scale()
         for i in range(self.maxHp):
-            if i < self.life_points:
+            if i < self.hp:
                 screen.blit(self.HeartIcon, (40*scale + i*50*scale, 800*scale))
             else:
                 screen.blit(self.EmptyHeartIcon, (40*scale + i*50*scale, 800*scale))
@@ -172,6 +172,16 @@ class Player:
                     self.addItem(card)
                 self.hand[i] = Cards.Nothing()
 
+        ####### FIELD TO DECK AS WELL #########
+        for i in range(len(self.field)):
+            card = self.field[i]
+            card.disarmed_rounds = 0
+            #card.disarmed = 0
+            if card.m == False:
+                    self.addItem(card)
+            self.field[i] = Cards.Nothing()
+            
+
         self.sync_hand()
         self.sync_deck()
 
@@ -204,10 +214,10 @@ class Player:
 
 
     def take_damage(self, amount):
-        self.life_points -= amount
-        #print(f"{self.name} took {amount} damage! Life points: {self.life_points}")
-        if self.life_points <= 0:
-            self.life_points=0
+        self.hp -= amount
+        #print(f"{self.name} took {amount} damage! Life points: {self.hp}")
+        if self.hp <= 0:
+            self.hp=0
             #print(f"{self.name} has lost the duel!")
 
     def fallOff(self, card):
@@ -225,10 +235,10 @@ class Player:
 
 
     def heal(self, amount):
-        self.life_points += amount
-        if self.life_points > self.maxHp:
-            self.life_points = self.maxHp
-        #print(f"{self.name} has healed {amount} points! Life points: {self.life_points}")
+        self.hp += amount
+        if self.hp > self.maxHp:
+            self.hp = self.maxHp
+        #print(f"{self.name} has healed {amount} points! Life points: {self.hp}")
 
     def addItem(self, card):
         if len(self.deck)<9:
@@ -274,7 +284,7 @@ class Player:
             "hand": [card.name for card in self.hand],
             "field": [card.name for card in self.field],
             "graveyard": [card.name for card in self.graveyard],
-            "life_points": self.life_points,
+            "hp": self.hp,
             "level": self.level,
             "DungeonLevel": self.DungeonLevel,
             "AdvLevel": self.AdvLevel,
@@ -295,15 +305,10 @@ class Player:
                 # clicking an already-selected button unclicks it
                 if btn.selected:
                     if btn.card.name == "HealingPotion":
-                        self.heal(10)
+                        btn.card.heal(self)
                         btn.set_card(Cards.Nothing())
                         # Update the corresponding card in self.hand or self.deck
-                        clicked_index = self.HandButtons.index(btn) if btn in self.HandButtons else self.DeckButtons.index(btn)
-                        if clicked_index < len(self.hand):
-                            self.hand[clicked_index] = Cards.Nothing()
-                        elif clicked_index < len(self.deck):
-                            self.deck[clicked_index] = Cards.Nothing()
-                        # Strip the deck to remove any remaining "Nothing" cards
+                        self._sync_lists_from_buttons()
                         self.stripDeck()
 
                     btn.selected = False
@@ -377,7 +382,7 @@ class Player:
                 # clicking an already-selected button unclicks it
                 if btn.selected:
                     btn.selected = False
-                    if btn.card.name == "Bandage" and self.life_points < 8:
+                    if btn.card.name == "Bandage" and self.hp < 8:
                         clicked_index = self.HandButtons.index(btn)
                         print(clicked_index)
                         # Check if clicked_index is within bounds of self.hand
@@ -485,7 +490,7 @@ def LoadPlayerFromJson():
     player.hand = [Cards.get_card_by_name(name) for name in player_data["hand"]]
     player.field = [Cards.get_card_by_name(name) for name in player_data["field"]]
     player.graveyard = [Cards.get_card_by_name(name) for name in player_data["graveyard"]]
-    player.life_points = player_data["life_points"]
+    player.hp = player_data["hp"]
     player.level = player_data["level"]
     player.DungeonLevel = player_data["DungeonLevel"]
     player.AdvLevel = player_data["AdvLevel"]

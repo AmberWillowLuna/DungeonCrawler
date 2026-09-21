@@ -107,6 +107,9 @@ class ArmoredOrc(enemy):
 class Ogre(enemy):
     def __init__(self):
         super().__init__("Ogre", "Huge green furry mischievous creature.", 6, [Cards.Club(), Cards.Nothing(), Cards.Nothing()], "Orc's dungeon", 4)
+        self.lootTable = [Cards.Club(), Cards.Club(), Cards.Nothing()]
+        self.lootChance = 1
+
 
 class OrcWizard(enemy):
     def __init__(self):

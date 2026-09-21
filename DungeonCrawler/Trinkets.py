@@ -40,12 +40,12 @@ class RingOfLife(Trinket):
 
     def apply_effect(self, player):
         player.maxHp += 1
-        player.life_points += 1  # Optionally heal the player as well
+        player.hp += 1  # Optionally heal the player as well
 
     def delete_effect(self, player):
         player.maxHp -= 1
         if player.hp > player.maxHp:
-            player.life_points = player.maxHp
+            player.hp = player.maxHp
 
 class EnchantedRingOfLife(Trinket):
     def __init__(self):
@@ -53,12 +53,12 @@ class EnchantedRingOfLife(Trinket):
 
     def apply_effect(self, player):
         player.maxHp += 3
-        player.life_points += 3  # Optionally heal the player as well
+        player.hp += 3  # Optionally heal the player as well
 
     def delete_effect(self, player):
         player.maxHp -= 3
         if player.hp > player.maxHp:
-            player.life_points = player.maxHp
+            player.hp = player.maxHp
 
 class NecklaceOfRegeneration(Trinket):
     def __init__(self):

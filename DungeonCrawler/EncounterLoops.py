@@ -27,7 +27,8 @@ def _build_enemy_display(enemy):
             card, card_type=card.card_type
         )
         buttons.append(cb)
-    return buttons
+        enemy.HandButtons = buttons
+
 
 
 def _draw_enemy_header(screen, enemy):
@@ -65,7 +66,12 @@ def _resolve_round(player1, enemy, log):
     Then ticks disarm/return timers. Hand slots emptied by a fall-off stay
     Nothing() for the rest of the battle - there is no refill from the deck
     mid-fight, since the hand is chosen beforehand and locked in for the fight.
+
+
     """
+    e_hp_before = enemy.hp
+    p_hp_before = player1.hp
+
     for i in range(3):
         p_card = player1.HandButtons[i].card
         e_card = enemy.hand[i]
@@ -74,7 +80,7 @@ def _resolve_round(player1, enemy, log):
         #_ensure_trick_state(e_card)
 
         e_hp_before = enemy.hp
-        p_hp_before = player1.life_points
+        p_hp_before = player1.hp
 
         # --- attacks ---
         # NOTE: attack(oc, player, target) - "target" is whichever side
@@ -89,6 +95,49 @@ def _resolve_round(player1, enemy, log):
 
         if e_card.Aval > 0:
             e_card.attack(p_card, enemy, player1)
+
+
+        if enemy.hp < e_hp_before:
+            log.append(f"{p_card.name} hits {enemy.name} for {e_hp_before - enemy.hp}.")
+        if player1.hp < p_hp_before:
+            log.append(f"{e_card.name} hits you for {p_hp_before - player1.hp}.")
+
+    #PRZECHODZIMY JESZCZE RAZ ¯EBY SPRAWDZIÆ TRIKI
+    for i in range(3):
+        p_card = player1.HandButtons[i].card
+        e_card = enemy.hand[i]
+
+
+
+        # --- healing ---
+        #Bandage
+        if p_card.Hval > 0:
+            if p_card.Tval==7:
+                if e_card.Aval==0:
+                    p_card.CanHeal=True
+                else:
+                    p_card.CanHeal=False
+        if e_card.Hval > 0:
+            if e_card.Tval==7:
+                if p_card.Aval==0:
+                    e_card.CanHeal=True
+                else:
+                    e_card.CanHeal=False
+        #healing amulet - heals when not attacked
+        if p_card.Hval > 0:
+            if p_card.Tval==8:
+                if e_card.Aval==0:
+                    p_card.heal(e_card, player1, enemy)
+                    log.append(f"{p_card.name} heals you for {p_card.Hval}.")
+
+
+        if e_card.Hval > 0:
+            if e_card.Tval==8:
+                if p_card.Aval==0:
+                    e_card.heal(p_card, enemy, player1)
+                    log.append(f"{p_card.name} heals enemy for {p_card.Hval}.")
+
+
 
         ################# DISARMING SECTION ###############################
         #check if card is disarmed and getting it to graveyard or field
@@ -128,47 +177,13 @@ def _resolve_round(player1, enemy, log):
 
         ######################################################
 
-        if enemy.hp < e_hp_before:
-            log.append(f"{p_card.name} hits {enemy.name} for {e_hp_before - enemy.hp}.")
-        if player1.life_points < p_hp_before:
-            log.append(f"{e_card.name} hits you for {p_hp_before - player1.life_points}.")
 
-        # --- healing ---
-        #Bandage
-        if p_card.Hval > 0:
-            if p_card.Tval==7:
-                if e_card.Aval==0:
-                    p_card.CanHeal=True
-                else:
-                    p_card.CanHeal=False
-        if e_card.Hval > 0:
-            if e_card.Tval==7:
-                if p_card.Aval==0:
-                    e_card.CanHeal=True
-                else:
-                    e_card.CanHeal=False
-        #healing amulet - heals when not attacked
-        if p_card.Hval > 0:
-            if p_card.Tval==8:
-                if e_card.Aval==0:
-                    p_card.heal(e_card, player1, enemy)
-                    log.append(f"{p_card.name} heals you for {p_card.Hval}.")
-
-
-        if e_card.Hval > 0:
-            if e_card.Tval==8:
-                if p_card.Aval==0:
-                    e_card.heal(p_card, enemy, player1)
-                    log.append(f"{p_card.name} heals enemy for {p_card.Hval}.")
-
-
-    #################################################CHECK IF CARDS GET BACK TO HANDD
     for tcard in player1.field:
         tcard.disarmed_rounds -= 1
         if tcard.disarmed_rounds <= 0:
-            for hb in player1.HandButtons:
-                if hb.card.name == "Nothing":
-                    hb.set_card(tcard)
+            for i, slot in enumerate(player1.hand):
+                if slot.name == "Nothing":
+                    player1.hand[i] = tcard
                     player1.field.remove(tcard)
                     break
 
@@ -213,7 +228,7 @@ def Battle(screen, player1, enemy):
         "Victory!", (100, 125, 0), (10, 155, 155)
     )
 
-    enemy_buttons = _build_enemy_display(enemy)
+    _build_enemy_display(enemy)
     revealed = False
     log = []
     result = None
@@ -233,10 +248,8 @@ def Battle(screen, player1, enemy):
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_b:
-                    print(player1.hand)
-                    print(player1.deck)
-                    print(player1.graveyard)
-                    print(player1.field)
+                    print(enemy.hand)
+                    print(enemy.field)
                     print("####################")
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -247,16 +260,15 @@ def Battle(screen, player1, enemy):
                     log = []
                     _resolve_round(player1, enemy, log)
 
-
-                    enemy_buttons = _build_enemy_display(enemy)
                     revealed = True
                    
-                    if player1.life_points <= 0:
+                    if player1.hp <= 0:
                         result = "lose"
                     elif enemy.hp <= 0:
                         result = "win"
 
                     player1.sync_delay_start = pygame.time.get_ticks()
+                    _build_enemy_display(enemy)
                     player1.sync_delay_active = True
 
 
@@ -281,7 +293,7 @@ def Battle(screen, player1, enemy):
                 player1.sync_delay_active = False
 
         FightButton.check_hover(mouse_pos)
-        for eb in enemy_buttons:
+        for eb in enemy.HandButtons:
             eb.check_hover(mouse_pos, screen)
 
         for hb in player1.DeckButtons:
@@ -296,10 +308,10 @@ def Battle(screen, player1, enemy):
         _draw_enemy_header(screen, enemy)
 
         if revealed:
-            for eb in enemy_buttons:
+            for eb in enemy.HandButtons:
                 eb.draw(screen)
         else:
-            for eb in enemy_buttons:
+            for eb in enemy.HandButtons:
                 pygame.draw.rect(screen, (60, 60, 60), eb.rect, border_radius=10)
                 pygame.draw.rect(screen, colors.GREEN, eb.rect, 2, border_radius=10)
 
@@ -391,7 +403,7 @@ def TrapLoop(screen, player1, trap):
     Trap.trigger(player1, trap, screen)  # assumes Trap has a .trigger(player) method; adjust to your Trap class
     #after trap is set 
 
-    trap_buttons = _build_enemy_display(trap)
+    _build_enemy_display(trap)
 
     while running:
         mouse_pos = pygame.mouse.get_pos()
@@ -411,7 +423,7 @@ def TrapLoop(screen, player1, trap):
 
         # ---- draw ----
         screen.fill((30, 0, 0))  # dim red backdrop to signal danger
-        for eb in trap_buttons:
+        for eb in trap.HandButtons:
             eb.draw(screen)
 
 
@@ -441,7 +453,7 @@ def BattleLoop(screen, player1, enemy):
         "Ready", (0, 100, 0), (0, 200, 0)
     )
 
-    enemy_buttons = _build_enemy_display(enemy)
+    _build_enemy_display(enemy)
     # asset/enemy.name+"png"
     player1.stripDeck()
 
@@ -457,10 +469,8 @@ def BattleLoop(screen, player1, enemy):
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_b:
-                    print(player1.hand)
-                    print(player1.deck)
-                    print(player1.graveyard)
-                    print(player1.field)
+                    print(enemy.hand)
+                    print(enemy.field)
                     print("####################")
 
 
@@ -471,7 +481,7 @@ def BattleLoop(screen, player1, enemy):
                     running = False
 
         ReadyButton.check_hover(mouse_pos)
-        for eb in enemy_buttons:
+        for eb in enemy.HandButtons:
             eb.check_hover(mouse_pos, screen)  # purely cosmetic, they aren't clickable for swaps
 
         for hb in player1.DeckButtons:
@@ -483,7 +493,7 @@ def BattleLoop(screen, player1, enemy):
         screen.fill((0, 0, 30))  # dim blue backdrop for battle
 
         _draw_enemy_header(screen, enemy)
-        for eb in enemy_buttons:
+        for eb in enemy.HandButtons:
             eb.draw(screen)
 
 

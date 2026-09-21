@@ -201,14 +201,15 @@ class Bow(Card):
         #if an arrow is in player eq then return 2
 
         #FIX THIS ###############################
-        for q in player.hand:
-            if q.name=="Arrow":
-                player.hand.remove(q)
+        for i, card in enumerate(player.hand):
+            if card.name=="Arrow":
+                player.hand[i].disarmed_rounds = 2
                 #Eq.append(Nothing())
                 dmg = oc.defend(self, player, enemy)
                 enemy.take_damage(dmg)
-            else:
-                return 0
+                return ####################################################### NAPRAW!
+
+        return
                 
 
     def defend(self, oc, player, enemy):
@@ -376,9 +377,9 @@ class Club(Card):
 
 class HealingPotion(Card):
     def __init__(self):
-        super().__init__("HealingPotion", "Heavy", 25, "HEAL: MAX",0,0,0,10,0) 
+        super().__init__("HealingPotion", "Heavy", 25, "HEAL: 5",0,0,0,5,0) 
     def heal(self, player):
-        player.heal(10)
+        player.heal(self.Hval)
 
 
 class Sword(Card):
@@ -410,19 +411,27 @@ class Boomerang(Card):
     def trick(self,  oc, player, enemy):
         self.disarmed_rounds=2
 
+class MagicMirror(Card):
+    def __init__(self):
+        super().__init__("Magic mirror", "Light", 4, "Simulater opposing card, ??", 0, 0, 0, 0, 8)
+    def attack(self,  oc, player, enemy):
+        dmg = oc.defend(oc, player, enemy) # tu jest w argumentach oc zamiast self i essa
+        enemy.take_damage(dmg)
+
+
 #we will be adding them simultaniously with enemies and dungeons
 #but first I need to fix traps and knife falling off
 
 # to add:
-#magic mirror - reflecs stats of opposing cards - very rare item
-#healing potion - heal 2hp but cannot be used in fight
+#magic mirror - reflecs stats of opposing cards - very rare item v
+#healing potion - heal 5hp but cannot be used in fight
 # spell book - if heavy dmg then blok and recoil 1 heavy dmg (item is light) (does not block light dmg)
 # spell shield - blocks heavy dmg BUT NOT LIGHT
-#boomerang - 1 light dmg, def light dmg then falls out for one round
+#
 # magic eye - 3 dmg and if you hit it it has -1dmg when in defence (i dunno wether light or heavy tho maybe heavy)
 #ritual knife - light axe but recover 1hp when oc is nothing
 # knife pack - magic hat but when hit it falls off
-# sword - long sword but 1 dmg
+# 
 # poisonous gas - 1 dmg light bypassing everything
 # gas buuble - recoil all things that attacks you
 # magic mirror - stats same as oc
