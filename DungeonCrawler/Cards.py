@@ -343,9 +343,13 @@ class Knife(Card):
         self.disarmed_rounds=-1 # -1 means it will be removed FOREVER from hand after attack
         pass
 
-class WizardHat(Card):
+class MagicHat(Card):
     def __init__(self):
-        super().__init__("Wizard Hat", "Heavy", 3, "ATK: 0, DEF: L0, H0",0,1,0.5,0,6) 
+        super().__init__("Magic Hat", "Heavy", 3, "ATK: 0, DEF: L1, H0",0,1,0.5,0,6) 
+
+    def attack(self, oc, player, enemy):
+        self.trick(oc, player, enemy)
+
     def defend(self, oc, player, enemy):
         if oc.card_type=="Light":
             return 0

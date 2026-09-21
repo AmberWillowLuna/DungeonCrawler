@@ -298,7 +298,7 @@ def Battle(screen, player1, enemy):
         clock.tick(60)
 
     loot = Cards.Nothing()
-    if random.randint(0,1)==1:
+    if random.randint(1,enemy.lootChance)==1:
         loot = enemy.lootTable[random.randint(0,2)]
     player1.earn(enemy.prize)
 

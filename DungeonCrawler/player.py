@@ -14,7 +14,7 @@ class Player:
         self.trinkets = []
         self.maxHp = 8
         self.life_points = self.maxHp
-        self.level = 7
+        self.level = 9
         self.DungeonLevel = 0
         self.AdvLevel = 0
         self.gold = 0
@@ -36,6 +36,8 @@ class Player:
         self.timePerk = False
         self.scout = False
         self.income = 0
+        self.Trinket_text = self.font.render("Trinkets: ", True, (255, 255, 255))
+
 
         #buttons for displaying the deck
         #at the beggining 9 nothing cards and 3 nothing cards in hand!
@@ -66,15 +68,57 @@ class Player:
             button.CardButton(1130*scale, 750*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")            
             ]
 
+    def PickUp(self, trinket):
+        self.trinkets.append(trinket)
+        self.update_trinket_text()
+
+    def update_trinket_text(self):
+        """
+        Updates the Trinket_text to display all trinket names in self.trinkets,
+        each on a new line.
+        """
+        if not self.trinkets:
+            self.Trinket_text = [self.font.render("Trinkets: None", True, (255, 255, 255))]
+            return
+
+        # Start with "Trinkets: " and add each trinket's name on a new line
+        text_lines = ["Trinkets:"]
+        for trinket in self.trinkets:
+            text_lines.append(trinket.name)
+
+        # Render each line separately
+        self.Trinket_text = [
+            self.font.render(line, True, (255, 255, 255))
+            for line in text_lines
+        ]
+
+    def displayTrinkets(self, screen):
+        scale = SettingHelp.get_scale()
+
+        # Ensure Trinket_text is updated
+        self.update_trinket_text()
+
+        # Calculate position (adjust as needed)
+        x_pos = 1500 * scale
+        y_pos = 20 * scale
+
+        # Blit each line of text onto the screen
+        for line in self.Trinket_text:
+            screen.blit(line, (x_pos, y_pos))
+            y_pos += 45 * scale 
+
     def displayHp(self, screen):
         scale = SettingHelp.get_scale()
         for i in range(self.maxHp):
             if i < self.life_points:
-                screen.blit(self.HeartIcon, (40*scale + i*75*scale, 800*scale))
+                screen.blit(self.HeartIcon, (40*scale + i*50*scale, 800*scale))
             else:
-                screen.blit(self.EmptyHeartIcon, (40*scale + i*75*scale, 800*scale))
+                screen.blit(self.EmptyHeartIcon, (40*scale + i*50*scale, 800*scale))
 
         screen.blit(self.gold_text, (200 * scale, 880 * scale))
+        self.displayTrinkets(screen)
+
+
 
     def earn(self, val):
         self.gold+=val

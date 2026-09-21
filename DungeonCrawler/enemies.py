@@ -31,6 +31,7 @@ class enemy:
         self.prize = Fibbonaci(level+3)
         self.icon = self._load_icon()
         self.type="enemy"
+        self.lootChance=2
 
     def _load_icon(self, size=None):
         """Load assets/{name}.png as the enemy's display icon."""
@@ -79,8 +80,9 @@ class Ogre(enemy):
 
 class OrcWizard(enemy):
     def __init__(self):
-        super().__init__("Orc Wizard", "A powerful mystical creature.", 3, [Cards.Knife(), Cards.LightAxe(), Cards.Nothing()], "Orc's dungeon", 5)
-
+        super().__init__("Orc Wizard", "A powerful mystical creature.", 3, [Cards.Dagger(), Cards.ChainMail(), Cards.MagicHat()], "Orc's dungeon", 5)
+        self.lootTable = [Cards.MagicHat(), Cards.MagicHat(), Cards.MagicHat()]
+        self.lootChance = 1
 
 class Slime(enemy):
         def __init__(self):
@@ -92,7 +94,7 @@ class Skeleton(enemy):
 
 class DarkCreature(enemy):
         def __init__(self):
-            super().__init__("DarkCreature", "Gives nightmares if you look too much at him", 5, [Cards.Halbard(), Cards.ShoulderPlate(), Cards.ShoulderPlate()], "Misty dungeon", 3)
+            super().__init__("DarkCreature", "Gives nightmares if you look too much at him", 5, [Cards.Halbard(), Cards.ShoulderPlate(), Cards.ChainMail()], "Misty dungeon", 3)
 
 class Ghoul(enemy):
         def __init__(self):

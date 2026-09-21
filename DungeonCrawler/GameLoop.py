@@ -129,7 +129,7 @@ def GameLoop(screen, player1):
                     EncounterLoops.TrapLoop(screen, player1, trap)
                     State = "Free"
 
-                elif sign in ("L1", "L2", "L3", "L4"):
+                elif sign in ("L1", "L2", "L3", "L4", "L5"):
                     State = "Battle"
                     enemy = copy.copy(dungeons[player1.AdvLevel][player1.DungeonLevel].get_random_enemy(sign))
                     enemy.ShuffleHand()
@@ -168,7 +168,6 @@ def GameLoop(screen, player1):
                     #ALSO YOU GET TO CHOOSE YOUR SET BEFORE THE FIGHT STARTS - so you can choose a set of 3 cards from your deck to fight with
 
                 # if L1-L4 start a fight, L5 boss fight, T trap, P empty, M merchant, E escape, TR trinket - depending on this make a button that informs what happens and then if it is a fight then start a fight
-
 
         player1.displayDeck(screen)
         for hb in player1.DeckButtons:

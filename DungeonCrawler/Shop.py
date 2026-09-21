@@ -57,6 +57,7 @@ class Shop:
         return shop_items
 
     def replace_item(self, item_type, player1):
+        player1.earn(0)
         """Replace an item of the given type with a new random item."""
         if item_type == "weapon" and self.weapons:
             new_item = random.choice(self.weapons)
