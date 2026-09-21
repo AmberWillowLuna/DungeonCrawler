@@ -2,14 +2,12 @@
 import random
 
 class dungeon:
-    def __init__(self, name, description, enemies, rewards, trinkets, imagname, traps):
+    def __init__(self, name, description, enemies, traps):
         self.name = name
         self.description = description
         self.enemies = enemies  # List of enemy objects
-        self.rewards = rewards  # List of reward objects - items to buy in the shop
-        self. trinkets = trinkets
         #load background image
-        self.background = "assets/"+imagname+".png"
+        self.background = "assets/"+name+".png"
         self.traps = traps
         # each round you choose one of the three ways to go - and you get random enemies and rewards
         self.set=[

@@ -14,7 +14,8 @@ class Player:
         self.trinkets = []
         self.maxHp = 8
         self.life_points = self.maxHp
-        self.level = 9
+        self.level = 13
+        self.et = "p"
         self.DungeonLevel = 0
         self.AdvLevel = 0
         self.gold = 0
@@ -37,6 +38,10 @@ class Player:
         self.scout = False
         self.income = 0
         self.Trinket_text = self.font.render("Trinkets: ", True, (255, 255, 255))
+
+        self.sync_delay_start = 0
+        self.sync_delay_active = False
+        self.sync_delay_duration = 2000  #
 
 
         #buttons for displaying the deck
@@ -134,7 +139,10 @@ class Player:
         #print(f"{self.name} earned {amount} gold! Total gold: {self.gold}")
 
     def ascend(self):
+
+        #game is blocking on 14
         self.level += 1
+        print(self.level)
         if self.level==15:
             self.level=0
             self.curD = ""
@@ -144,6 +152,11 @@ class Player:
                 self.AdvLevel += 1
                 if self.AdvLevel==3:
                     self.AdvLevel=0
+
+
+        self.gold += self.income
+        self.heal(self.regeneration)
+
                     #game won!
 
 
@@ -155,7 +168,8 @@ class Player:
                 card = self.hand[i]
                 card.disarmed_rounds = 0
                 #card.disarmed = 0
-                self.addItem(card)
+                if card.m == False:
+                    self.addItem(card)
                 self.hand[i] = Cards.Nothing()
 
         self.sync_hand()

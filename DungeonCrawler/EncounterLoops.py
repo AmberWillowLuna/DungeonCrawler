@@ -1,5 +1,5 @@
 # EncounterLoops.py
-from turtle import undobufferentries
+
 import pygame
 import button
 import colors
@@ -88,13 +88,16 @@ def _resolve_round(player1, enemy, log):
             p_card.attack(e_card, player1, enemy)
 
         if e_card.Aval > 0:
-            e_card.attack(p_card, player1, player1)
+            e_card.attack(p_card, enemy, player1)
 
         ################# DISARMING SECTION ###############################
         #check if card is disarmed and getting it to graveyard or field
         if p_card.disarmed_rounds == -1:
-            player1.graveyard.append(p_card)
-            player1.HandButtons[i].set_card(Cards.Nothing())
+
+            if p_card.m == False:
+                player1.graveyard.append(p_card)
+            player1.hand[i] = Cards.Nothing()
+
 
         if e_card.disarmed_rounds == -1:
             enemy.hand[i] = Cards.Nothing()
@@ -103,7 +106,7 @@ def _resolve_round(player1, enemy, log):
         if p_card.disarmed_rounds > 0:
             # put in field 
             player1.field.append(p_card)
-            player1.HandButtons[i].set_card(Cards.Nothing())
+            player1.hand[i] = Cards.Nothing()
 
         if e_card.disarmed_rounds > 0:
             # put in field 
@@ -115,7 +118,8 @@ def _resolve_round(player1, enemy, log):
             # count hits and self destroy ( go to graveyard)
             if p_card.durability==0:
                 player1.graveyard.append(p_card)
-                player1.HandButtons[i].set_card(Cards.Nothing())
+                player1.hand[i] = Cards.Nothing()
+                #player1.HandButtons[i].set_card(Cards.Nothing())
         #same for enemy cards
 
         if e_card.Tval == 4:
@@ -179,8 +183,6 @@ def _resolve_round(player1, enemy, log):
 
 
 
-    player1._sync_lists_from_buttons() #????
-
 
 def Battle(screen, player1, enemy):
     """
@@ -240,8 +242,12 @@ def Battle(screen, player1, enemy):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if FightButton.is_clicked(mouse_pos, event):
                     enemy.ShuffleHand()
+                    player1.sync_hand()
+                    player1.sync_delay_active = False
                     log = []
                     _resolve_round(player1, enemy, log)
+
+
                     enemy_buttons = _build_enemy_display(enemy)
                     revealed = True
                    
@@ -249,6 +255,9 @@ def Battle(screen, player1, enemy):
                         result = "lose"
                     elif enemy.hp <= 0:
                         result = "win"
+
+                    player1.sync_delay_start = pygame.time.get_ticks()
+                    player1.sync_delay_active = True
 
 
                 elif WinButton.is_clicked(mouse_pos, event):
@@ -258,8 +267,18 @@ def Battle(screen, player1, enemy):
                     # their hand - re-hide the enemy so the next Fight is
                     # a blind placement again. Deck/equipment is NOT
                     # touchable here - that's locked in for the fight.
+
                     player1.handle_hand_click(mouse_pos, event, enemy)
                     revealed = False
+
+        current_time = pygame.time.get_ticks()
+
+        # Check if the delay is active and if it has expired
+        if player1.sync_delay_active:
+            elapsed_time = current_time - player1.sync_delay_start
+            if elapsed_time >= player1.sync_delay_duration:
+                player1.sync_hand()
+                player1.sync_delay_active = False
 
         FightButton.check_hover(mouse_pos)
         for eb in enemy_buttons:

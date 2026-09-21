@@ -7,6 +7,7 @@ import Empty
 import copy
 import Merchant
 import GetTrinkets
+import Escape
 
 def GameLoop(screen, player1):
     '''Main game loop for the dungeon crawler'''
@@ -29,6 +30,7 @@ def GameLoop(screen, player1):
 
     backgroundImg = None
 
+    dungeons = None
 
     running = True
     while running:
@@ -167,7 +169,20 @@ def GameLoop(screen, player1):
                     #start a fight with a random enemy from the dungeon class
                     #ALSO YOU GET TO CHOOSE YOUR SET BEFORE THE FIGHT STARTS - so you can choose a set of 3 cards from your deck to fight with
 
+                elif sign == "E":
+                    State="Escape"
+                    Escape.LetsNotStopHere(screen, player1, backgroundImg, State)
+                    player1.ascend()
+
+                    #LOAD NEW DUNGEON!
+                    backgroundImg = pygame.image.load(dungeons[player1.AdvLevel][player1.DungeonLevel].background).convert()
+
+
+                    State="Free"
                 # if L1-L4 start a fight, L5 boss fight, T trap, P empty, M merchant, E escape, TR trinket - depending on this make a button that informs what happens and then if it is a fight then start a fight
+
+
+
 
         player1.displayDeck(screen)
         for hb in player1.DeckButtons:

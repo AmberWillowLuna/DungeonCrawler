@@ -20,6 +20,7 @@ class Card:
         self.Tval = Tval
         self.disarmed_rounds = 0
         self.price=5
+        self.m=False
 
 
         #cards can be heavy or light
@@ -198,14 +199,11 @@ class Bow(Card):
         super().__init__("Bow", "Heavy", 6, "'H': 6, ATK: 2 (-1 arrow for 2 rounds) - even if halved!, DEF: L1, H0.5", 2, 0, 0, 0,0)
     def attack(self, oc, player, enemy):
         #if an arrow is in player eq then return 2
-        #then throw out arrow out of eq for one round!
-        #player : Eq - all equipement (max 12 items for example)
-        # player. hand  - 3 cards in fight
-        # player. off hand - cards that are in hand but where disarmed for example
-        # player. off hand timer - timer to get back to hand
-        for q in player.Hand:
+
+        #FIX THIS ###############################
+        for q in player.hand:
             if q.name=="Arrow":
-                player.Hand.remove(q)
+                player.hand.remove(q)
                 #Eq.append(Nothing())
                 dmg = oc.defend(self, player, enemy)
                 enemy.take_damage(dmg)
@@ -226,7 +224,7 @@ class Arrow(Card):
     def defend(self, oc, player, enemy):
         #find a way for recoil dmg - i dunno maybe put a player class for this function
         if oc.card_type=="Light":
-            self.trick(self, player, enemy) # 
+            self.trick(oc, player, enemy) # 
         return oc.Aval # negative will mean 1 recoil dmg? - risky but it is a way to do it
     def trick(self, oc, player, enemy):
         dmg = 1
@@ -246,7 +244,7 @@ class HealingAmulet(Card):
     def __init__(self):
         super().__init__("Healing Amulet", "Light", 2, "DEF: 1, TRK: falls off after being attakced",0,0,0,1,9) #or falls of and gets back to player eq
     def defend(self, oc, player, enemy):
-        self.trick(self, player, enemy)
+        self.trick(oc, player, enemy)
     def heal(self, oc, player, enemy):
         player.heal(1)
     def trick(self, oc, player, enemy):
@@ -271,7 +269,7 @@ class FishingRod(Card):
 
     def attack(self, oc, player, enemy):
         if oc.name!="Nothing":
-            self.trick(self, oc, player, enemy)
+            self.trick(oc, player, enemy)
     def trick(oc, player, enemy):
         oc.disarmed_rounds=3
 
@@ -289,13 +287,12 @@ class ShoulderPlate(Card):
         super().__init__("Shoulder Plate", "Light", 1, "DEF: L1, H0 TRK: falls off after defending",0,1,0,0,1) 
     def defend(self, oc, player, enemy):
         if oc.card_type=="Light":
-            self.trick(self, oc, player, enemy)
+            self.trick(oc, player, enemy)
             return 0
         else:
             return oc.Aval
     def trick(self, oc, player, enemy):
-        #tu cos ten player.falls()
-        pass
+        self.disarmed_rounds=-1
 
 class ChainMail(Card):
     def __init__(self):
@@ -307,6 +304,9 @@ class ChainMail(Card):
             return 0
         else:
             self.durability-=1
+            if self.durability==0:
+                self.disarmed_rounds=-1
+
             return oc.Aval
 
 class Spear(Card):
@@ -345,7 +345,7 @@ class Knife(Card):
 
 class MagicHat(Card):
     def __init__(self):
-        super().__init__("Magic Hat", "Heavy", 3, "ATK: 0, DEF: L1, H0",0,1,0.5,0,6) 
+        super().__init__("Magic Hat", "Heavy", 3, "ATK: 0, DEF: L1, H0",0.1,1,0.5,0,6) 
 
     def attack(self, oc, player, enemy):
         self.trick(oc, player, enemy)
@@ -356,8 +356,15 @@ class MagicHat(Card):
         else:
             return oc.Aval
     def trick(self, oc, player, enemy):
-        #tu cos ten ze spawnem knife�w
-        pass
+
+        for i, card in enumerate(player.hand):
+            if card.name == "Nothing":
+                # Replace the first Nothing() card with Knife()
+                player.hand[i] = Knife()
+                player.hand[i].m=True   # Assuming Cards.Knife() creates a Knife card
+                player.sync_hand()  # Synchronize the hand after the change
+                return  # Exit the function after the first replacement
+
     
 class Club(Card):
     def __init__(self):
@@ -384,7 +391,7 @@ class Sword(Card):
         if oc.card_type=="light":
             return 0
         else:
-            return  oc.Aval
+            return  halved(oc)
 
 class Boomerang(Card):
     def __init__(self):

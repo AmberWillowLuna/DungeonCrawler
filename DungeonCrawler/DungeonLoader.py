@@ -9,9 +9,11 @@ import Trap
 
 def DefineEasyDungeon(player):
     # Define a low level dungeon
-    D1 = dungeons.dungeon("Orc's dungeon", "Dungeon with some green and grey creatures", [enemies.Goblin(), enemies.Orc(), enemies.ArmoredOrc(), enemies.OrcWizard(), enemies.Ogre()], [Cards.Bandage(), Cards.Bandage(), Cards.Bandage(), Cards.Shield(), Cards.ChainMail(), Cards.Dagger(), Cards.Knife(), Cards.Knife()], ["Ring of life", "Lucky coin", "Regeneration necklace"], "orcdungeon", [Trap.KnifeTrap(), Trap.ArrowTrap()])
+    D1 = dungeons.dungeon("Orc's dungeon", "Dungeon with some green and grey creatures", [enemies.Goblin(), enemies.Orc(), enemies.ArmoredOrc(), enemies.Ogre(), enemies.OrcWizard()], [Trap.KnifeTrap(), Trap.ArrowTrap()])
+    D2 = dungeons.dungeon("Misty's dungeon", "Dungeon with some slimes and undead creatures", [enemies.Slime(), enemies.Skeleton(), enemies.DarkCreature(), enemies.Ghoul(), enemies.MistyGhost()], [Trap.KnifeTrap(), Trap.ArrowTrap()])
 
-    Dungeons=[D1]
+
+    Dungeons=[D1, D2]
     
     random.shuffle(Dungeons)
 

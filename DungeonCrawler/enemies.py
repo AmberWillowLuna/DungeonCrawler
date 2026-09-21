@@ -2,6 +2,9 @@ import Cards
 import os
 from random import shuffle
 import pygame
+import button
+import SettingHelp
+
 
 def shuffle(lst):
     import random
@@ -23,7 +26,9 @@ class enemy:
         self.description = description
         self.hp = hp
         self.maxhp = hp
+        self.et = "e"
         self.hand = hand  # List of card objects
+        scale = SettingHelp.get_scale()
         self.lootTable = hand
         self.field = []
         self.DungeonName = DungeonName
@@ -32,6 +37,11 @@ class enemy:
         self.icon = self._load_icon()
         self.type="enemy"
         self.lootChance=2
+        self.HandButtons = [
+            button.CardButton(690*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(910*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1130*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")   
+            ]
 
     def _load_icon(self, size=None):
         """Load assets/{name}.png as the enemy's display icon."""
@@ -60,6 +70,26 @@ class enemy:
         if self.hp < 0:
             self.hp = 0
 
+    def sync_hand(self):
+        for i in range(min(len(self.HandButtons), len(self.hand))):
+            self.HandButtons[i].set_card(self.hand[i])
+
+    def _build_enemy_display(self):
+        """Build read-only CardButtons to show the enemy's hand, laid out in a row."""
+        scale = SettingHelp.get_scale()
+        buttons = []
+        start_x = 680 * scale
+        spacing = 220 * scale
+        y = 240 * scale
+
+        for i, card in enumerate(self.hand):
+            cb = button.CardButton(
+                start_x + i * spacing, y,
+                card.name, (200, 200, 200), (150, 150, 150),
+                card, card_type=card.card_type
+            )
+            buttons.append(cb)
+        return buttons
 
 
 class Goblin(enemy):
@@ -72,7 +102,7 @@ class Orc(enemy):
 
 class ArmoredOrc(enemy):
     def __init__(self):
-        super().__init__("Armored Orc", "A grey orc with a chainmail.", 4, [Cards.LightAxe(), Cards.LightAxe(), Cards.ChainMail()], "Orc's dungeon", 3)
+        super().__init__("Armored Orc", "A grey orc with a chainmail.", 4, [Cards.Sword(), Cards.LightAxe(), Cards.ChainMail()], "Orc's dungeon", 3)
 
 class Ogre(enemy):
     def __init__(self):
@@ -80,7 +110,7 @@ class Ogre(enemy):
 
 class OrcWizard(enemy):
     def __init__(self):
-        super().__init__("Orc Wizard", "A powerful mystical creature.", 3, [Cards.Dagger(), Cards.ChainMail(), Cards.MagicHat()], "Orc's dungeon", 5)
+        super().__init__("Orc Wizard", "A powerful mystical creature.", 5, [Cards.Spear(), Cards.ChainMail(), Cards.MagicHat()], "Orc's dungeon", 5)
         self.lootTable = [Cards.MagicHat(), Cards.MagicHat(), Cards.MagicHat()]
         self.lootChance = 1
 
