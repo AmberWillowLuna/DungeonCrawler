@@ -556,7 +556,7 @@ class DevilHorns(Card):
 
 class Trident(Card):
     def __init__(self):
-        super().__init__("Trident", "Light", 5, "'L': 5, DEF: 1", 2, 0, 1, 0, 0)
+        super().__init__("Trident", "Light", 6, "'L': 5, DEF: 1", 2, 0, 1, 0, 0)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)

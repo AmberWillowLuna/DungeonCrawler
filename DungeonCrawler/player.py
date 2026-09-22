@@ -14,7 +14,7 @@ class Player:
         self.trinkets = []
         self.maxHp = 8
         self.hp = self.maxHp
-        self.level = 12
+        self.level = 0
 
         self.et = "p"
         self.DungeonLevel = 0
@@ -242,7 +242,8 @@ class Player:
         #print(f"{self.name} has healed {amount} points! Life points: {self.hp}")
 
     def addItem(self, card):
-        if len(self.deck)<9:
+        self.stripDeck()
+        if len(self.deck)<=16:
             self.deck.append(card)
             #put in the first nothing card button the card
             for i in range(len(self.DeckButtons)):
