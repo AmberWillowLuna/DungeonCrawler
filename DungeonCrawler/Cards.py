@@ -1,7 +1,7 @@
 ﻿
 
 def halved(oc):
-        if oc.name != "Bow":
+        if oc.name == "Bow" or oc.name== "Spell Book":
             return oc.Aval
         return oc.Aval//2
 
@@ -172,7 +172,7 @@ class Shield(Card):
     def __init__(self):
         super().__init__("Shield", "Light", 5, "'L': 5, DEF: 1", 0, 1, 1, 0, 0)
     def defend(self, oc, player, enemy):
-        return halved(oc)
+        return 0
 
 class Halbard(Card):
     def __init__(self):
@@ -196,7 +196,7 @@ class LightAxe(Card):
 
 class Bow(Card):
     def __init__(self):
-        super().__init__("Bow", "Heavy", 6, "'H': 6, ATK: 2 (-1 arrow for 2 rounds) - even if halved!, DEF: L1, H0.5", 2, 0, 0, 0,0)
+        super().__init__("Bow", "Heavy", 6, "'H': 6, ATK: 2 (-1 arrow for 2 rounds) - non halvable!, DEF: L1, H0.5", 2, 0, 0, 0,0)
     def attack(self, oc, player, enemy):
         #if an arrow is in player eq then return 2
 
@@ -229,7 +229,7 @@ class Arrow(Card):
         return oc.Aval # negative will mean 1 recoil dmg? - risky but it is a way to do it
     def trick(self, oc, player, enemy):
         dmg = 1
-        if oc.Dval==0 and oc.Aval>0:
+        if oc.Dval==0 and oc.Aval>=1:
             enemy.take_damage(dmg)
 
 class Crown(Card):
@@ -276,7 +276,7 @@ class FishingRod(Card):
 
 class Helmet(Card):
     def __init__(self):
-        super().__init__("Helmet", "Light", 3, "DEF: L1, H0", 0,1,0,0,0) 
+        super().__init__("Helmet", "Light", 2, "DEF: L1, H0", 0,1,0,0,0) 
     def defend(self, oc, player, enemy):
         if oc.card_type=="Light":
             return 0
@@ -346,7 +346,7 @@ class Knife(Card):
 
 class MagicHat(Card):
     def __init__(self):
-        super().__init__("Magic Hat", "Heavy", 3, "ATK: 0, DEF: L1, H0",0.1,1,0.5,0,6) 
+        super().__init__("Magic Hat", "Heavy", 3, "ATK: 0, DEF: L1, H0.5",0.1,1,0.5,0,6) 
 
     def attack(self, oc, player, enemy):
         self.trick(oc, player, enemy)
@@ -355,7 +355,7 @@ class MagicHat(Card):
         if oc.card_type=="Light":
             return 0
         else:
-            return oc.Aval
+            return halved(oc)
     def trick(self, oc, player, enemy):
 
         for i, card in enumerate(player.hand):
@@ -369,7 +369,7 @@ class MagicHat(Card):
     
 class Club(Card):
     def __init__(self):
-        super().__init__("Club", "Heavy", 7, "ATK: 3, DEF: L0, H0",3,0,0,0,0) 
+        super().__init__("Club", "Heavy", 6, "ATK: 3, DEF: L0, H0",3,0,0,0,0) 
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -413,10 +413,178 @@ class Boomerang(Card):
 
 class MagicMirror(Card):
     def __init__(self):
-        super().__init__("Magic mirror", "Light", 4, "Simulater opposing card, ??", 0, 0, 0, 0, 8)
+        super().__init__("Magic mirror", "Light", 4, "'L': 4 Simulater opposing card, ??", 0, 0, 0, 0, 8)
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(oc, player, enemy) # tu jest w argumentach oc zamiast self i essa
         enemy.take_damage(dmg)
+
+class SpellBook(Card):
+    def __init__(self):
+        super().__init__("Spell Book", "Light", 5, "'H': 5, ATK: 0 (recoil 1 non halvable), DEF: L0, H1", 0, 0, 1, 0, 0)
+    def attack(self,  oc, player, enemy):
+        if self.card_type == "Heavy":
+            dmg = oc.defend(self, player, enemy)
+            enemy.take_damage(dmg)
+
+    def defend(self,  oc, player, enemy):
+        if oc.card_type=="Heavy":
+            self.card_type = "Heavy"
+            self.Aval = 1
+            self.attack(oc,player,enemy)
+            self.Aval = 0
+            self.card_type= "Light"
+            return 0
+        else:
+            return oc.Aval
+
+class SpellShield(Card):
+    def __init__(self):
+        super().__init__("Spell Shield", "Light", 4, "'H': 4, ATK: 0 , DEF: L0, H1", 0, 0, 1, 0, 0)
+    def defend(self,  oc, player, enemy):
+        if oc.card_type=="Heavy":
+            return 0
+        else:
+            return oc.Aval
+
+class MagicEye(Card):
+    def __init__(self):
+        super().__init__("Magic Eye", "Heavy", 6, "ATK: 3, DEF: L0, H0",3,0,0,0,0) 
+    def attack(self, oc, player, enemy):
+        dmg = oc.defend(self, player, enemy)
+        enemy.take_damage(dmg)
+    def defend(self, oc, player, enemy):
+        return oc.Aval+1
+
+class RitualKnife(Card):
+    def __init__(self):
+        super().__init__("Ritual Knife", "Light", 5, "'L': 3, ATK: 1", 1, 0, 0, 0, 0)
+    def attack(self,  oc, player, enemy):
+        dmg = oc.defend(self, player, enemy)
+        enemy.take_damage(dmg)
+        if oc.name == "Nothing":
+            player.heal(1) #low key I should put it in self.heal() but that is simply one line
+
+
+class KnifePack(Card):
+    def __init__(self):
+        super().__init__("Knife Pack", "Light", 2, "ATK: 0, DEF: L1, H0",0.1,1,0.5,0,6) 
+
+    def attack(self, oc, player, enemy):
+        self.trick(oc, player, enemy)
+
+    def defend(self, oc, player, enemy):
+        #CALL DISARMED ROUNDS INTEAD OF CALL TRICK CUZ TRICK IS OCCUPIED
+        self.disarmed_rounds = -1
+        if oc.card_type=="Light":
+            return 0
+        else:
+            return halved(oc)
+
+    def trick(self, oc, player, enemy):
+
+        for i, card in enumerate(player.hand):
+            if card.name == "Nothing":
+                # Replace the first Nothing() card with Knife()
+                player.hand[i] = Knife()
+                player.hand[i].m=True   # Assuming Cards.Knife() creates a Knife card
+                player.sync_hand()  # Synchronize the hand after the change
+                return  # Exit the function after the first replacement
+
+class PoisonousGas(Card):
+    def __init__(self):
+        super().__init__("Poisonous Gas", "Light", 2, "ATK: 1, TRK: Falls off ",1,0,0,0,1) 
+    def attack(self, oc, player, enemy):
+        enemy.take_damage(self.Aval)
+
+class GasBubble(Card):
+    def __init__(self):
+        super().__init__("Gas Bubble", "Light", 4, "ATK: recoil 1, TRK: Recoil  ",0.2,0,0,0,1) 
+    def defend(self, oc, player, enemy):
+        enemy.take_damage(1)
+
+class Fire(Card):
+    def __init__(self):
+        super().__init__("Fire", "Light", 1, "ATK: 1, DEF: L0, H0, TRK: falls off after atack",1,0,0,0,5) 
+    def attack(self, oc, player, enemy):
+        self.card_type="Heavy"
+        dmg = oc.defend(self, player, enemy)
+        self.card_type="Light"
+        self.trick(oc, player, enemy)
+        enemy.take_damage(dmg)
+    def trick(self, oc, player, enemy):
+        self.disarmed_rounds=-1 # -1 means it will be removed FOREVER from hand after attack
+        pass
+
+class Fireball(Card):
+    def __init__(self):
+        super().__init__("Fireball", "Heavy", 6, "'L': 6, DEF: 1", 0, 1, 1, 0, 0)
+    def attack(self, oc, player, enemy):
+        self.trick(oc, player, enemy)
+
+    def defend(self, oc, player, enemy):
+        return 0
+    def trick(self, oc, player, enemy):
+
+        for i, card in enumerate(player.hand):
+            if card.name == "Nothing":
+                # Replace the first Nothing() card with Knife()
+                player.hand[i] = Fire()
+                player.hand[i].m=True   # Assuming Cards.Knife() creates a Knife card
+                player.sync_hand()  # Synchronize the hand after the change
+                return  # Exit the function after the first replacement
+
+class FirerySword(Card):
+    def __init__(self):
+        super().__init__("Firery Sword", "Heavy", 7, "'H': 7, ATK: 3, DEF: L0.5, H0.5", 3, 1, 0.5, 0, 0)
+    def attack(self, oc, player, enemy):
+        dmg = oc.defend(self, player, enemy)
+        enemy.take_damage(dmg)
+    def defend(self,  oc, player, enemy):
+        if oc.card_type=="Light":
+            return halved(oc)
+        else:
+            return  halved(oc)
+
+class DevilHorns(Card):
+    def __init__(self):
+        super().__init__("Devil Horns", "Heavy", 8, "'H': 8, DEF: 1", 2, 1, 1, 0, 0)
+    def attack(self, oc, player, enemy):
+        dmg = oc.defend(self, player, enemy)
+        enemy.take_damage(dmg)
+    def defend(self, oc, player, enemy):
+        return 0
+
+class Trident(Card):
+    def __init__(self):
+        super().__init__("Trident", "Light", 5, "'L': 5, DEF: 1", 2, 0, 1, 0, 0)
+    def attack(self, oc, player, enemy):
+        dmg = oc.defend(self, player, enemy)
+        enemy.take_damage(dmg)
+    def defend(self, oc, player, enemy):
+        if oc.card_type=="Heavy":
+            return 0
+        else:
+            return oc.Aval
+
+class SwordOfDarkness(Card):
+    def __init__(self):
+        super().__init__("Sword of Darkness", "Heavy", 10, "'H': 10, ATK: 3, DEF: L1, H1", 2, 1, 1, 0, 9)
+    def attack(self, oc, player, enemy):
+        dmg = oc.defend(self, player, enemy)
+        enemy.take_damage(dmg)
+        if oc.name == "Nothing":
+            player.heal(1)
+    def defend(self,  oc, player, enemy):
+            return 0
+
+class CrownOfDarkness(Card):
+    def __init__(self):
+        super().__init__("Crown of Darkness", "Light", 4, "DEF: 1, TRK: falls off after defending the dmg", 0,1,1,0,1) #or falls of and gets back to player eq
+    def defend(self, oc, player, enemy):
+        self.trick(self, player, enemy)
+        return 0
+    def trick(self, oc, player, enemy):
+        self.disarmed_rounds=2 # -1 means it will be removed FOREVER from hand being hit
 
 
 #we will be adding them simultaniously with enemies and dungeons
@@ -425,21 +593,22 @@ class MagicMirror(Card):
 # to add:
 #magic mirror - reflecs stats of opposing cards - very rare item v
 #healing potion - heal 5hp but cannot be used in fight
-# spell book - if heavy dmg then blok and recoil 1 heavy dmg (item is light) (does not block light dmg)
-# spell shield - blocks heavy dmg BUT NOT LIGHT
+# spell book - if heavy dmg then blok and recoil 1 heavy dmg (item is light) (does not block light dmg) v
+# spell shield - blocks heavy dmg BUT NOT LIGHT v
 #
-# magic eye - 3 dmg and if you hit it it has -1dmg when in defence (i dunno wether light or heavy tho maybe heavy)
-#ritual knife - light axe but recover 1hp when oc is nothing
-# knife pack - magic hat but when hit it falls off
+# magic eye - 3 dmg and if you hit it it has -1dmg when in defence (i dunno wether light or heavy tho maybe heavy) v
+#ritual knife - light axe but recover 1hp when oc is nothing v
+# knife pack - magic hat but when hit it falls off v
 # 
-# poisonous gas - 1 dmg light bypassing everything
-# gas buuble - recoil all things that attacks you
-# magic mirror - stats same as oc
-# fire - knife but heavy dmg (item is i dunno i would say heavy for fun)
-#fireball - shield but spawns fire like magic hat
-# rogi - 2 heavy dmg and shield
-#trójząb - 3 light dmg
-#sword of darkness - heavy item with 8 weightness but it a firery sword with shield defence with ritual dagger effect and 
+# poisonous gas - 1 dmg light bypassing everything v
+# gas buuble - recoil all things that attacks you v
+# magic mirror - stats same as oc v
+# fire - knife but heavy dmg (item is i dunno i would say heavy for fun) v
+#fireball - shield but spawns fire like magic hat v
+# rogi - 2 heavy dmg and shield v
+#trójząb - 3 light dmg v
+#sword of darkness - heavy item with 8 weightness but it a firery sword with shield defence with ritual dagger effect and spawns knifes maybe? v
+
 
 # TRAP CARDS #################################################################
 '''class Spike(Card):

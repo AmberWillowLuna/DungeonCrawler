@@ -14,11 +14,12 @@ class Player:
         self.trinkets = []
         self.maxHp = 8
         self.hp = self.maxHp
-        self.level = 0
+        self.level = 12
+
         self.et = "p"
         self.DungeonLevel = 0
         self.AdvLevel = 0
-        self.gold = 0
+        self.gold = 15
         scale = SettingHelp.get_scale()
         self.font  = pygame.font.SysFont("Arial", int(48 * scale))
         self.gold_text = self.font.render("Gold: "+str(self.gold), True, (255, 255, 255))

@@ -28,6 +28,63 @@ class Shop:
             ]
             self.healing = [Cards.Bandage()]
             self.potions = [Cards.HealingPotion()]
+        elif curD == "Misty's dungeon":
+            self.weapons = [
+                Cards.Sword(),
+                Cards.Halbard(),
+                Cards.LongSword(),
+                Cards.Dagger(),
+                Cards.KnifePack(),
+                Cards.Bow(),
+                Cards.Arrow(),
+                Cards.Arrow()
+            ]
+            self.armors = [
+                Cards.ChainMail(),
+                Cards.Shield(),
+                Cards.Helmet(),
+                Cards.ShoulderPlate(),
+                Cards.Crown()
+            ]
+            self.healing = [Cards.Bandage()]
+            self.potions = [Cards.HealingPotion()]
+        elif curD == "Library dungeon":
+            self.weapons = [
+                Cards.FishingRod(),
+                Cards.Dagger(),
+                Cards.LongSword(),
+                Cards.Halbard(),
+                Cards.Spear(),
+                Cards.MagicEye()
+            ]
+            self.armors = [
+                Cards.ChainMail(),
+                Cards.Shield(),
+                Cards.MagicHat(),
+                Cards.SpellBook(),
+                Cards.SpellShield()
+            ]
+            self.healing = [Cards.Bandage(), Cards.HealingAmulet()]
+            self.potions = [Cards.HealingPotion()]
+        elif curD == "Forest dungeon":
+            self.weapons = [
+                Cards.FishingRod(),
+                Cards.Club(),
+                Cards.PoisonousGas(),
+                Cards.Spear(),
+                Cards.Boomerang(),
+                Cards.KnifePack()
+            ]
+            self.armors = [
+                Cards.Crown(),
+                Cards.Shield(),
+                Cards.Helmet(),
+                Cards.GasBubble(),
+                Cards.SpellShield()
+            ]
+            self.healing = [Cards.Bandage(), Cards.HealingAmulet()]
+            self.potions = [Cards.HealingPotion()]
+
 
     def generate_items(self):
         """Generate a list of items for the shop."""

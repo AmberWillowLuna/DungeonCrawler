@@ -13,9 +13,20 @@ def DefineEasyDungeon(player):
     D2 = dungeons.dungeon("Misty's dungeon", "Dungeon with some slimes and undead creatures", [enemies.Slime(), enemies.Skeleton(), enemies.DarkCreature(), enemies.Ghoul(), enemies.MistyGhost()], [Trap.KnifeTrap(), Trap.ArrowTrap()])
 
 
-    Dungeons=[D1, D2]
+    Dungeons1=[D1, D2]
     
-    random.shuffle(Dungeons)
+    random.shuffle(Dungeons1)
+
+    D3 = dungeons.dungeon("Library dungeon", "Dungeon with books and magic with undead and magical creatures", 
+                          [enemies.Librarian(), enemies.DemonicEye(), enemies.ThreeEyedBeast(), enemies.TrophyHunter(), enemies.ArcaneGuardian()], 
+                          [Trap.FireTrap(), Trap.HalbardTrap(), Trap.ArrowTrap(), Trap.DestroyItem()])
+
+    D4 = dungeons.dungeon("Forest dungeon", "Dungeon with full of fungi, ents and gremlins", 
+                          [enemies.Gremlin(), enemies.Fungis(), enemies.Ent(), enemies.TreeOfLife(), enemies.ForestSpirit()], 
+                          [Trap.GasTrap(), Trap.GasBubbleTrap(), Trap.ClubTrap(), Trap.DestroyItem()])
+
+
+    Dungeons = Dungeons1
 
     return Dungeons
 

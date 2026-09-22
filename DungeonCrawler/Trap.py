@@ -5,7 +5,7 @@ import EncounterLoops
 
 import colors
 import button
-import button
+
 import SettingHelp
 
 class Trap:
@@ -52,6 +52,27 @@ class KnifeTrap(Trap):
 class HalbardTrap(Trap):
     def __init__(self):
         super().__init__("Halbard Trap", "A trap that swings a halbard at the player.", [Cards.Halbard(), Cards.Nothing(), Cards.Nothing()], "Orc's dungeon", 0)
+        self.shuffleHand()
+
+class GasTrap(Trap):
+    def __init__(self):
+        super().__init__("Poisonous Trap", "A trap that throws knife at the player.", [Cards.PoisonousGas(), Cards.Nothing(), Cards.Nothing()], "Orc's dungeon", 0)
+        self.shuffleHand()
+
+class GasBubbleTrap(Trap):
+    def __init__(self):
+        super().__init__("Poisonous Bubble Trap", "A trap that throws knife at the player.", [Cards.GasBubble(), Cards.GasBubble(), Cards.PoisonousGas()], "Orc's dungeon", 0)
+        self.shuffleHand()
+
+
+class FireTrap(Trap):
+    def __init__(self):
+        super().__init__("Fire Trap", "A trap that throws knife at the player.", [Cards.Fire(), Cards.Fireball(), Cards.Fire()], "Orc's dungeon", 0)
+        self.shuffleHand()
+
+class ClubTrap(Trap):
+    def __init__(self):
+        super().__init__("Club Trap", "A trap that swings a Club at the player.", [Cards.Club(), Cards.Nothing(), Cards.Nothing()], "Orc's dungeon", 0)
         self.shuffleHand()
 
 class DestroyItem(Trap):

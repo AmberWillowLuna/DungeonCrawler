@@ -139,5 +139,103 @@ class MistyGhost(enemy):
 
 
 
+class Librarian(enemy):
+        def __init__(self):
+            super().__init__("librarian", 
+                             "Seems like a smart dude with books", 
+                             5, 
+                             [Cards.SpellBook(), Cards.Boomerang(), Cards.SpellShield()], 
+                             "Library dungeon", 
+                             1)
+
+class DemonicEye(enemy):
+        def __init__(self):
+            super().__init__("Demonic eye", 
+                             "Lewitating evil eye", 
+                             6, 
+                             [Cards.MagicEye(), Cards.SpellShield(), Cards.ShoulderPlate()], 
+                             "Library dungeon", 
+                             2)
+
+class ThreeEyedBeast(enemy):
+        def __init__(self):
+            super().__init__("Three eyed beast", 
+                             "Powerfull combination of beast and cyclop", 
+                             7, 
+                             [Cards.SpellBook(), Cards.Halbard(), Cards.Nothing()], 
+                             "Library dungeon", 
+                             3)
 
 
+class TrophyHunter(enemy):
+        def __init__(self):
+            super().__init__("Trophy hunter", 
+                             "Try-hard, willing to do a lot for gold", 
+                             7, 
+                             [Cards.SpellBook(), Cards.LongSword(), Cards.Boomerang()], 
+                             "Library dungeon", 
+                             4)
+            self.lootTable = [Cards.SpellBook(), Cards.SpellBook(), Cards.Nothing()]
+            self.lootChance = 1
+
+class ArcaneGuardian(enemy):
+        def __init__(self):
+            super().__init__("Arcane guardian", 
+                             "Increadibly powerful cultist like person", 
+                             8, 
+                             [Cards.SpellBook(), Cards.RitualKnife(), Cards.HealingAmulet()], 
+                             "Library dungeon", 
+                             5)
+            self.lootTable = [Cards.RitualKnife(), Cards.RitualKnife(), Cards.RitualKnife()]
+            self.lootChance = 1
+
+
+class Gremlin(enemy):
+        def __init__(self):
+            super().__init__("Gremlin", 
+                             "Small but grevious creature", 
+                             4, 
+                             [Cards.Nothing(), Cards.KnifePack(), Cards.Knife()], 
+                             "Forest dungeon", 
+                             1)
+
+class Fungis(enemy):
+        def __init__(self):
+            super().__init__("Fungis", 
+                             "Humanoid fungus", 
+                             6, 
+                             [Cards.Sword(), Cards.FishingRod(), Cards.PoisonousGas()], 
+                             "Forest dungeon", 
+                             2)
+
+class Ent(enemy):
+        def __init__(self):
+            super().__init__("Ent", 
+                             "Humanoid tree", 
+                             9, 
+                             [Cards.Sword(), Cards.Shield(), Cards.PoisonousGas()], 
+                             "Forest dungeon", 
+                             3)
+
+class TreeOfLife(enemy):
+        def __init__(self):
+            super().__init__("Tree of life", 
+                             "Huge tree pulsating with magic", 
+                             12, 
+                             [Cards.FishingRod(), Cards.GasBubble(), Cards.Spear()], 
+                             "Forest dungeon", 
+                             4)
+            self.lootTable = [Cards.GasBubble(), Cards.GasBubble(), Cards.Nothing()]
+            self.lootChance = 1
+
+
+class ForestSpirit(enemy):
+        def __init__(self):
+            super().__init__("Forest Spirit", 
+                             "Born from nature to rule the forest", 
+                             10, 
+                             [Cards.RitualKnife(), Cards.MagicMirror(), Cards.RitualKnife()], 
+                             "Forest dungeon", 
+                             4)
+            self.lootTable = [Cards.MagicMirror(), Cards.MagicMirror(), Cards.MagicMirror()]
+            self.lootChance = 1
