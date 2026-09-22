@@ -99,7 +99,7 @@ def trigger(player1, trap,screen):
     scale = SettingHelp.get_scale()
     if trap.trick==0:
         #one round battle
-        OkayButton = Button(screen.get_width() // 2 - 50, 400*scale, 300*scale, 150*scale, "Okay", colors.PINK, colors.WHITE)
+        OkayButton = button.Button(screen.get_width() // 2 - 50, 400*scale, 300*scale, 150*scale, "Okay", colors.PINK, colors.WHITE)
         running = True
         while running:
             mouse_pos = pygame.mouse.get_pos()

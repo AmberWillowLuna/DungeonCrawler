@@ -246,10 +246,7 @@ class Player:
         if len(self.deck)<=16:
             self.deck.append(card)
             #put in the first nothing card button the card
-            for i in range(len(self.DeckButtons)):
-                if self.DeckButtons[i].card.name=="Nothing":
-                    self.DeckButtons[i] = button.CardButton(self.DeckButtons[i].rect.x, self.DeckButtons[i].rect.y, card.name, (200, 200, 200), (150, 150, 150), card, card_type=card.card_type)
-                    break
+            self.sync_deck()
         #print(f"{card} has been added to {self.name}'s deck.")
 
     def PlayCards(self, order):

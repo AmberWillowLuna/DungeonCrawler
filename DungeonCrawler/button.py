@@ -160,6 +160,8 @@ class CardButton(Button):
         else:
             self.image = None
 
+        self.DescText = small_font.render(card.name+" "+card.desc, True, (255, 255, 255))
+
     def drawBorder(self, screen):
         if self.Rselected:
             pygame.draw.rect(screen, (255, 0, 0), self.rect, width=4) 

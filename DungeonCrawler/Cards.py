@@ -244,10 +244,13 @@ class Crown(Card):
 class HealingAmulet(Card):
     def __init__(self):
         super().__init__("Healing Amulet", "Light", 2, "DEF: 1, TRK: falls off after being attakced",0,0,0,1,9) #or falls of and gets back to player eq
+    def attack(self, oc, player, enemy):
+        if oc.Aval>=1:
+            pass
+        else:
+            player.heal(1)
     def defend(self, oc, player, enemy):
-        self.trick(oc, player, enemy)
-    def heal(self, oc, player, enemy):
-        player.heal(1)
+        self.trick(oc, player, enemy)        
     def trick(self, oc, player, enemy):
         self.disarmed_rounds=-1 # -1 means it will be removed FOREVER from hand being hit
 
@@ -396,11 +399,11 @@ class Sword(Card):
 
 class Boomerang(Card):
     def __init__(self):
-        super().__init__("Light Axe", "Light", 2, "'L': 3, ATK: 1", 1, 0, 0, 0, 0)
+        super().__init__("Boomerang", "Light", 2, "'L': 3, ATK: 1", 1, 0, 0, 0, 0)
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
-        self.trick()
+        self.trick(oc, player, enemy)
 
     def defend(self,  oc, player, enemy):
         if oc.card_type=="Light":

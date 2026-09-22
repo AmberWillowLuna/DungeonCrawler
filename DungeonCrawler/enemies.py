@@ -119,7 +119,7 @@ class OrcWizard(enemy):
 
 class Slime(enemy):
         def __init__(self):
-            super().__init__("slime", "A goo that seems to be agresive", 3, [Cards.Sword(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 1)
+            super().__init__("slime", "A goo that seems to be agresive", 3, [Cards.Dagger(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 1)
 
 class Skeleton(enemy):
         def __init__(self):
