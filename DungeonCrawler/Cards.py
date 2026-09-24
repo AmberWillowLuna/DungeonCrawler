@@ -230,7 +230,7 @@ class Arrow(Card):
     def trick(self, oc, player, enemy):
         dmg = 1
         if oc.Dval==0 and oc.Aval>=1:
-            enemy.take_damage(dmg)
+            player.take_damage(dmg)
 
 class Crown(Card):
     def __init__(self):
@@ -269,13 +269,15 @@ class Bandage(Card):
 
 class FishingRod(Card):
     def __init__(self):
-        super().__init__("Fishing rod", "Light", 3, "TRK: disarms oc and itself if oc is not empty",0,0,0,0,2) #or falls of and gets back to player eq
+        super().__init__("Fishing rod", "Light", 3, "TRK: disarms oc and itself if oc is not empty",0.25,0,0,0,2) #or falls of and gets back to player eq
 
     def attack(self, oc, player, enemy):
         if oc.name!="Nothing":
             self.trick(oc, player, enemy)
-    def trick(oc, player, enemy):
-        oc.disarmed_rounds=3
+
+    def trick(self, oc, player, enemy):
+        oc.disarmed_rounds=4
+        self.disarmed_rounds=-1
 
 class Helmet(Card):
     def __init__(self):
@@ -498,6 +500,10 @@ class PoisonousGas(Card):
         super().__init__("Poisonous Gas", "Light", 2, "ATK: 1, TRK: Falls off ",1,0,0,0,1) 
     def attack(self, oc, player, enemy):
         enemy.take_damage(self.Aval)
+        self.trick(oc, player, enemy)
+
+    def trick(self, oc, player, enemy):
+        self.disarmed_rounds=-1
 
 class GasBubble(Card):
     def __init__(self):

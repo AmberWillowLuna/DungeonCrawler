@@ -31,8 +31,8 @@ def ChooseSet(screen, player1):
             # Check button clicks
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if set1Button.is_clicked(mouse_pos, event):
-                    player1.addItem(Cards.Sword())
-                    player1.addItem(Cards.HealingPotion())
+                    player1.addItem(Cards.PoisonousGas())
+                    player1.addItem(Cards.KnifePack())
                     running = False
                 elif set2Button.is_clicked(mouse_pos, event):
                     player1.addItem(Cards.SwordOfDarkness())
