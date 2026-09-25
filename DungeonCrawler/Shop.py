@@ -84,6 +84,39 @@ class Shop:
             ]
             self.healing = [Cards.Bandage(), Cards.HealingAmulet()]
             self.potions = [Cards.HealingPotion()]
+        elif curD == "Hell dungeon":
+            self.weapons = [
+                Cards.Fire(),
+                Cards.FirerySword(),
+                Cards.LongSword(),
+                Cards.RitualKnife(),
+                Cards.MagicEye()
+            ]
+            self.armors = [
+                Cards.Fireball(),
+                Cards.Shield(),
+                Cards.SpellShield(),
+                Cards.DevilHorns()
+            ]
+            self.healing = [Cards.Bandage(), Cards.HealingAmulet()]
+            self.potions = [Cards.HealingPotion()]
+        elif curD == "Darkness dungeon":
+            self.weapons = [
+                Cards.MagicMirror(),
+                Cards.Club(),
+                Cards.PoisonousGas(),
+                Cards.Dagger(),
+                Cards.FishingRod(),
+                Cards.Halbard()
+            ]
+            self.armors = [
+                Cards.Crown(),
+                Cards.ChainMail(),
+                Cards.GasBubble(),
+                Cards.SpellShield()
+            ]
+            self.healing = [Cards.Bandage(), Cards.HealingAmulet()]
+            self.potions = [Cards.HealingPotion()]
 
 
     def generate_items(self):

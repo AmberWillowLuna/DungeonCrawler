@@ -64,6 +64,7 @@ def LoadDungeon(screen, player):
             Dungeons.append(DefineMediumDungeon())
             Dungeons.append(DefineHardDungeon())
         elif player.DungeonLevel == 6:
+            # when u win manage here
             pass
    
     return Dungeons

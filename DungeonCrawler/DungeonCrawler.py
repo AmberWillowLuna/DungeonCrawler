@@ -5,6 +5,8 @@ import json
 import random
 import start
 from button import Button, CardButton, EntityCards, WeaponCards
+import Options
+
 #make a loop with buttons
 
 #start a window (only for this module)
@@ -70,7 +72,7 @@ def main():
 
                 # Add your start game logic here
             elif options_button.is_clicked(mouse_pos, event):
-                pass
+                Options.Options(screen)
                 # Add your options menu logic here
             elif achievements_button.is_clicked(mouse_pos, event):
                  pass

@@ -17,6 +17,7 @@ class Button:
         self.color = color
         self.hover_color = hover_color
         self.is_hovered = False
+        self.mode = False
 
     def draw(self, surface):
         color = self.hover_color if self.is_hovered else self.color
@@ -50,6 +51,11 @@ class Button:
     def setSize(self, width, height):
         self.rect.size = (width, height)
         #resize the font based on the new size
+
+    def changeMode(self, newMode):
+        self.mode=newMode
+
+
 
 
 import SettingHelp
@@ -167,6 +173,8 @@ class CardButton(Button):
             pygame.draw.rect(screen, (255, 0, 0), self.rect, width=4) 
         elif self.selected:
             pygame.draw.rect(screen, (255, 215, 0), self.rect, width=4)  # gold border
+        elif self.mode:
+            pygame.draw.rect(screen, colors.BLUE, self.rect, 2, border_radius=10)
         else:
             pygame.draw.rect(screen, colors.GREEN, self.rect, 2, border_radius=10)
 

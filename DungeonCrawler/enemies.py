@@ -109,7 +109,6 @@ class Ogre(enemy):
         super().__init__("Ogre", "Huge green furry mischievous creature.", 6, [Cards.Club(), Cards.Nothing(), Cards.Nothing()], "Orc's dungeon", 4)
         self.lootTable = [Cards.Club(), Cards.Club(), Cards.Nothing()]
 
-
 class OrcWizard(enemy):
     def __init__(self):
         super().__init__("Orc Wizard", "A powerful mystical creature.", 8, [Cards.Spear(), Cards.ChainMail(), Cards.MagicHat()], "Orc's dungeon", 5)
@@ -120,7 +119,7 @@ class OrcWizard(enemy):
 
 class Slime(enemy):
         def __init__(self):
-            super().__init__("slime", "A goo that seems to be agresive", 3, [Cards.Boomerang(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 1)
+            super().__init__("Slime", "A goo that seems to be agresive", 3, [Cards.Boomerang(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 1)
 
 class DarkCreature(enemy):
         def __init__(self):
@@ -145,7 +144,7 @@ class MistyGhost(enemy):
 
 class Librarian(enemy):
         def __init__(self):
-            super().__init__("librarian", 
+            super().__init__("Librarian", 
                              "Seems like a smart dude with books", 
                              5, 
                              [Cards.SpellBook(), Cards.Boomerang(), Cards.SpellShield()], 
@@ -259,7 +258,7 @@ class LavaLarva(enemy):
 
 class LavaGolem(enemy):
         def __init__(self):
-            super().__init__("lava golem", 
+            super().__init__("Lava golem", 
                              "Mindless mass of magma", 
                              6, 
                              [Cards.Fireball(), Cards.Nothing(), Cards.Boomerang()], 
@@ -268,7 +267,7 @@ class LavaGolem(enemy):
 
 class FirerySpirit(enemy):
         def __init__(self):
-            super().__init__("firery spirit", 
+            super().__init__("Firery spirit", 
                              "Burning flame in humanoid form", 
                              5, 
                              [Cards.FirerySword(), Cards.Nothing(), Cards.SpellShield()], 
@@ -277,7 +276,7 @@ class FirerySpirit(enemy):
 
 class Demon(enemy):
         def __init__(self):
-            super().__init__("demon", 
+            super().__init__("Demon", 
                              "Hellish creature with dangerous aspirations", 
                              5, 
                              [Cards.Halbard(), Cards.DevilHorns(), Cards.Fire()], 
@@ -287,7 +286,7 @@ class Demon(enemy):
 
 class Satan(enemy):
         def __init__(self):
-            super().__init__("satan", 
+            super().__init__("Satan", 
                              "Hellish creature with dangerous aspirations", 
                              7, 
                              [Cards.Trident(), Cards.DevilHorns(), Cards.Fire()], 

@@ -178,7 +178,7 @@ class Shield(Card):
 
 class Halbard(Card):
     def __init__(self):
-        super().__init__("Halbard", "Heavy", 4, "'H': 4, ATK: 2, DEF: L1, H0", 2, 1, 0, 0, 0)
+        super().__init__("Halberd", "Heavy", 4, "'H': 4, ATK: 2, DEF: L1, H0", 2, 1, 0, 0, 0)
         self.price=6+random.randint(0,2)
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
@@ -208,7 +208,7 @@ class Bow(Card):
         #FIX THIS ###############################
         for i, card in enumerate(player.hand):
             if card.name=="Arrow":
-                player.hand[i].disarmed_rounds = 2
+                player.hand[i].disarmed_rounds = 3
                 #Eq.append(Nothing())
                 dmg = oc.defend(self, player, enemy)
                 enemy.take_damage(dmg)
@@ -598,7 +598,7 @@ class DevilHorns(Card):
 
 class Trident(Card):
     def __init__(self):
-        super().__init__("Trident", "Light", 5, "'L': 5, DEF: 1", 2, 0.5, 1, 0, 0)
+        super().__init__("Trident", "Light", 5, "'L': 5, DEF: 1", 3, 0.5, 1, 0, 0)
         self.price=15+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)

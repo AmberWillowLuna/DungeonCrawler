@@ -36,6 +36,7 @@
     <Compile Include="GameLoop.py" />
     <Compile Include="GetTrinkets.py" />
     <Compile Include="Merchant.py" />
+    <Compile Include="Options.py" />
     <Compile Include="player.py" />
     <Compile Include="SetPicker.py" />
     <Compile Include="SettingHelp.py" />
@@ -45,8 +46,10 @@
     <Compile Include="Trinkets.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="encyclopedia.json" />
     <Content Include="player.json" />
     <Content Include="settings.json" />
+    <Content Include="weapon_pedia.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -1,4 +1,5 @@
 
+from copy import copy
 import pygame
 import button
 import SettingHelp
@@ -39,6 +40,7 @@ class Player:
         self.scout = False
         self.income = 0
         self.Trinket_text = self.font.render("Trinkets: ", True, (255, 255, 255))
+        self.mode = 0
 
         self.sync_delay_start = 0
         self.sync_delay_active = False
@@ -241,9 +243,13 @@ class Player:
             self.hp = self.maxHp
         #print(f"{self.name} has healed {amount} points! Life points: {self.hp}")
 
+    from copy import copy
+
     def addItem(self, card):
         self.stripDeck()
         if len(self.deck)<=16:
+            if card.name=="Chain mail":
+                card.durability=2
             self.deck.append(card)
             #put in the first nothing card button the card
             self.sync_deck()
@@ -296,38 +302,108 @@ class Player:
             json.dump(player_data, f, indent=4)
 
     def handle_equipment_click(self, mouse_pos, event):
-        """Call this once per event in your main loop."""
+        """Handle keyboard navigation and selection for equipment buttons."""
         all_buttons = self.DeckButtons + self.HandButtons
+        num_buttons = len(all_buttons)
 
-        for btn in all_buttons:
-            if btn.is_clicked(mouse_pos, event):
-                # clicking an already-selected button unclicks it
-                if btn.selected:
-                    if btn.card.name == "HealingPotion":
-                        btn.card.heal(self)
+        # Keyboard navigation with Q and E
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                # Move left (decrement mode)
+                self.mode = (self.mode - 1) % num_buttons
+                self._update_button_modes(all_buttons)
+            elif event.key == pygame.K_e:
+                # Move right (increment mode)
+                self.mode = (self.mode + 1) % num_buttons
+                self._update_button_modes(all_buttons)
+            elif event.key == pygame.K_SPACE:
+                # Select the current button
+                if 0 <= self.mode < num_buttons:
+                    btn = all_buttons[self.mode]
+                    if btn.selected:
+                         if btn.card.name == "HealingPotion":
+                             btn.card.heal(self)
+                             btn.set_card(Cards.Nothing())
+                             self._sync_lists_from_buttons()
+                             self.stripDeck()
+
+                         btn.selected = False
+
+                         return
+
+                    already_selected = [b for b in all_buttons if b.selected]
+
+                    if not already_selected:
+                         btn.selected = True
+
+                         return
+                    else:
+                         other = already_selected[0]
+                         self._try_swap(other, btn)
+                         other.selected = False
+                         btn.selected = False
+                         self._sync_lists_from_buttons()
+
+                         return
+            elif event.key == pygame.K_BACKSPACE:
+                if 0 <= self.mode < num_buttons:
+                    btn = all_buttons[self.mode]
+                    btn.Rselected = True
+                    btn.border_color = (255, 0, 0)  # Red border
+
+                    # Check if the same button was already selected
+                    if hasattr(self, 'last_clicked_button') and self.last_clicked_button == btn:
+                        # Replace the card in the button with Cards.Nothing()
                         btn.set_card(Cards.Nothing())
-                        # Update the corresponding card in self.hand or self.deck
-                        self._sync_lists_from_buttons()
-                        self.stripDeck()
-
-                    btn.selected = False
-
+                        # Update the corresponding card in self.deck
+                        clicked_index = self.DeckButtons.index(btn)
+                        if clicked_index < len(self.deck):
+                            self.deck[clicked_index] = Cards.Nothing()
+                        # Reset the last clicked button and border
+                        self.last_clicked_button = None
+                        btn.Rselected = False
+                        btn.border_color = (0, 255, 0)  # Revert to green border
+                    else:
+                        # Store the clicked button for the next right-click
+                        self.last_clicked_button = btn
                     return
 
-                already_selected = [b for b in all_buttons if b.selected]
 
-                if not already_selected:
-                    btn.selected = True
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            # Mouse interaction (unchanged)
+             for btn in all_buttons:
+                 if btn.is_clicked(mouse_pos, event):
+                     # clicking an already-selected button unclicks it
+                     if btn.selected:
+                         if btn.card.name == "HealingPotion":
+                             btn.card.heal(self)
+                             btn.set_card(Cards.Nothing())
+                             self._sync_lists_from_buttons()
+                             self.stripDeck()
 
-                    return
-                else:
-                    other = already_selected[0]
-                    self._try_swap(other, btn)
-                    other.selected = False
-                    btn.selected = False
-                    self._sync_lists_from_buttons()
+                         btn.selected = False
 
-                    return
+                         return
+
+                     already_selected = [b for b in all_buttons if b.selected]
+
+                     if not already_selected:
+                         btn.selected = True
+
+                         return
+                     else:
+                         other = already_selected[0]
+                         self._try_swap(other, btn)
+                         other.selected = False
+                         btn.selected = False
+                         self._sync_lists_from_buttons()
+
+                         return
+
+    def _update_button_modes(self, all_buttons):
+        """Update the mode and border color of all buttons."""
+        for i, btn in enumerate(all_buttons):
+            btn.changeMode(i == self.mode)
 
     def handle_equipment_delete(self, mouse_pos, event):
         """Call this once per event in your main loop.

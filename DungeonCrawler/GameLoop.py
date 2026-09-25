@@ -73,9 +73,10 @@ def GameLoop(screen, player1):
                             move="Forward"
                         elif GoRight.is_clicked(mouse_pos, event):
                             move="Right"
-
-                player1.handle_equipment_click(mouse_pos, event)
                 player1.handle_equipment_delete(mouse_pos, event)
+
+            player1.handle_equipment_click(mouse_pos, event)
+                
                 #if state is free - you can swap two cards 
                 # the clicked card - get clicked status
                 # when two where clicked - swap them in the hand and set clicked status to false

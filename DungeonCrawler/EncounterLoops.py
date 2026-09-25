@@ -1,6 +1,7 @@
 # EncounterLoops.py
 
 import pygame
+import pygame.event
 import button
 import colors
 import SettingHelp
@@ -246,15 +247,6 @@ def Battle(screen, player1, enemy):
                 raise SystemExit
 
 
-
-
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_b:
-                    print(enemy.hand)
-                    print(enemy.field)
-                    print("####################")
-
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if FightButton.is_clicked(mouse_pos, event):
                     enemy.ShuffleHand()
@@ -282,9 +274,10 @@ def Battle(screen, player1, enemy):
                     # their hand - re-hide the enemy so the next Fight is
                     # a blind placement again. Deck/equipment is NOT
                     # touchable here - that's locked in for the fight.
-
-                    player1.handle_hand_click(mouse_pos, event, enemy)
                     revealed = False
+                    layer1.handle_hand_click(mouse_pos, event, enemy)
+
+                    
 
         current_time = pygame.time.get_ticks()
 
@@ -471,18 +464,13 @@ def BattleLoop(screen, player1, enemy):
                 pygame.quit()
                 raise SystemExit
 
+            player1.handle_equipment_click(mouse_pos, event)
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_b:
-                    print(enemy.hand)
-                    print(player1.hand)
-                    print("####################")
-                    print(enemy.field)
-                    print("####################")
+            #if event.type == pygame.
+            #Spacebar -> running = false
 
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                player1.handle_equipment_click(mouse_pos, event)
                 player1.handle_equipment_delete(mouse_pos, event)
                 if ReadyButton.is_clicked(mouse_pos, event):
                     running = False
