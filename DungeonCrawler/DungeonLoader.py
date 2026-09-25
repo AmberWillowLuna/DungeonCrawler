@@ -7,40 +7,35 @@ import Cards
 import random
 import Trap
 
-def DefineEasyDungeon(player):
+def DefineEasyDungeon():
     # Define a low level dungeon
     D1 = dungeons.dungeon("Orc's dungeon", "Dungeon with some green and grey creatures", [enemies.Goblin(), enemies.Orc(), enemies.ArmoredOrc(), enemies.Ogre(), enemies.OrcWizard()], [Trap.KnifeTrap(), Trap.ArrowTrap()])
-    D2 = dungeons.dungeon("Misty's dungeon", "Dungeon with some slimes and undead creatures", [enemies.Slime(), enemies.Skeleton(), enemies.DarkCreature(), enemies.Ghoul(), enemies.MistyGhost()], [Trap.KnifeTrap(), Trap.ArrowTrap()])
+    D2 = dungeons.dungeon("Misty's dungeon", "Dungeon with some slimes and undead creatures", [enemies.Slime(), enemies.DarkCreature(), enemies.Skeleton(), enemies.Ghoul(), enemies.MistyGhost()], [Trap.KnifeTrap(), Trap.ArrowTrap()])
 
 
     Dungeons=[D1, D2]
     
     random.shuffle(Dungeons)
 
-    D3 = dungeons.dungeon("Library dungeon", "Dungeon with books and magic with undead and magical creatures", 
-                          [enemies.Librarian(), enemies.DemonicEye(), enemies.ThreeEyedBeast(), enemies.TrophyHunter(), enemies.ArcaneGuardian()], 
-                          [Trap.FireTrap(), Trap.HalbardTrap(), Trap.ArrowTrap(), Trap.DestroyItem()])
-
-    D4 = dungeons.dungeon("Forest dungeon", "Dungeon with full of fungi, ents and gremlins", 
-                          [enemies.Gremlin(), enemies.Fungis(), enemies.Ent(), enemies.TreeOfLife(), enemies.ForestSpirit()], 
-                          [Trap.GasTrap(), Trap.GasBubbleTrap(), Trap.ClubTrap(), Trap.DestroyItem()])
-
-    if random.randint(0,1)==1:
-        Dungeons.append(D4)
-        Dungeons.append(D3)
-    else:
-        Dungeons.append(D3)
-        Dungeons.append(D4)
-
-
-    Dungeons = Dungeons
 
     return Dungeons
 
 
 def DefineMediumDungeon():
-    # Define a medium level dungeon
-    pass
+    # Define a low level dungeon
+    D1 = dungeons.dungeon("Library dungeon", "Dungeon with books and magic with undead and magical creatures", 
+                          [enemies.Librarian(), enemies.DemonicEye(), enemies.ThreeEyedBeast(), enemies.TrophyHunter(), enemies.ArcaneGuardian()], 
+                          [Trap.FireTrap(), Trap.HalbardTrap(), Trap.ArrowTrap(), Trap.DestroyItem()])
+    D2 = dungeons.dungeon("Forest dungeon", "Dungeon with full of fungi, ents and gremlins", 
+                          [enemies.Gremlin(), enemies.Fungis(), enemies.Ent(), enemies.TreeOfLife(), enemies.ForestSpirit()], 
+                          [Trap.GasTrap(), Trap.GasBubbleTrap(), Trap.ClubTrap(), Trap.DestroyItem()])
+
+
+    Dungeons=[D1, D2]
+    
+    random.shuffle(Dungeons)
+
+    return Dungeons
 
 def DefineHardDungeon():
     # Define a hard level dungeon
@@ -53,7 +48,8 @@ def LoadDungeon(screen, player):
     Dungeons = []
     if player.curD=="":
         if player.DungeonLevel <6:
-            Dungeons.append(DefineEasyDungeon(player))
+            Dungeons.append(DefineEasyDungeon())
+            Dungeons.append(DefineMediumDungeon())
         elif player.DungeonLevel == 6:
             pass
    

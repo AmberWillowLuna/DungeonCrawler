@@ -8,9 +8,9 @@ def ChooseSet(screen, player1):
     scale = SettingHelp.get_scale()
 
     # Create buttons for the set picker
-    set1Button = button.Button(720*scale, 300*scale, 550*scale, 160*scale, "SwordMan", (0, 0, 128), (0, 255, 0))
-    set2Button = button.Button(720*scale, 500*scale, 550*scale, 160*scale, "King of Halbard", (0, 0, 128), (0, 255, 0))
-    set3Button = button.Button(720*scale, 700*scale, 550*scale, 160*scale, "Spearman", (0, 0, 128), (0, 255, 0))
+    set1Button = button.Button(720*scale, 300*scale, 550*scale, 160*scale, "Lumberjack", (0, 0, 128), (0, 255, 0))
+    set2Button = button.Button(720*scale, 500*scale, 550*scale, 160*scale, "Duelist", (0, 0, 128), (0, 255, 0))
+    set3Button = button.Button(720*scale, 700*scale, 550*scale, 160*scale, "Rouge", (0, 0, 128), (0, 255, 0))
 
     # Main loop for the set picker
     #set 1 - longsword
@@ -31,14 +31,14 @@ def ChooseSet(screen, player1):
             # Check button clicks
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if set1Button.is_clicked(mouse_pos, event):
-                    player1.addItem(Cards.PoisonousGas())
-                    player1.addItem(Cards.KnifePack())
+                    player1.addItem(Cards.LightAxe())
+                    player1.addItem(Cards.Helmet())
                     running = False
                 elif set2Button.is_clicked(mouse_pos, event):
-                    player1.addItem(Cards.SwordOfDarkness())
+                    player1.addItem(Cards.Sword())
                     running = False
                 elif set3Button.is_clicked(mouse_pos, event):
-                    player1.addItem(Cards.Spear())
+                    player1.addItem(Cards.Dagger())
                     player1.addItem(Cards.Boomerang())
                     running = False
 

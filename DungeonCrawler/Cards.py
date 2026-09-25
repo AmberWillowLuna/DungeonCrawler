@@ -250,7 +250,8 @@ class HealingAmulet(Card):
         else:
             player.heal(1)
     def defend(self, oc, player, enemy):
-        self.trick(oc, player, enemy)        
+        self.trick(oc, player, enemy)
+        return oc.Aval
     def trick(self, oc, player, enemy):
         self.disarmed_rounds=-1 # -1 means it will be removed FOREVER from hand being hit
 
@@ -389,7 +390,7 @@ class HealingPotion(Card):
 
 class Sword(Card):
     def __init__(self):
-        super().__init__("Sword", "Heavy", 3, "'H': 5, ATK: 1, DEF: L1, H0", 1, 1, 0, 0, 0)
+        super().__init__("Sword", "Heavy", 3, "'H': 3, ATK: 1, DEF: L1, H0", 1, 1, 0, 0, 0)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -472,7 +473,7 @@ class RitualKnife(Card):
 
 class KnifePack(Card):
     def __init__(self):
-        super().__init__("Knife Pack", "Light", 2, "ATK: 0, DEF: L1, H0",0.1,1,0.5,0,6) 
+        super().__init__("Knife Pack", "Light", 3, "ATK: 0, DEF: L1, H0",0.1,1,0.5,0,6) 
 
     def attack(self, oc, player, enemy):
         self.trick(oc, player, enemy)
@@ -565,7 +566,7 @@ class DevilHorns(Card):
 
 class Trident(Card):
     def __init__(self):
-        super().__init__("Trident", "Light", 6, "'L': 5, DEF: 1", 2, 0, 1, 0, 0)
+        super().__init__("Trident", "Light", 5, "'L': 5, DEF: 1", 2, 0.5, 1, 0, 0)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -573,7 +574,7 @@ class Trident(Card):
         if oc.card_type=="Heavy":
             return 0
         else:
-            return oc.Aval
+            return halved(oc.Aval)
 
 class SwordOfDarkness(Card):
     def __init__(self):

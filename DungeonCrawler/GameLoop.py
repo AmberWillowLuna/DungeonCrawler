@@ -19,6 +19,9 @@ def GameLoop(screen, player1):
     GoForward = button.Button(800*scale, 150*scale, 300*scale, 200*scale, "Forward", (0, 0, 128), (0, 255, 0))
     GoRight = button.Button(1500*scale, 500*scale, 300*scale, 200*scale, "Right", (0, 0, 128), (0, 255, 0))
 
+
+    dungeons = LoadDungeon(screen, player1)
+
     State = "Free"
     #States 
     # Free - free to go
@@ -30,16 +33,15 @@ def GameLoop(screen, player1):
 
     backgroundImg = None
 
-    dungeons = None
-
     running = True
     while running:
         mouse_pos = pygame.mouse.get_pos()
 
         if player1.curD=="":
-            dungeons = LoadDungeon(screen, player1)
+
             player1.curD=dungeons[player1.AdvLevel][player1.DungeonLevel].name
             backgroundImg = pygame.image.load(dungeons[player1.AdvLevel][player1.DungeonLevel].background).convert()
+            backgroundImg = pygame.transform.scale(backgroundImg, (1920*scale, 1080*scale))
             '''
             dungeons - array of an arrays of dungeons so dungeons[0] is an array of EASY dungeons and dungeons[0][0] is first dungeon
             '''

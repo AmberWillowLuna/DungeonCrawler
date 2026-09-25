@@ -94,48 +94,52 @@ class enemy:
 
 class Goblin(enemy):
     def __init__(self):
-        super().__init__("Goblin", "A small, green, mischievous creature.", 3, [Cards.Knife(), Cards.LightAxe(), Cards.Nothing()], "Orc's dungeon", 1)
+        super().__init__("Goblin", "A small, green, mischievous creature.", 3, [Cards.Nothing(), Cards.LightAxe(), Cards.Nothing()], "Orc's dungeon", 1)
 
 class Orc(enemy):
     def __init__(self):
-        super().__init__("Orc", "Grey mischievous creature.", 4, [Cards.Dagger(), Cards.ShoulderPlate(), Cards.LightAxe()], "Orc's dungeon", 2)
+        super().__init__("Orc", "Grey mischievous creature.", 4, [Cards.Nothing(), Cards.Helmet(), Cards.LightAxe()], "Orc's dungeon", 2)
 
 class ArmoredOrc(enemy):
     def __init__(self):
-        super().__init__("Armored Orc", "A grey orc with a chainmail.", 4, [Cards.Sword(), Cards.LightAxe(), Cards.ChainMail()], "Orc's dungeon", 3)
+        super().__init__("Armored Orc", "A grey orc with a chainmail.", 5, [Cards.Sword(), Cards.Knife(), Cards.ChainMail()], "Orc's dungeon", 3)
 
 class Ogre(enemy):
     def __init__(self):
         super().__init__("Ogre", "Huge green furry mischievous creature.", 6, [Cards.Club(), Cards.Nothing(), Cards.Nothing()], "Orc's dungeon", 4)
         self.lootTable = [Cards.Club(), Cards.Club(), Cards.Nothing()]
-        self.lootChance = 1
 
 
 class OrcWizard(enemy):
     def __init__(self):
-        super().__init__("Orc Wizard", "A powerful mystical creature.", 5, [Cards.Spear(), Cards.ChainMail(), Cards.MagicHat()], "Orc's dungeon", 5)
+        super().__init__("Orc Wizard", "A powerful mystical creature.", 8, [Cards.Spear(), Cards.ChainMail(), Cards.MagicHat()], "Orc's dungeon", 5)
         self.lootTable = [Cards.MagicHat(), Cards.MagicHat(), Cards.MagicHat()]
         self.lootChance = 1
 
+
+
 class Slime(enemy):
         def __init__(self):
-            super().__init__("slime", "A goo that seems to be agresive", 3, [Cards.LightAxe(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 1)
-
-class Skeleton(enemy):
-        def __init__(self):
-            super().__init__("Skeleton", "Archer that looks like death", 4, [Cards.Bow(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 2)
+            super().__init__("slime", "A goo that seems to be agresive", 3, [Cards.Boomerang(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 1)
 
 class DarkCreature(enemy):
         def __init__(self):
-            super().__init__("DarkCreature", "Gives nightmares if you look too much at him", 5, [Cards.Halbard(), Cards.ShoulderPlate(), Cards.ChainMail()], "Misty dungeon", 3)
+            super().__init__("DarkCreature", "Gives nightmares if you look too much at him", 4, [Cards.Sword(), Cards.Knife(), Cards.Nothing()], "Misty dungeon", 2)
+
+class Skeleton(enemy):
+        def __init__(self):
+            super().__init__("Skeleton", "Archer that looks like death", 5, [Cards.Bow(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 3)
 
 class Ghoul(enemy):
         def __init__(self):
-            super().__init__("Ghoul", "Very dangerous spirit", 5, [Cards.Spear(), Cards.LightAxe(), Cards.Shield()], "Misty dungeon", 4)
+            super().__init__("Ghoul", "Very dangerous spirit", 6, [Cards.Spear(), Cards.LightAxe(), Cards.Shield()], "Misty dungeon", 4)
 
 class MistyGhost(enemy):
         def __init__(self):
             super().__init__("MistyGhost", "Agressive spirit of this dungeon", 7, [Cards.HealingAmulet(), Cards.Crown(), Cards.LongSword()], "Misty dungeon", 5)
+            self.lootTable = [Cards.HealingAmulet(), Cards.HealingAmulet(), Cards.HealingAmulet()]
+            self.lootChance = 1
+
 
 
 
@@ -152,8 +156,8 @@ class DemonicEye(enemy):
         def __init__(self):
             super().__init__("Demonic eye", 
                              "Lewitating evil eye", 
-                             6, 
-                             [Cards.MagicEye(), Cards.SpellShield(), Cards.ShoulderPlate()], 
+                             4, 
+                             [Cards.MagicEye(), Cards.SpellShield(), Cards.Nothing()], 
                              "Library dungeon", 
                              2)
 
@@ -171,7 +175,7 @@ class TrophyHunter(enemy):
         def __init__(self):
             super().__init__("Trophy hunter", 
                              "Try-hard, willing to do a lot for gold", 
-                             7, 
+                             6, 
                              [Cards.SpellBook(), Cards.LongSword(), Cards.Boomerang()], 
                              "Library dungeon", 
                              4)
@@ -190,12 +194,15 @@ class ArcaneGuardian(enemy):
             self.lootChance = 1
 
 
+
+
+
 class Gremlin(enemy):
         def __init__(self):
             super().__init__("Gremlin", 
                              "Small but grevious creature", 
                              4, 
-                             [Cards.Nothing(), Cards.KnifePack(), Cards.Knife()], 
+                             [Cards.LightAxe(), Cards.KnifePack(), Cards.Knife()], 
                              "Forest dungeon", 
                              1)
 
@@ -222,7 +229,7 @@ class TreeOfLife(enemy):
             super().__init__("Tree of life", 
                              "Huge tree pulsating with magic", 
                              12, 
-                             [Cards.FishingRod(), Cards.GasBubble(), Cards.Spear()], 
+                             [Cards.Nothing(), Cards.GasBubble(), Cards.Halbard()], 
                              "Forest dungeon", 
                              4)
             self.lootTable = [Cards.GasBubble(), Cards.GasBubble(), Cards.Nothing()]
@@ -234,8 +241,57 @@ class ForestSpirit(enemy):
             super().__init__("Forest Spirit", 
                              "Born from nature to rule the forest", 
                              10, 
-                             [Cards.RitualKnife(), Cards.MagicMirror(), Cards.RitualKnife()], 
+                             [Cards.LongSword(), Cards.MagicMirror(), Cards.FishingRod()], 
                              "Forest dungeon", 
                              4)
             self.lootTable = [Cards.MagicMirror(), Cards.MagicMirror(), Cards.MagicMirror()]
             self.lootChance = 1
+
+
+class LavaLarva(enemy):
+        def __init__(self):
+            super().__init__("Lava Larva", 
+                             "Hot as hell", 
+                             3, 
+                             [Cards.Fire(), Cards.Nothing(), Cards.Fireball()], 
+                             "Hell dungeon", 
+                             1)
+
+class LavaGolem(enemy):
+        def __init__(self):
+            super().__init__("lava golem", 
+                             "Mindless mass of magma", 
+                             6, 
+                             [Cards.Fireball(), Cards.Nothing(), Cards.Boomerang()], 
+                             "Hell dungeon", 
+                             2)
+
+class FirerySpirit(enemy):
+        def __init__(self):
+            super().__init__("firery spirit", 
+                             "Burning flame in humanoid form", 
+                             5, 
+                             [Cards.FirerySword(), Cards.Nothing(), Cards.SpellShield()], 
+                             "Hell dungeon", 
+                             3)
+
+class Demon(enemy):
+        def __init__(self):
+            super().__init__("demon", 
+                             "Hellish creature with dangerous aspirations", 
+                             5, 
+                             [Cards.Halbard(), Cards.DevilHorns(), Cards.Fire()], 
+                             "Hell dungeon", 
+                             4)
+
+class Demon(enemy):
+        def __init__(self):
+            super().__init__("satan", 
+                             "Hellish creature with dangerous aspirations", 
+                             7, 
+                             [Cards.Trident(), Cards.DevilHorns(), Cards.Fire()], 
+                             "Hell dungeon", 
+                             5)
+
+
+

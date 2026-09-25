@@ -19,7 +19,7 @@ class Player:
         self.et = "p"
         self.DungeonLevel = 0
         self.AdvLevel = 0
-        self.gold = 15
+        self.gold = 0
         scale = SettingHelp.get_scale()
         self.font  = pygame.font.SysFont("Arial", int(48 * scale))
         self.gold_text = self.font.render("Gold: "+str(self.gold), True, (255, 255, 255))
@@ -141,14 +141,13 @@ class Player:
 
     def ascend(self):
 
-        #game is blocking on 14
         self.level += 1
         print(self.level)
         if self.level==15:
             self.level=0
             self.curD = ""
             self.DungeonLevel += 1
-            if self.DungeonLevel==5:
+            if self.DungeonLevel==2:
                 self.DungeonLevel=0
                 self.AdvLevel += 1
                 if self.AdvLevel==3:
@@ -438,7 +437,7 @@ class Player:
 
     def _hand_is_valid(self, hand_cards):
         total_weight = sum(c.weight for c in hand_cards if c.name != "Nothing")
-        heavy_count = sum(1 for c in hand_cards if c.card_type == "heavy")
+        heavy_count = sum(1 for c in hand_cards if c.card_type == "Heavy")
         return total_weight <= self.maxweight and heavy_count <= 1
 
     def handle_hand_reorder_click(self, mouse_pos, event):
