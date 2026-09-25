@@ -208,6 +208,7 @@ class Player:
         for i in range(min(len(self.DeckButtons), len(self.deck))):
             self.DeckButtons[i].set_card(self.deck[i])
 
+
     def sync_hand(self):
         for i in range(min(len(self.HandButtons), len(self.hand))):
             self.HandButtons[i].set_card(self.hand[i])

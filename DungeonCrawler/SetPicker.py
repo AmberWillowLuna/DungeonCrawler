@@ -38,6 +38,7 @@ def ChooseSet(screen, player1):
                     player1.addItem(Cards.Sword())
                     running = False
                 elif set3Button.is_clicked(mouse_pos, event):
+                    player1.addItem(Cards.Knife())
                     player1.addItem(Cards.Dagger())
                     player1.addItem(Cards.Boomerang())
                     running = False

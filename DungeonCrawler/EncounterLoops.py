@@ -156,7 +156,7 @@ def _resolve_round(player1, enemy, log):
             # put in field 
             player1.field.append(p_card)
             player1.hand[i] = Cards.Nothing()
-            player1.hand_sync()
+            player1.sync_hand()
 
         if e_card.disarmed_rounds > 0:
             # put in field 
@@ -169,7 +169,7 @@ def _resolve_round(player1, enemy, log):
             if p_card.durability==0:
                 player1.graveyard.append(p_card)
                 player1.hand[i] = Cards.Nothing()
-                player1.hand_sync()
+                player1.sync_hand()
                 #player1.HandButtons[i].set_card(Cards.Nothing())
         #same for enemy cards
 
@@ -186,7 +186,7 @@ def _resolve_round(player1, enemy, log):
             for i, slot in enumerate(player1.hand):
                 if slot.name == "Nothing":
                     player1.hand[i] = tcard
-                    player1.hand_sync()
+                    player1.sync_hand()
                     player1.field.remove(tcard)
                     break
 

@@ -139,7 +139,7 @@ TRICKS = {
 
 
 
-
+import random
 
 
 '''
@@ -158,6 +158,7 @@ Trick list:
 class LongSword(Card):
     def __init__(self):
         super().__init__("Long Sword", "Heavy", 5, "'H': 5, ATK: 2, DEF: L1, H0.5", 2, 1, 0.5, 0, 0)
+        self.price=7+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -171,12 +172,14 @@ class LongSword(Card):
 class Shield(Card):
     def __init__(self):
         super().__init__("Shield", "Light", 5, "'L': 5, DEF: 1", 0, 1, 1, 0, 0)
+        self.price=7+random.randint(0,2)
     def defend(self, oc, player, enemy):
         return 0
 
 class Halbard(Card):
     def __init__(self):
         super().__init__("Halbard", "Heavy", 4, "'H': 4, ATK: 2, DEF: L1, H0", 2, 1, 0, 0, 0)
+        self.price=6+random.randint(0,2)
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -190,6 +193,7 @@ class Halbard(Card):
 class LightAxe(Card):
     def __init__(self):
         super().__init__("Light Axe", "Light", 3, "'L': 3, ATK: 1", 1, 0, 0, 0, 0)
+        self.price=4+random.randint(0,2)
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -197,6 +201,7 @@ class LightAxe(Card):
 class Bow(Card):
     def __init__(self):
         super().__init__("Bow", "Heavy", 6, "'H': 6, ATK: 2 (-1 arrow for 2 rounds) - non halvable!, DEF: L1, H0.5", 2, 0, 0, 0,0)
+        self.price=6+random.randint(0,2)
     def attack(self, oc, player, enemy):
         #if an arrow is in player eq then return 2
 
@@ -222,6 +227,7 @@ class Bow(Card):
 class Arrow(Card):
     def __init__(self):
         super().__init__("Arrow", "Light", 2, "'L': 2, DEF: 0, L: recoile 1dmg atk, TRK: returns to hand after two rounds", 0, -1, 0, 0,3)
+        self.price=2+random.randint(0,2)
     def defend(self, oc, player, enemy):
         #find a way for recoil dmg - i dunno maybe put a player class for this function
         if oc.card_type=="Light":
@@ -235,6 +241,7 @@ class Arrow(Card):
 class Crown(Card):
     def __init__(self):
         super().__init__("Crown", "Light", 2, "DEF: 1, TRK: falls off after defending the dmg", 0,1,1,0,1) #or falls of and gets back to player eq
+        self.price=5+random.randint(0,2)
     def defend(self, oc, player, enemy):
         self.trick(self, player, enemy)
         return 0
@@ -244,6 +251,7 @@ class Crown(Card):
 class HealingAmulet(Card):
     def __init__(self):
         super().__init__("Healing Amulet", "Light", 2, "DEF: 1, TRK: falls off after being attakced",0,0,0,1,9) #or falls of and gets back to player eq
+        self.price=7+random.randint(0,2)
     def attack(self, oc, player, enemy):
         if oc.Aval>=1:
             pass
@@ -259,6 +267,7 @@ class Bandage(Card):
     def __init__(self):
         super().__init__("Bandage", "Light", 3, "HEAL: 2 TRK: falls after being used",0,0,0,2,1) #or falls of and gets back to player eq
         self.CanHeal=False
+        self.price=4+random.randint(0,2)
     def heal(self, oc, player, enemy):
         if oc==None:
             player.heal(self.Hval)
@@ -271,7 +280,7 @@ class Bandage(Card):
 class FishingRod(Card):
     def __init__(self):
         super().__init__("Fishing rod", "Light", 3, "TRK: disarms oc and itself if oc is not empty",0.25,0,0,0,2) #or falls of and gets back to player eq
-
+        self.price=8+random.randint(0,2)
     def attack(self, oc, player, enemy):
         if oc.name!="Nothing":
             self.trick(oc, player, enemy)
@@ -283,6 +292,7 @@ class FishingRod(Card):
 class Helmet(Card):
     def __init__(self):
         super().__init__("Helmet", "Light", 2, "DEF: L1, H0", 0,1,0,0,0) 
+        self.price=3+random.randint(0,2)
     def defend(self, oc, player, enemy):
         if oc.card_type=="Light":
             return 0
@@ -291,7 +301,8 @@ class Helmet(Card):
 
 class ShoulderPlate(Card):
     def __init__(self):
-        super().__init__("Shoulder Plate", "Light", 1, "DEF: L1, H0 TRK: falls off after defending",0,1,0,0,1) 
+        super().__init__("Shoulder Plate", "Light", 1, "DEF: L1, H0 TRK: falls off after defending",0,1,0,0,1)
+        self.price=1+random.randint(0,2)
     def defend(self, oc, player, enemy):
         if oc.card_type=="Light":
             self.trick(oc, player, enemy)
@@ -305,6 +316,7 @@ class ChainMail(Card):
     def __init__(self):
         super().__init__("Chain Mail", "Light", 4, "DEF: L1, H0.5",0,1,0.5,0,4) 
         self.durability=2
+        self.price=6+random.randint(0,2)
     def defend(self, oc, player, enemy):
 
         if oc.card_type=="Light":
@@ -319,6 +331,7 @@ class ChainMail(Card):
 class Spear(Card):
     def __init__(self):
         super().__init__("Spear", "Heavy", 3, "ATK: 3, DEF: L0, H0",3,0,0,0,0) 
+        self.price=4+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -330,6 +343,7 @@ class Spear(Card):
 class Dagger(Card):
     def __init__(self):
         super().__init__("Dagger", "Light", 2, "ATK: 1, DEF: L0, H0",2,0,0,0,5) 
+        self.price=2+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -342,6 +356,7 @@ class Dagger(Card):
 class Knife(Card):
     def __init__(self):
         super().__init__("Knife", "Light", 1, "ATK: 1, DEF: L0, H0, TRK: falls off after atack",1,0,0,0,5) 
+        self.price=0+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         self.trick(oc, player, enemy)
@@ -352,7 +367,8 @@ class Knife(Card):
 
 class MagicHat(Card):
     def __init__(self):
-        super().__init__("Magic Hat", "Heavy", 3, "ATK: 0, DEF: L1, H0.5",0.1,1,0.5,0,6) 
+        super().__init__("Magic Hat", "Heavy", 3, "ATK: 0, DEF: L1, H0.5",0.1,1,0.5,0,6)
+        self.price=9+random.randint(0,2)
 
     def attack(self, oc, player, enemy):
         self.trick(oc, player, enemy)
@@ -376,6 +392,7 @@ class MagicHat(Card):
 class Club(Card):
     def __init__(self):
         super().__init__("Club", "Heavy", 6, "ATK: 3, DEF: L0, H0",3,0,0,0,0) 
+        self.price=8+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -384,6 +401,7 @@ class Club(Card):
 class HealingPotion(Card):
     def __init__(self):
         super().__init__("HealingPotion", "Heavy", 25, "HEAL: 5",0,0,0,5,0) 
+        self.price=4+random.randint(0,2)
     def heal(self, player):
         player.heal(self.Hval)
 
@@ -391,6 +409,7 @@ class HealingPotion(Card):
 class Sword(Card):
     def __init__(self):
         super().__init__("Sword", "Heavy", 3, "'H': 3, ATK: 1, DEF: L1, H0", 1, 1, 0, 0, 0)
+        self.price=4+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -403,6 +422,7 @@ class Sword(Card):
 class Boomerang(Card):
     def __init__(self):
         super().__init__("Boomerang", "Light", 2, "'L': 3, ATK: 1", 1, 0, 0, 0, 0)
+        self.price=1+random.randint(0,2)
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -420,6 +440,7 @@ class Boomerang(Card):
 class MagicMirror(Card):
     def __init__(self):
         super().__init__("Magic mirror", "Light", 4, "'L': 4 Simulater opposing card, ??", 0, 0, 0, 0, 8)
+        self.price=14+random.randint(0,2)
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(oc, player, enemy) # tu jest w argumentach oc zamiast self i essa
         enemy.take_damage(dmg)
@@ -427,6 +448,7 @@ class MagicMirror(Card):
 class SpellBook(Card):
     def __init__(self):
         super().__init__("Spell Book", "Light", 5, "'H': 5, ATK: 0 (recoil 1 non halvable), DEF: L0, H1", 0, 0, 1, 0, 0)
+        self.price=10+random.randint(0,2)
     def attack(self,  oc, player, enemy):
         if self.card_type == "Heavy":
             dmg = oc.defend(self, player, enemy)
@@ -446,6 +468,7 @@ class SpellBook(Card):
 class SpellShield(Card):
     def __init__(self):
         super().__init__("Spell Shield", "Light", 4, "'H': 4, ATK: 0 , DEF: L0, H1", 0, 0, 1, 0, 0)
+        self.price=9+random.randint(0,2)
     def defend(self,  oc, player, enemy):
         if oc.card_type=="Heavy":
             return 0
@@ -455,6 +478,7 @@ class SpellShield(Card):
 class MagicEye(Card):
     def __init__(self):
         super().__init__("Magic Eye", "Heavy", 6, "ATK: 3, DEF: L0, H0",3,0,0,0,0) 
+        self.price=8+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -464,6 +488,7 @@ class MagicEye(Card):
 class RitualKnife(Card):
     def __init__(self):
         super().__init__("Ritual Knife", "Light", 5, "'L': 3, ATK: 1", 1, 0, 0, 0, 0)
+        self.price=20+random.randint(0,2)
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -474,6 +499,7 @@ class RitualKnife(Card):
 class KnifePack(Card):
     def __init__(self):
         super().__init__("Knife Pack", "Light", 3, "ATK: 0, DEF: L1, H0",0.1,1,0.5,0,6) 
+        self.price=5+random.randint(0,2)
 
     def attack(self, oc, player, enemy):
         self.trick(oc, player, enemy)
@@ -499,6 +525,7 @@ class KnifePack(Card):
 class PoisonousGas(Card):
     def __init__(self):
         super().__init__("Poisonous Gas", "Light", 2, "ATK: 1, TRK: Falls off ",1,0,0,0,1) 
+        self.price=3+random.randint(0,2)
     def attack(self, oc, player, enemy):
         enemy.take_damage(self.Aval)
         self.trick(oc, player, enemy)
@@ -509,12 +536,14 @@ class PoisonousGas(Card):
 class GasBubble(Card):
     def __init__(self):
         super().__init__("Gas Bubble", "Light", 4, "ATK: recoil 1, TRK: Recoil  ",0.2,0,0,0,1) 
+        self.price=7+random.randint(0,2)
     def defend(self, oc, player, enemy):
         enemy.take_damage(1)
 
 class Fire(Card):
     def __init__(self):
         super().__init__("Fire", "Light", 1, "ATK: 1, DEF: L0, H0, TRK: falls off after atack",1,0,0,0,5) 
+        self.price=4+random.randint(0,2)
     def attack(self, oc, player, enemy):
         self.card_type="Heavy"
         dmg = oc.defend(self, player, enemy)
@@ -528,6 +557,7 @@ class Fire(Card):
 class Fireball(Card):
     def __init__(self):
         super().__init__("Fireball", "Heavy", 6, "'L': 6, DEF: 1", 0, 1, 1, 0, 0)
+        self.price=10+random.randint(0,2)
     def attack(self, oc, player, enemy):
         self.trick(oc, player, enemy)
 
@@ -546,6 +576,7 @@ class Fireball(Card):
 class FirerySword(Card):
     def __init__(self):
         super().__init__("Firery Sword", "Heavy", 7, "'H': 7, ATK: 3, DEF: L0.5, H0.5", 3, 1, 0.5, 0, 0)
+        self.price=14+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -558,6 +589,7 @@ class FirerySword(Card):
 class DevilHorns(Card):
     def __init__(self):
         super().__init__("Devil Horns", "Heavy", 8, "'H': 8, DEF: 1", 2, 1, 1, 0, 0)
+        self.price=15+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -567,6 +599,7 @@ class DevilHorns(Card):
 class Trident(Card):
     def __init__(self):
         super().__init__("Trident", "Light", 5, "'L': 5, DEF: 1", 2, 0.5, 1, 0, 0)
+        self.price=15+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -579,6 +612,7 @@ class Trident(Card):
 class SwordOfDarkness(Card):
     def __init__(self):
         super().__init__("Sword of Darkness", "Heavy", 10, "'H': 10, ATK: 3, DEF: L1, H1", 2, 1, 1, 0, 9)
+        self.price=20+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
@@ -590,11 +624,12 @@ class SwordOfDarkness(Card):
 class CrownOfDarkness(Card):
     def __init__(self):
         super().__init__("Crown of Darkness", "Light", 4, "DEF: 1, TRK: falls off after defending the dmg", 0,1,1,0,1) #or falls of and gets back to player eq
+        self.price=10+random.randint(0,2)
     def defend(self, oc, player, enemy):
         self.trick(self, player, enemy)
         return 0
     def trick(self, oc, player, enemy):
-        self.disarmed_rounds=2 # -1 means it will be removed FOREVER from hand being hit
+        self.disarmed_rounds=4 # -1 means it will be removed FOREVER from hand being hit
 
 
 #we will be adding them simultaniously with enemies and dungeons

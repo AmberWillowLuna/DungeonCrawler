@@ -124,7 +124,7 @@ class Slime(enemy):
 
 class DarkCreature(enemy):
         def __init__(self):
-            super().__init__("DarkCreature", "Gives nightmares if you look too much at him", 4, [Cards.Sword(), Cards.Knife(), Cards.Nothing()], "Misty dungeon", 2)
+            super().__init__("DarkCreature", "Gives nightmares if you look too much at him", 4, [Cards.Sword(), Cards.Nothing(), Cards.Nothing()], "Misty dungeon", 2)
 
 class Skeleton(enemy):
         def __init__(self):
@@ -283,8 +283,9 @@ class Demon(enemy):
                              [Cards.Halbard(), Cards.DevilHorns(), Cards.Fire()], 
                              "Hell dungeon", 
                              4)
+            self.lootTable = [Cards.DevilHorns(), Cards.DevilHorns(), Cards.DevilHorns()]
 
-class Demon(enemy):
+class Satan(enemy):
         def __init__(self):
             super().__init__("satan", 
                              "Hellish creature with dangerous aspirations", 
@@ -292,6 +293,54 @@ class Demon(enemy):
                              [Cards.Trident(), Cards.DevilHorns(), Cards.Fire()], 
                              "Hell dungeon", 
                              5)
+            self.lootTable = [Cards.Trident(), Cards.Trident(), Cards.Trident()]
+            self.lootChance = 1
 
 
+class Shadow(enemy):
+        def __init__(self):
+            super().__init__("Shadow", 
+                             "Is it even here?", 
+                             5, 
+                             [Cards.Nothing(), Cards.MagicHat(), Cards.Nothing()], 
+                             "darkness dungeon", 
+                             1)
+
+class DarknessGhoul(enemy):
+        def __init__(self):
+            super().__init__("Darkness ghoul", 
+                             "A darker version of ghoul", 
+                             6, 
+                             [Cards.MagicMirror(), Cards.MagicEye(), Cards.Knife()], 
+                             "darkness dungeon", 
+                             2)
+
+class DarkKnight(enemy):
+        def __init__(self):
+            super().__init__("Dark knight", 
+                             "The slave of darkness", 
+                             7, 
+                             [Cards.LongSword(), Cards.Shield(), Cards.Nothing()], 
+                             "darkness dungeon", 
+                             3)
+
+class DarknessSorcerer(enemy):
+        def __init__(self):
+            super().__init__("Darkness sorcerer", 
+                             "Very powerful shadowy creature, that maybe even was a human once", 
+                             6, 
+                             [Cards.Club(), Cards.SpellBook(), Cards.Knife()], 
+                             "darkness dungeon", 
+                             4)
+
+class Lich(enemy):
+        def __init__(self):
+            super().__init__("Lich", 
+                             "An deeply corrupted unhinged interpretation of evil in this world", 
+                             8, 
+                             [Cards.SwordOfDarkness(), Cards.Nothing(), Cards.Crown()], 
+                             "darkness dungeon", 
+                             5)
+            self.lootTable = [Cards.SwordOfDarkness(), Cards.SwordOfDarkness(), Cards.SwordOfDarkness()]
+            self.lootChance = 1
 

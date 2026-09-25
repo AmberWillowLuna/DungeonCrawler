@@ -22,7 +22,7 @@ def DefineEasyDungeon():
 
 
 def DefineMediumDungeon():
-    # Define a low level dungeon
+    # Define a mid level dungeon
     D1 = dungeons.dungeon("Library dungeon", "Dungeon with books and magic with undead and magical creatures", 
                           [enemies.Librarian(), enemies.DemonicEye(), enemies.ThreeEyedBeast(), enemies.TrophyHunter(), enemies.ArcaneGuardian()], 
                           [Trap.FireTrap(), Trap.HalbardTrap(), Trap.ArrowTrap(), Trap.DestroyItem()])
@@ -39,7 +39,19 @@ def DefineMediumDungeon():
 
 def DefineHardDungeon():
     # Define a hard level dungeon
-    pass
+    D1 = dungeons.dungeon("Darkness dungeon", "Dungeon with books and magic with undead and magical creatures", 
+                          [enemies.Shadow(), enemies.DarknessGhoul(), enemies.DarkKnight(), enemies.DarknessSorcerer(), enemies.Lich()], 
+                          [Trap.ClubTrap(), Trap.GasBubbleTrap(), Trap.GasTrap(), Trap.DestroyItem()])
+    D2 = dungeons.dungeon("Hell dungeon", "Dungeon with full of fungi, ents and gremlins", 
+                          [enemies.LavaLarva(), enemies.LavaGolem(), enemies.Ent(), enemies.Demon(), enemies.Satan()], 
+                          [Trap.FireTrap(), Trap.ClubTrap(), Trap.DestroyItem(), Trap.DestroyItem()])
+
+
+    Dungeons=[D1, D2]
+    
+    random.shuffle(Dungeons)
+
+    return Dungeons
 
 
 def LoadDungeon(screen, player):
@@ -50,6 +62,7 @@ def LoadDungeon(screen, player):
         if player.DungeonLevel <6:
             Dungeons.append(DefineEasyDungeon())
             Dungeons.append(DefineMediumDungeon())
+            Dungeons.append(DefineHardDungeon())
         elif player.DungeonLevel == 6:
             pass
    
