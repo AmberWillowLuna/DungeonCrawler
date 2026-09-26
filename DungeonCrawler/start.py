@@ -46,10 +46,11 @@ def start(screen):
 
         #display elements
         # Draw everything
-        screen.fill((0, 0, 0))
-        newGameButton.draw(screen)
-        continueButton.draw(screen)
-        pygame.display.flip()
+        if running:
+            screen.fill((0, 0, 0))
+            newGameButton.draw(screen)
+            continueButton.draw(screen)
+            pygame.display.flip()
 
 
 

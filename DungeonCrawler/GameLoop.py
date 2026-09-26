@@ -189,7 +189,7 @@ def GameLoop(screen, player1):
 
         player1.displayDeck(screen)
         for hb in player1.DeckButtons:
-            hb.check_hover(mouse_pos, screen)
+            hb.check_hover2(mouse_pos, screen)
 
         # Update the display
         pygame.display.flip()

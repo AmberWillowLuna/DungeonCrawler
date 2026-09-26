@@ -51,29 +51,29 @@ class Player:
         #at the beggining 9 nothing cards and 3 nothing cards in hand!
         scale = SettingHelp.get_scale()
         self.DeckButtons = [
-            button.CardButton(40*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(156*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(272*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(388*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(504*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(620*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(736*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(852*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(968*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1084*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1200*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1316*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1432*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1548*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1669*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1790*scale, 950*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")
+            button.CardButton(40*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(156*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(272*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(388*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(504*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(620*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(736*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(852*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(968*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1084*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1200*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1316*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1432*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1548*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1669*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1790*scale, 930*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")
         ]
 
 
         self.HandButtons = [
-            button.CardButton(690*scale, 750*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(910*scale, 750*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1130*scale, 750*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")            
+            button.CardButton(690*scale, 700*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(910*scale, 700*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
+            button.CardButton(1130*scale, 700*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")            
             ]
 
     def PickUp(self, trinket):
@@ -449,6 +449,27 @@ class Player:
             btn.selected = False
 
     def handle_hand_click(self, mouse_pos, event, enemy):
+        if event.type==pygame.KEYDOWN:
+            if event.key==pygame.K_h:
+                all_buttons = self.HandButtons
+
+                for btn in all_buttons:
+                    if btn.card.name == "Bandage" and self.hp < 8:
+                        clicked_index = self.HandButtons.index(btn)
+                        # Check if clicked_index is within bounds of self.hand
+                        if clicked_index < len(self.hand):
+                            if clicked_index < len(enemy.hand):
+                                oc = enemy.hand[clicked_index]
+                                if oc.Aval <= 0:
+                                    DidItHeal = btn.card.heal(None, self, None)
+                                    if DidItHeal:
+                                        btn.set_card(Cards.Nothing())
+                                        self.hand[clicked_index] = Cards.Nothing()
+                    return
+
+
+
+
         """Call this once per event in your fight loop."""
         all_buttons = self.HandButtons
 
@@ -459,7 +480,6 @@ class Player:
                     btn.selected = False
                     if btn.card.name == "Bandage" and self.hp < 8:
                         clicked_index = self.HandButtons.index(btn)
-                        print(clicked_index)
                         # Check if clicked_index is within bounds of self.hand
                         if clicked_index < len(self.hand):
                             if clicked_index < len(enemy.hand):

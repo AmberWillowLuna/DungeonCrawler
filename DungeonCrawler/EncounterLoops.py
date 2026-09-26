@@ -9,8 +9,10 @@ import Cards
 import Trap
 import random
 
-font = pygame.font.SysFont("Arial", 40)
-desc_font = pygame.font.SysFont("Arial", 26)
+scale = SettingHelp.get_scale()
+
+font = pygame.font.SysFont("Arial", int(20*scale))
+desc_font = pygame.font.SysFont("Arial", int(13*scale))
 
 
 def _build_enemy_display(enemy):
@@ -224,11 +226,11 @@ def Battle(screen, player1, enemy):
     clock = pygame.time.Clock()
 
     FightButton = button.Button(
-        800 * scale, 500 * scale, 300 * scale, 100 * scale,
+        800 * scale, 400 * scale, 300 * scale, 100 * scale,
         "Fight", (100, 0, 0), (200, 0, 0)
     )
     WinButton = button.Button(
-        800 * scale, 650 * scale, 300 * scale, 100 * scale,
+        800 * scale, 550 * scale, 300 * scale, 100 * scale,
         "Victory!", (100, 125, 0), (10, 155, 155)
     )
 
@@ -247,8 +249,9 @@ def Battle(screen, player1, enemy):
                 raise SystemExit
 
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if FightButton.is_clicked(mouse_pos, event):
+            if event.type == pygame.MOUSEBUTTONDOWN or event.type==pygame.KEYDOWN:
+                player1.handle_hand_click(mouse_pos, event, enemy)
+                if FightButton.is_clicked(mouse_pos, event) and result==None:
                     enemy.ShuffleHand()
                     player1.sync_hand()
                     player1.sync_delay_active = False
@@ -266,8 +269,30 @@ def Battle(screen, player1, enemy):
                     _build_enemy_display(enemy)
                     player1.sync_delay_active = True
 
+                elif event.type == pygame.KEYDOWN:
+                        if event.key==pygame.K_SPACE and result == None:
+                            enemy.ShuffleHand()
+                            player1.sync_hand()
+                            player1.sync_delay_active = False
+                            log = []
+                            _resolve_round(player1, enemy, log)
 
-                elif WinButton.is_clicked(mouse_pos, event):
+                            revealed = True
+                   
+                            if player1.hp <= 0:
+                                result = "lose"
+                            elif enemy.hp <= 0:
+                                result = "win"
+
+                            player1.sync_delay_start = pygame.time.get_ticks()
+                            _build_enemy_display(enemy)
+                            player1.sync_delay_active = True
+
+
+                        if event.key==pygame.K_2 and result!=None:
+                            end = False
+
+                elif WinButton.is_clicked(mouse_pos, event) and result!=None:
                         end = False
                 else:
                     # any click that isn't Fight is the player reordering
@@ -275,7 +300,7 @@ def Battle(screen, player1, enemy):
                     # a blind placement again. Deck/equipment is NOT
                     # touchable here - that's locked in for the fight.
                     revealed = False
-                    layer1.handle_hand_click(mouse_pos, event, enemy)
+
 
                     
 
@@ -344,7 +369,7 @@ def Battle(screen, player1, enemy):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN or event.type== pygame.KEYDOWN:
                 waiting = False
 
         screen.fill((0, 0, 0))
@@ -460,6 +485,8 @@ def BattleLoop(screen, player1, enemy):
         mouse_pos = pygame.mouse.get_pos()
 
         for event in pygame.event.get():
+
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
@@ -470,22 +497,27 @@ def BattleLoop(screen, player1, enemy):
             #Spacebar -> running = false
 
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
                 player1.handle_equipment_delete(mouse_pos, event)
                 if ReadyButton.is_clicked(mouse_pos, event):
                     running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key==pygame.K_2:
+                        running = False
+
+        # ---- draw ----
+        screen.fill((0, 0, 30))  # dim blue backdrop for battle
 
         ReadyButton.check_hover(mouse_pos)
         for eb in enemy.HandButtons:
-            eb.check_hover(mouse_pos, screen)  # purely cosmetic, they aren't clickable for swaps
+            eb.check_hover3(mouse_pos, screen)  # purely cosmetic, they aren't clickable for swaps
 
         for hb in player1.DeckButtons:
-            hb.check_hover(mouse_pos, screen)
+            hb.check_hover3(mouse_pos, screen)
 
         for hb in player1.HandButtons:
-            hb.check_hover(mouse_pos, screen)
-        # ---- draw ----
-        screen.fill((0, 0, 30))  # dim blue backdrop for battle
+            hb.check_hover3(mouse_pos, screen)
+
 
         _draw_enemy_header(screen, enemy)
         for eb in enemy.HandButtons:
