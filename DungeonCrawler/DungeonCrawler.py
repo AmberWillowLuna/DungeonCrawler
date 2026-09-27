@@ -19,8 +19,8 @@ import Encyclopedia
 
 scale = SettingHelp.get_scale(screen)
 titles="Dungeon Crawler"
-font = pygame.font.SysFont("Arial", int(20*scale))
-small_font = pygame.font.SysFont("Arial", int(15*scale))
+font = pygame.font.SysFont("Arial", int(64*scale))
+small_font = pygame.font.SysFont("Arial", int(45*scale))
 
 
 

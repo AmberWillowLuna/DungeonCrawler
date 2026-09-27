@@ -8,8 +8,9 @@ import SettingHelp
 
 scale = SettingHelp.get_scale(screen)
 
-font = pygame.font.SysFont("Arial", int(36*scale))
-small_font = pygame.font.SysFont("Arial", int(24*scale))
+font = pygame.font.SysFont("Arial", int(64*scale))
+small_font = pygame.font.SysFont("Arial", int(40*scale))
+font2 = pygame.font.SysFont("Arial", int(100*scale))
 
 class Button:
     def __init__(self, x, y, width, height, text, color, hover_color):
@@ -95,16 +96,17 @@ class CardButton(Button):
         self.card=card #store card
         self.stats = self._load_stats()  # Load stats for the card
         self.image = self._load_image()  # Load the card image
-        self.DescText = [
-            f"{card.name}",
-            f"weight {card.weight}",
-            f"type {card.card_type}",
-            f"attack {card.Aval}",
-            f"Light def {card.Dval}",
-            f"Heavy def {card.D2val}",
-            f"Heal {card.Hval}",
-            f"Trick {card.desc}"
-        ]
+        if self.card_type != "entity":
+            self.DescText = [
+                f"{card.name}",
+                f"weight {card.weight}",
+                f"type {card.card_type}",
+                f"attack {card.Aval}",
+                f"Light def {card.Dval}",
+                f"Heavy def {card.D2val}",
+                f"Heal {card.Hval}",
+                f"Trick {card.desc}"
+            ]
 
 
 
@@ -118,8 +120,8 @@ class CardButton(Button):
             )
 
         # Set up font for stats
-        self.font = pygame.font.SysFont("Arial", int(24 * scale))
-        self.small_font = pygame.font.SysFont("Arial", int(16 * scale))
+        self.font = pygame.font.SysFont("Arial", int(64 * scale))
+        self.small_font = pygame.font.SysFont("Arial", int(48 * scale))
 
     def check_hover(self, pos, screen):
         self.is_hovered = self.rect.collidepoint(pos)
@@ -138,9 +140,13 @@ class CardButton(Button):
     def _load_stats(self):
         """Load stats for the card (example: replace with your logic)"""
         # Example stats, replace with actual logic
-        return {
-            self.card.desc,
-        }
+
+        if self.card_type!="entity":
+            return {
+                self.card.desc,
+            }
+        else:
+            return " "
 
     def drawDesc(self, surface):
         """Draw the card description as multiple lines."""
@@ -153,7 +159,7 @@ class CardButton(Button):
         surface.blit(name_surface, name_rect)
 
         # Starting y position for stats
-        y_offset = scale * 40
+        y_offset = scale * 80
 
         # Draw each line manually using card attributes
         line_surface = self.small_font.render(f"weight - {self.card.weight}", True, colors.WHITE)
@@ -193,41 +199,41 @@ class CardButton(Button):
         # Draw the card name
         name_surface = self.font.render(self.name, True, colors.WHITE)
         name_rect = name_surface.get_rect(
-            centerx=scale * 1000,
-            top=scale * 250
+            centerx=scale * 2400,
+            top=scale * 600
         )
         surface.blit(name_surface, name_rect)
 
         # Starting y position for stats (relative to the name position)
-        y_offset = scale * 300
+        y_offset = scale * 700
 
         # Draw each line of the description manually
         line_surface = self.small_font.render(f"weight - {self.card.weight}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 2400 - line_surface.get_width() // 2, y_offset))
         y_offset += line_surface.get_height()
 
         line_surface = self.small_font.render(f"type - {self.card.card_type}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 2400 - line_surface.get_width() // 2, y_offset))
         y_offset += line_surface.get_height()
 
         line_surface = self.small_font.render(f"attack - {self.card.Aval}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 2400 - line_surface.get_width() // 2, y_offset))
         y_offset += line_surface.get_height()
 
         line_surface = self.small_font.render(f"Light def - {self.card.Dval}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 2400 - line_surface.get_width() // 2, y_offset))
         y_offset += line_surface.get_height()
 
         line_surface = self.small_font.render(f"Heavy def - {self.card.D2val}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 2400 - line_surface.get_width() // 2, y_offset))
         y_offset += line_surface.get_height()
 
         line_surface = self.small_font.render(f"Heal - {self.card.Hval}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 2400 - line_surface.get_width() // 2, y_offset))
         y_offset += line_surface.get_height()
 
         line_surface = self.small_font.render(f"Trick - {self.card.desc}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 2400 - line_surface.get_width() // 2, y_offset))
 
         # Draw the border
         self.drawBorder(surface)
