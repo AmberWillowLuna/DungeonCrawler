@@ -119,7 +119,7 @@ class Shop:
             self.potions = [Cards.HealingPotion()]
 
 
-    def generate_items(self):
+    def generate_items(self, mod):
         """Generate a list of items for the shop."""
         shop_items = []
 
@@ -127,38 +127,43 @@ class Shop:
         for _ in range(2):
             if self.weapons:
                 weapon = random.choice(self.weapons)
-                shop_items.append({"item": weapon, "price": weapon.price, "type": "weapon"})
+                shop_items.append({"item": weapon, "price": weapon.price+mod, "type": "weapon"})
 
         # Add 1 random armor
         if self.armors:
             armor = random.choice(self.armors)
-            shop_items.append({"item": armor, "price": armor.price, "type": "armor"})
+            shop_items.append({"item": armor, "price": armor.price+mod, "type": "armor"})
 
         # Add 1 random healing item
         if self.healing:
             healing = random.choice(self.healing)
-            shop_items.append({"item": healing, "price": healing.price, "type": "healing"})
+            shop_items.append({"item": healing, "price": healing.price+mod, "type": "healing"})
 
         # Add 1 random potion
         if self.potions:
             potion = random.choice(self.potions)
-            shop_items.append({"item": potion, "price": potion.price, "type": "potion"})
+            shop_items.append({"item": potion, "price": potion.price+mod, "type": "potion"})
 
         return shop_items
 
     def replace_item(self, item_type, player1):
         player1.earn(0)
+        mod = player1.AdvLevel*10+player1.DungeonLevel*4
         """Replace an item of the given type with a new random item."""
         if item_type == "weapon" and self.weapons:
             new_item = random.choice(self.weapons)
+            new_item.price+=mod
             return new_item
         elif item_type == "armor" and self.armors:
             new_item = random.choice(self.armors)
+            new_item.price+=mod
             return new_item
         elif item_type == "healing" and self.healing:
             new_item = random.choice(self.healing)
+            new_item.price+=mod
             return new_item
         elif item_type == "potion" and self.potions:
             new_item = random.choice(self.potions)
+            new_item.price+=mod
             return new_item
         return None

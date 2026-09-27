@@ -250,7 +250,7 @@ class Crown(Card):
 
 class HealingAmulet(Card):
     def __init__(self):
-        super().__init__("Healing Amulet", "Light", 2, "DEF: 1, TRK: falls off after being attakced",0,0,0,1,9) #or falls of and gets back to player eq
+        super().__init__("Healing Amulet", "Light", 2, "DEF: 1, TRK: falls off after being attakced",0.05,0,0,1,9) #or falls of and gets back to player eq
         self.price=7+random.randint(0,2)
     def attack(self, oc, player, enemy):
         if oc.Aval>=1:
@@ -492,7 +492,7 @@ class RitualKnife(Card):
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
-        if oc.name == "Nothing":
+        if oc.Dval <1:
             player.heal(1) #low key I should put it in self.heal() but that is simply one line
 
 

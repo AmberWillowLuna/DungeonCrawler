@@ -5,7 +5,7 @@ import Cards
 
 def ChooseSet(screen, player1):
     '''Choose a starting set for the game'''
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
 
     # Create buttons for the set picker
     set1Button = button.Button(720*scale, 300*scale, 550*scale, 160*scale, "Lumberjack", (0, 0, 128), (0, 255, 0))

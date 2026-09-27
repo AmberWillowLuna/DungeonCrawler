@@ -31,6 +31,7 @@
     <Compile Include="dungeons.py" />
     <Compile Include="Empty.py" />
     <Compile Include="EncounterLoops.py" />
+    <Compile Include="Encyclopedia.py" />
     <Compile Include="enemies.py" />
     <Compile Include="Escape.py" />
     <Compile Include="GameLoop.py" />
@@ -38,6 +39,7 @@
     <Compile Include="Merchant.py" />
     <Compile Include="Options.py" />
     <Compile Include="player.py" />
+    <Compile Include="Screen.py" />
     <Compile Include="SetPicker.py" />
     <Compile Include="SettingHelp.py" />
     <Compile Include="Shop.py" />

@@ -10,7 +10,7 @@ def GetTrinket(screen, player1):
     Display a trinket receive screen with the trinket's name and description.
     The player can choose to take the trinket, which will apply its effects.
     """
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
     clock = pygame.time.Clock()
 
     # Load the trinket based on player's AdvLevel and DungeonLevel

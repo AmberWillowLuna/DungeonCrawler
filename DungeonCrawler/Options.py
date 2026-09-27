@@ -10,7 +10,7 @@ def Options(screen):
     # Options menu
     # --------------------------------
     clock = pygame.time.Clock()
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
     font = pygame.font.SysFont("Arial", 36)
 
     resolutions = [

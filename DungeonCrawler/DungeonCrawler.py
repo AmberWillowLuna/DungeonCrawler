@@ -3,22 +3,24 @@ pygame.init()
 import colors
 import json
 import random
+from Screen import screen
 import start
 from button import Button, CardButton, EntityCards, WeaponCards
 import Options
+import SettingHelp
+import Encyclopedia
 
 #make a loop with buttons
 
 #start a window (only for this module)
 
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
 
 
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+scale = SettingHelp.get_scale(screen)
 titles="Dungeon Crawler"
-font = pygame.font.SysFont("Arial", 40)
-small_font = pygame.font.SysFont("Arial", 30)
+font = pygame.font.SysFont("Arial", int(20*scale))
+small_font = pygame.font.SysFont("Arial", int(15*scale))
 
 
 
@@ -52,7 +54,8 @@ def main():
 
 
     start_button = Button(240*scale, 100*scale, 160*scale, 40*scale, "Start", colors.NAVY_BLUE, colors.GREEN)
-    achievements_button = Button(240*scale, 160*scale, 160*scale, 40*scale, "Achievements", colors.NAVY_BLUE, colors.GREEN)
+    achievements_button = Button(240*scale, 140*scale, 160*scale, 40*scale, "Achievements", colors.NAVY_BLUE, colors.GREEN)
+    Encyclopedia_button = Button(240*scale, 180*scale, 160*scale, 40*scale, "Encyclopedia", colors.NAVY_BLUE, colors.GREEN)
     options_button = Button(240*scale, 220*scale, 160*scale, 40*scale, "Options", colors.NAVY_BLUE, colors.GREEN)
     exit_button = Button(240*scale, 280*scale, 160*scale, 40*scale, "Exit", colors.NAVY_BLUE, colors.GREEN)
 
@@ -76,12 +79,15 @@ def main():
                 # Add your options menu logic here
             elif achievements_button.is_clicked(mouse_pos, event):
                  pass
+            elif Encyclopedia_button.is_clicked(mouse_pos, event):
+                Encyclopedia.display_unlocked_enemies(screen)
             elif exit_button.is_clicked(mouse_pos, event):
                 running = False
 
         # Check button hover
         start_button.check_hover(mouse_pos)
         options_button.check_hover(mouse_pos)
+        Encyclopedia_button.check_hover(mouse_pos)
         achievements_button.check_hover(mouse_pos)
         exit_button.check_hover(mouse_pos)
 
@@ -91,6 +97,7 @@ def main():
         screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2, 100))
 
         achievements_button.draw(screen)
+        Encyclopedia_button.draw(screen)
         start_button.draw(screen)
         options_button.draw(screen)
         exit_button.draw(screen)

@@ -7,7 +7,7 @@ import button
 
 def LetsNotStopHere(screen, player1, backgroundImg, State):
     '''Main game loop for the dungeon crawler'''
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
     clock = pygame.time.Clock()
 
     LesGo = button.Button(700*scale, 150*scale, 800*scale, 300*scale, "Empty room... lets not stop here!", (0, 0, 128), (0, 255, 0))

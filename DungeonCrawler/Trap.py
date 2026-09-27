@@ -7,6 +7,7 @@ import colors
 import button
 
 import SettingHelp
+from Screen import screen
 
 class Trap:
     def __init__(self, name, description, hand, DungeonName,  trick):
@@ -19,11 +20,11 @@ class Trap:
         self.description = description
         self.DungeonName = DungeonName
         self.type="trap"
-        scale = SettingHelp.get_scale()
+        scale = SettingHelp.get_scale(screen)
         self.HandButtons = [
-            button.CardButton(690*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(910*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1130*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")   
+            button.CardButton(690*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), False, card_type="nothing"),
+            button.CardButton(910*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), False, card_type="nothing"),
+            button.CardButton(1130*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), False, card_type="nothing")   
         ]
     #if trick == 0 it is just a one round battle like three arrows or sth
     def shuffleHand(self):
@@ -96,7 +97,7 @@ import SettingHelp
 def trigger(player1, trap,screen):
     #make a one turn battle with the trap - player should have a chance to play cards and then the trap will play its cards
     #if trap.trick == 0 then it is a one turn battle
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
     if trap.trick==0:
         #one round battle
         OkayButton = button.Button(screen.get_width() // 2 - 50, 400*scale, 300*scale, 150*scale, "Okay", colors.PINK, colors.WHITE)

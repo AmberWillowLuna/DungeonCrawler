@@ -12,7 +12,7 @@ def start(screen):
     -when new game u get to choose a starting deck 
 
     '''
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
 
     # Create buttons for the start menu
 

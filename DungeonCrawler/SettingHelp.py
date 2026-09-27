@@ -1,16 +1,17 @@
 #functions to get scale and window size
 import pygame
 import json
-def get_scale():
+from Screen import screen
+def get_scale(screen):
     # Get the current display info
     display_info = pygame.display.Info()
-    width, height = display_info.current_w, display_info.current_h
+    #width, height = display_info.current_w, display_info.current_h
 
     # Calculate scale based on a reference resolution (e.g., 1920x1080)
     reference_width = 1920
     reference_height = 1080
-    scale_x = width / reference_width
-    scale_y = height / reference_height
+    scale_x = screen.get_width() / reference_width
+    scale_y = screen.get_height() / reference_height
 
     # Return the smaller scale to maintain aspect ratio
     return min(scale_x, scale_y)

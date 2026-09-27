@@ -4,7 +4,7 @@ from random import shuffle
 import pygame
 import button
 import SettingHelp
-
+from Screen import screen
 
 def shuffle(lst):
     import random
@@ -28,7 +28,7 @@ class enemy:
         self.maxhp = hp
         self.et = "e"
         self.hand = hand  # List of card objects
-        scale = SettingHelp.get_scale()
+        scale = SettingHelp.get_scale(screen)
         self.lootTable = hand
         self.field = []
         self.DungeonName = DungeonName
@@ -38,9 +38,9 @@ class enemy:
         self.type="enemy"
         self.lootChance=2
         self.HandButtons = [
-            button.CardButton(690*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(910*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing"),
-            button.CardButton(1130*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), card_type="nothing")   
+            button.CardButton(690*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), False, card_type="nothing"),
+            button.CardButton(910*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), False, card_type="nothing"),
+            button.CardButton(1130*scale, 550*scale, "Nothing", (200, 200, 200), (150, 150, 150), Cards.Nothing(), False, card_type="nothing")   
             ]
 
     def _load_icon(self, size=None):
@@ -76,7 +76,7 @@ class enemy:
 
     def _build_enemy_display(self):
         """Build read-only CardButtons to show the enemy's hand, laid out in a row."""
-        scale = SettingHelp.get_scale()
+        scale = SettingHelp.get_scale(screen)
         buttons = []
         start_x = 680 * scale
         spacing = 220 * scale
@@ -186,7 +186,7 @@ class ArcaneGuardian(enemy):
             super().__init__("Arcane guardian", 
                              "Increadibly powerful cultist like person", 
                              8, 
-                             [Cards.SpellBook(), Cards.RitualKnife(), Cards.HealingAmulet()], 
+                             [Cards.SpellBook(), Cards.RitualKnife(), Cards.Sword()], 
                              "Library dungeon", 
                              5)
             self.lootTable = [Cards.RitualKnife(), Cards.RitualKnife(), Cards.RitualKnife()]

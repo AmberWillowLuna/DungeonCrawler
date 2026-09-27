@@ -11,7 +11,7 @@ import Escape
 
 def GameLoop(screen, player1):
     '''Main game loop for the dungeon crawler'''
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
     clock = pygame.time.Clock()
 
     #buttons for going in driections if someone want to play only with mouse
@@ -32,7 +32,6 @@ def GameLoop(screen, player1):
     move=""
 
     backgroundImg = None
-
     running = True
     while running:
         mouse_pos = pygame.mouse.get_pos()

@@ -56,7 +56,7 @@ def DefineHardDungeon():
 
 def LoadDungeon(screen, player):
     '''Load a dungeon from the given data and display it on the screen'''
-    scale = SettingHelp.get_scale()  # You can adjust this scale as needed
+    scale = SettingHelp.get_scale(screen)  # You can adjust this scale as needed
     Dungeons = []
     if player.curD=="":
         if player.DungeonLevel <6:

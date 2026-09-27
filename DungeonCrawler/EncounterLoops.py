@@ -8,8 +8,10 @@ import SettingHelp
 import Cards
 import Trap
 import random
+from Screen import screen
 
-scale = SettingHelp.get_scale()
+
+scale = SettingHelp.get_scale(screen)
 
 font = pygame.font.SysFont("Arial", int(20*scale))
 desc_font = pygame.font.SysFont("Arial", int(13*scale))
@@ -17,7 +19,7 @@ desc_font = pygame.font.SysFont("Arial", int(13*scale))
 
 def _build_enemy_display(enemy):
     """Build read-only CardButtons to show the enemy's hand, laid out in a row."""
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
     buttons = []
     start_x = 680 * scale
     spacing = 220 * scale
@@ -27,7 +29,7 @@ def _build_enemy_display(enemy):
         cb = button.CardButton(
             start_x + i * spacing, y,
             card.name, (200, 200, 200), (150, 150, 150),
-            card, card_type=card.card_type
+            card, False, card_type=card.card_type
         )
         buttons.append(cb)
         enemy.HandButtons = buttons
@@ -35,7 +37,7 @@ def _build_enemy_display(enemy):
 
 
 def _draw_enemy_header(screen, enemy):
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
 
     icon_x, icon_y = 150 * scale, 10 * scale
     if enemy.icon:
@@ -222,15 +224,15 @@ def Battle(screen, player1, enemy):
 
     Returns "win" or "lose".
     """
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
     clock = pygame.time.Clock()
 
     FightButton = button.Button(
-        800 * scale, 400 * scale, 300 * scale, 100 * scale,
+        800 * scale, 470 * scale, 300 * scale, 100 * scale,
         "Fight", (100, 0, 0), (200, 0, 0)
     )
     WinButton = button.Button(
-        800 * scale, 550 * scale, 300 * scale, 100 * scale,
+        800 * scale, 520 * scale, 300 * scale, 100 * scale,
         "Victory!", (100, 125, 0), (10, 155, 155)
     )
 
@@ -384,7 +386,7 @@ def Battle(screen, player1, enemy):
 
 
 def _draw_enemy_header(screen, enemy):
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
 
     icon_x, icon_y = 150 * scale, 10 * scale
     if enemy.icon:
@@ -414,11 +416,11 @@ def TrapLoop(screen, player1, trap):
     this way the destroy card trap is effective
 
     """
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
     clock = pygame.time.Clock()
     log = []
     ReadyButton = button.Button(
-        800 * scale, 50 * scale, 300 * scale, 100 * scale,
+        800 * scale, 500 * scale, 300 * scale, 100 * scale,
         "Ready", (0, 100, 0), (0, 200, 0)
     )
     running = True
@@ -468,7 +470,7 @@ def BattleLoop(screen, player1, enemy):
     rearrange cards before confirming with Ready.
     Returns once the player presses Ready (actual combat resolution happens after this).
     """
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
     clock = pygame.time.Clock()
 
     ReadyButton = button.Button(

@@ -1,4 +1,4 @@
-
+from Screen import screen
 from socketserver import DatagramRequestHandler
 import pygame
 import colors
@@ -6,10 +6,10 @@ import os
 import Cards
 import SettingHelp
 
-scale = SettingHelp.get_scale()
+scale = SettingHelp.get_scale(screen)
 
-font = pygame.font.SysFont("Arial", int(24*scale))
-small_font = pygame.font.SysFont("Arial", int(16*scale))
+font = pygame.font.SysFont("Arial", int(36*scale))
+small_font = pygame.font.SysFont("Arial", int(24*scale))
 
 class Button:
     def __init__(self, x, y, width, height, text, color, hover_color):
@@ -62,12 +62,25 @@ class Button:
 import SettingHelp
 
 class CardButton(Button):
-    def __init__(self, x, y, name, color, hover_color, card, card_type="default"):
+    def __init__(self, x, y, name, color, hover_color, card, d, card_type="default"):
         self.selected = False
         self.Rselected = False
         # Define base dimensions (unscaled)
-        base_width = 54
-        base_height = 72
+        if scale<1.25:
+            base_width = 240*scale
+            base_height = 340 * scale
+            if d == False:
+                base_width +=  60*scale
+                base_height += 80 *scale
+
+        else:
+
+            base_width = 160*scale
+            base_height = 210 * scale
+            if d == False:
+                base_width +=  60*scale
+                base_height += 80 *scale
+
 
         # Scale dimensions
         width = int(base_width * scale)
@@ -180,7 +193,7 @@ class CardButton(Button):
         # Draw the card name
         name_surface = self.font.render(self.name, True, colors.WHITE)
         name_rect = name_surface.get_rect(
-            centerx=scale * 800,
+            centerx=scale * 1000,
             top=scale * 250
         )
         surface.blit(name_surface, name_rect)
@@ -190,31 +203,31 @@ class CardButton(Button):
 
         # Draw each line of the description manually
         line_surface = self.small_font.render(f"weight - {self.card.weight}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 800 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
         y_offset += line_surface.get_height()
 
         line_surface = self.small_font.render(f"type - {self.card.card_type}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 800 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
         y_offset += line_surface.get_height()
 
         line_surface = self.small_font.render(f"attack - {self.card.Aval}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 800 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
         y_offset += line_surface.get_height()
 
         line_surface = self.small_font.render(f"Light def - {self.card.Dval}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 800 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
         y_offset += line_surface.get_height()
 
         line_surface = self.small_font.render(f"Heavy def - {self.card.D2val}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 800 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
         y_offset += line_surface.get_height()
 
         line_surface = self.small_font.render(f"Heal - {self.card.Hval}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 800 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
         y_offset += line_surface.get_height()
 
         line_surface = self.small_font.render(f"Trick - {self.card.desc}", True, colors.WHITE)
-        surface.blit(line_surface, (scale * 800 - line_surface.get_width() // 2, y_offset))
+        surface.blit(line_surface, (scale * 1000 - line_surface.get_width() // 2, y_offset))
 
         # Draw the border
         self.drawBorder(surface)
@@ -248,7 +261,7 @@ class CardButton(Button):
 
     def set_card(self, card):
         """Swap out the card this button represents, refreshing name/type/stats/image."""
-        scale = SettingHelp.get_scale()
+        scale = SettingHelp.get_scale(screen)
         self.card = card
         self.name = card.name
         self.card_type = card.card_type
@@ -286,7 +299,7 @@ class EntityCards(CardButton):
         height = int(base_height * scale)
 
         # Initialize with scaled dimensions
-        super().__init__(x, y, name, color, hover_color, card,card_type="entity")
+        super().__init__(x, y, name, color, hover_color, card, False,card_type="entity")
 
         # Override rect with new dimensions
         self.rect = pygame.Rect(x, y, width, height)

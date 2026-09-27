@@ -2,6 +2,7 @@ import pygame
 import SettingHelp
 import button
 import Shop
+from player import Player
 
 def MerchantLoop(screen, player1):
     """
@@ -10,7 +11,7 @@ def MerchantLoop(screen, player1):
     When a player buys an item, it is replaced with a new random item.
     Returns once the player clicks the "Proceed" button.
     """
-    scale = SettingHelp.get_scale()
+    scale = SettingHelp.get_scale(screen)
     clock = pygame.time.Clock()
 
     # Load background image
@@ -26,7 +27,8 @@ def MerchantLoop(screen, player1):
 
     # Create a Shop instance for the current dungeon
     shop = Shop.Shop(player1.curD)
-    shop_items = shop.generate_items()  # Generate initial items
+    Modifier = player1.AdvLevel*10+player1.DungeonLevel*4
+    shop_items = shop.generate_items(Modifier)  # Generate initial items
 
     # Button to proceed from the merchant screen
     ProceedButton = button.Button(
