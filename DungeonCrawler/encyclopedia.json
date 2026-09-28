@@ -1,11 +1,11 @@
 {
   "Goblin": 1,
   "Orc": 1,
-  "Armored Orc": 0,
+  "Armored Orc": 1,
   "Ogre": 0,
-  "Orc Wizard": 0,
-  "Slime": 0,
-  "DarkCreature": 0,
+  "Orc Wizard": 1,
+  "Slime": 1,
+  "DarkCreature": 1,
   "Sekeleton": 0,
   "Ghoul": 0,
   "MistyGhost": 0,
@@ -28,5 +28,5 @@
   "Darkness ghoul": 0,
   "Dark knight": 0,
   "Darkness sorcerer": 0,
-  "Lich":  0
+  "Lich": 0
 }

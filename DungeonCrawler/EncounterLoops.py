@@ -9,12 +9,18 @@ import Cards
 import Trap
 import random
 from Screen import screen
+import Encyclopedia
 
+
+Discovered = Encyclopedia.read_enemies_map("encyclopedia.json")
 
 scale = SettingHelp.get_scale(screen)
 
 font = pygame.font.SysFont("Arial", int(20*scale))
 desc_font = pygame.font.SysFont("Arial", int(13*scale))
+
+
+
 
 
 def _build_enemy_display(enemy):
@@ -472,6 +478,10 @@ def BattleLoop(screen, player1, enemy):
     """
     scale = SettingHelp.get_scale(screen)
     clock = pygame.time.Clock()
+
+    for d in Discovered:
+        Encyclopedia.unlock_enemy(enemy.name, "encyclopedia.json")
+
 
     ReadyButton = button.Button(
         800 * scale, 500 * scale, 300 * scale, 100 * scale,
