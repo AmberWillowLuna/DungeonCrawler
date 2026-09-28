@@ -239,7 +239,7 @@ class ForestSpirit(enemy):
         def __init__(self):
             super().__init__("Forest Spirit", 
                              "Born from nature to rule the forest", 
-                             10, 
+                             8, 
                              [Cards.LongSword(), Cards.MagicMirror(), Cards.FishingRod()], 
                              "Forest dungeon", 
                              4)

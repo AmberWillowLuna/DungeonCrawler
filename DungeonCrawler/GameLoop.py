@@ -14,6 +14,8 @@ def GameLoop(screen, player1):
     scale = SettingHelp.get_scale(screen)
     clock = pygame.time.Clock()
 
+    Outcome = None
+
     #buttons for going in driections if someone want to play only with mouse
     GoLeft = button.Button(200*scale, 500*scale, 300*scale, 200*scale, "Left", (0, 0, 128), (0, 255, 0))
     GoForward = button.Button(800*scale, 150*scale, 300*scale, 200*scale, "Forward", (0, 0, 128), (0, 255, 0))
@@ -130,8 +132,10 @@ def GameLoop(screen, player1):
                     # TO IMPLEMENT
                     State = "Trap"
                     trap = dungeons[player1.AdvLevel][player1.DungeonLevel].get_random_trap()
-                    EncounterLoops.TrapLoop(screen, player1, trap)
+                    won = EncounterLoops.TrapLoop(screen, player1, trap)
                     State = "Free"
+                    if won == "lose":
+                        running = False
 
                 elif sign in ("L1", "L2", "L3", "L4", "L5"):
                     State = "Battle"
@@ -150,6 +154,14 @@ def GameLoop(screen, player1):
                     #example traps - destroy a random card in hand / deal light / heavy damage / reduce eq until the end of dungeon / reduce max hp till the end 
                     # for damage - you can have a lot of traps dealing dmg like a spike trap (light axe damage) or a heavy trap (halbard damage) 
                     # also an arrow trap with 3 arrows or 2 arrows - generally traps should be in a dungeon class as Traps [] and u should get a random one
+                    if won == "lose":
+                        running = False
+                        Outcome = False
+
+                    if player1.AdvLevel>5:
+                        running = False
+                        Outcome == True
+
                 elif sign == "TR":
                     State = "Trinket"
                     
@@ -195,3 +207,9 @@ def GameLoop(screen, player1):
 
         # Cap the frame rate
         clock.tick(60)
+
+    #implementation of loss or win
+    if Outcome:
+        pass #win
+    else:
+        pass #lose

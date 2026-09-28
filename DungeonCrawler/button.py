@@ -238,6 +238,30 @@ class CardButton(Button):
         # Draw the border
         self.drawBorder(surface)
 
+
+    def drawDesc3(self, screen, scale):
+        """Draw the enemy card description and the names of all cards in enemy.hand."""
+        # Draw the enemy card's name
+        name_surface = self.font.render(self.card.name, True, colors.WHITE)
+        name_rect = name_surface.get_rect(
+            centerx=scale * 1200,
+            top=scale * 600
+        )
+        screen.blit(name_surface, name_rect)
+
+        # Starting y position for the hand list (below the enemy card's name)
+        y_offset = scale * 700
+
+        # Draw each card name in enemy.hand as a list
+        for card in self.card.hand:
+            line_surface = self.small_font.render(f"- {card.name}", True, colors.WHITE)
+            screen.blit(line_surface, (scale * 1200 - line_surface.get_width() // 2, y_offset))
+            y_offset += line_surface.get_height()
+
+        # Draw the border
+        self.drawBorder(screen)
+
+
     def draw(self, surface):
         # Draw the card background
         color = self.hover_color if self.is_hovered else self.color
@@ -316,6 +340,8 @@ class EntityCards(CardButton):
                 self.image,
                 (width, height)
             )
+
+
 
 class WeaponCards(CardButton):
     def __init__(self, x, y, name, color, hover_color):

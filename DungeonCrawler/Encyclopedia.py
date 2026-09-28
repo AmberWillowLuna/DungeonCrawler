@@ -1,5 +1,4 @@
 import json
-from tkinter import BUTT
 import pygame
 from enemies import enemy  # Assuming you have an enemy class
 import Cards  # Assuming you have a Cards module
@@ -58,16 +57,17 @@ def display_unlocked_enemies(screen, back_button_callback=None):
         )
 
     # Positioning variables (scaled)
-    start_x = int(200 * scale)  # Start after the BACK button
+    start_x = int(150 * scale)  # Start after the BACK button
     start_y = int(150 * scale)
-    spacing_x = int(300 * scale)  # Horizontal spacing between enemies
-    spacing_y = int(350 * scale)  # Vertical spacing between rows
-    card_width = int(468 // 2 * scale)  # Width of the entity card
+    spacing_x = int(200 * scale)  # Horizontal spacing between enemies
+    spacing_y = int(200 * scale)  # Vertical spacing between rows
+    card_width = int(360 // 2 * scale)  # Width of the entity card
     card_height = int(458 // 2 * scale)  # Height of the entity card
 
     # Main loop for displaying enemies
     running = True
     while running:
+        mouse_pos = pygame.mouse.get_pos()
         # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -75,7 +75,6 @@ def display_unlocked_enemies(screen, back_button_callback=None):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Left mouse button
                     if back_button and back_button.rect.collidepoint(event.pos):
-                        back_button.execute_action()
                         return True  # Exited via BACK button
 
         # Clear the screen
@@ -109,6 +108,8 @@ def display_unlocked_enemies(screen, back_button_callback=None):
 
                 # Draw the enemy card
                 enemy_card.draw(surface=screen)
+                if enemy_card.check_hover(mouse_pos, screen):
+                    enemy_card.drawDesc3(screen, scale)
 
                 # Move to the next position
                 current_x += spacing_x

@@ -368,7 +368,6 @@ def Battle(screen, player1, enemy):
 
     player1.graveyardToDeck()
     player1.addItem(loot)
-
     player1.stripDeck()
 
     waiting = True

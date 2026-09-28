@@ -5,6 +5,7 @@ import button
 import SettingHelp
 from Screen import screen
 import Cards
+import Encyclopedia
 
 class Player:
     def __init__(self, name):
@@ -154,13 +155,12 @@ class Player:
                 self.DungeonLevel=0
                 self.AdvLevel += 1
                 if self.AdvLevel==3:
-                    self.AdvLevel=0
+                    self.AdvLevel=10
 
 
         self.gold += self.income
         self.heal(self.regeneration)
 
-                    #game won!
 
 
         #print(f"{self.name} has ascended to level {self.level}!")
@@ -252,6 +252,7 @@ class Player:
             if card.name=="Chain mail":
                 card.durability=2
             self.deck.append(card)
+            Encyclopedia.unlock_enemy(card.name, "weapon_pedia.json")
             #put in the first nothing card button the card
             self.sync_deck()
         #print(f"{card} has been added to {self.name}'s deck.")

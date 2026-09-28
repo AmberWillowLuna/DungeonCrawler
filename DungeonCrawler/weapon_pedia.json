@@ -1,4 +1,5 @@
 {
+  "Nothing": 1,
   "Long Sword": 0,
   "Shield": 0,
   "Halberd": 0,
@@ -7,7 +8,7 @@
   "Arrow": 0,
   "Crown": 0,
   "Healing Amulet": 0,
-  "Bandage": 0,
+  "Bandage": 1,
   "Fishing rod": 0,
   "Helmet": 0,
   "Shoulder Plate": 0,
@@ -18,7 +19,7 @@
   "Magic Hat": 0,
   "Club": 0,
   "HealingPotion": 0,
-  "Sword": 0,
+  "Sword": 1,
   "Boomerang": 0,
   "Magic mirror": 0,
   "Spell Book": 0,
@@ -34,5 +35,5 @@
   "Devil Horns": 0,
   "Trident": 0,
   "Sword of Darkness": 0,
-  "Crown of Darkness":  0
+  "Crown of Darkness": 0
 }
