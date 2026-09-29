@@ -1,3 +1,10 @@
+from GameLoop import GameLoop
+import player
+import SaveAndRead
 
 
-#make a function to continue the game - loading from a save file
+def ContinueTheGame(screen):
+    player = SaveAndRead.load_player()
+    GameLoop.GameLoop(player)
+
+

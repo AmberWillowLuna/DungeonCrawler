@@ -9,7 +9,7 @@ from button import Button, CardButton, EntityCards, WeaponCards
 import Options
 import SettingHelp
 import Encyclopedia
-
+import Background
 #make a loop with buttons
 
 #start a window (only for this module)
@@ -51,13 +51,13 @@ def main():
     scale = 1.0*SCREEN_WIDTH/640
 
 
-
+    background = Background.load_background(screen)
 
     start_button = Button(240*scale, 100*scale, 160*scale, 40*scale, "Start", colors.NAVY_BLUE, colors.GREEN)
-    achievements_button = Button(240*scale, 140*scale, 160*scale, 40*scale, "Achievements", colors.NAVY_BLUE, colors.GREEN)
-    Encyclopedia_button = Button(240*scale, 180*scale, 160*scale, 40*scale, "Encyclopedia", colors.NAVY_BLUE, colors.GREEN)
-    options_button = Button(240*scale, 220*scale, 160*scale, 40*scale, "Options", colors.NAVY_BLUE, colors.GREEN)
-    exit_button = Button(240*scale, 280*scale, 160*scale, 40*scale, "Exit", colors.NAVY_BLUE, colors.GREEN)
+    Encyclopedia_button = Button(240*scale, 150*scale, 160*scale, 40*scale, "Encyclopedia", colors.NAVY_BLUE, colors.GREEN)
+    Weapons_button = Button(240*scale, 200*scale, 160*scale, 40*scale, "Weapons", colors.NAVY_BLUE, colors.GREEN)
+    options_button = Button(240*scale, 250*scale, 160*scale, 40*scale, "Options", colors.NAVY_BLUE, colors.GREEN)
+    exit_button = Button(240*scale, 300*scale, 160*scale, 40*scale, "Exit", colors.NAVY_BLUE, colors.GREEN)
 
     clock = pygame.time.Clock()
     running = True
@@ -72,15 +72,12 @@ def main():
             # Check button clicks
             if start_button.is_clicked(mouse_pos, event):
                 start.start(screen)
-
-                # Add your start game logic here
             elif options_button.is_clicked(mouse_pos, event):
                 Options.Options(screen)
-                # Add your options menu logic here
-            elif achievements_button.is_clicked(mouse_pos, event):
-                 pass
             elif Encyclopedia_button.is_clicked(mouse_pos, event):
                 Encyclopedia.display_unlocked_enemies(screen)
+            elif Weapons_button.is_clicked(mouse_pos, event):
+                Encyclopedia.display_unlocked_weapons(screen)
             elif exit_button.is_clicked(mouse_pos, event):
                 running = False
 
@@ -88,16 +85,17 @@ def main():
         start_button.check_hover(mouse_pos)
         options_button.check_hover(mouse_pos)
         Encyclopedia_button.check_hover(mouse_pos)
-        achievements_button.check_hover(mouse_pos)
+        Weapons_button.check_hover(mouse_pos)
         exit_button.check_hover(mouse_pos)
 
         # Draw everything
         screen.fill(colors.BLACK)
+        screen.blit(background, (0, 0))
         title_text = font.render("Dungeon Crawler", True, colors.WHITE)
         screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2, 100))
 
-        achievements_button.draw(screen)
         Encyclopedia_button.draw(screen)
+        Weapons_button.draw(screen)
         start_button.draw(screen)
         options_button.draw(screen)
         exit_button.draw(screen)
@@ -109,3 +107,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+

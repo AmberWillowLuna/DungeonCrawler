@@ -1,131 +1,183 @@
+import inspect
 import json
 import pygame
-from enemies import enemy  # Assuming you have an enemy class
-import Cards  # Assuming you have a Cards module
-import os
+import enemies  # module with all enemy classes
+import Cards    # module with all card classes
 import SettingHelp
 from Screen import screen
-import button  # Import your button module
+import button
 
 scale = SettingHelp.get_scale(screen)
 
-def display_unlocked_enemies(screen, back_button_callback=None):
-    """
-    Display all unlocked enemies (value = 1 in JSON) as EntityCards with a BACK button.
-    Runs in a while loop until the BACK button is pressed or the window is closed.
+_enemy_classes = None
+_card_classes = None
 
-    Args:
-        screen: Pygame surface to draw on.
-        back_button_callback (function): Callback function for the BACK button.
 
-    Returns:
-        bool: True if exited via BACK button, False if window was closed.
-    """
-    # Load scale based on the screen
-    scale = SettingHelp.get_scale(screen)
-    json_file_path = "encyclopedia.json"
+def _get_enemy_classes():
+    """name -> enemy subclass (built once, e.g. "Orc Wizard" -> OrcWizard)."""
+    global _enemy_classes
+    if _enemy_classes is None:
+        _enemy_classes = {}
+        for _, cls in inspect.getmembers(enemies, inspect.isclass):
+            if issubclass(cls, enemies.enemy) and cls is not enemies.enemy:
+                _enemy_classes[cls().name] = cls
+    return _enemy_classes
 
+
+def _get_card_classes():
+    """name -> Card subclass (built once, e.g. "Long Sword" -> LongSword)."""
+    global _card_classes
+    if _card_classes is None:
+        _card_classes = {}
+        for _, cls in inspect.getmembers(Cards, inspect.isclass):
+            if issubclass(cls, Cards.Card) and cls is not Cards.Card:
+                try:
+                    _card_classes[cls().name] = cls
+                except TypeError:
+                    pass  # class needs constructor args - skip it
+    return _card_classes
+
+
+def _make_back_button(scale):
+    return button.Button(
+        x=int(50 * scale),
+        y=int(50 * scale),
+        width=int(150 * scale),
+        height=int(100 * scale),
+        text="BACK",
+        color=(100, 100, 100),
+        hover_color=(150, 150, 150),
+    )
+
+
+def _load_unlocked(json_file_path):
     try:
         with open(json_file_path, 'r') as file:
-            enemies_data = json.load(file)
+            return json.load(file)
     except FileNotFoundError:
         print(f"Error: File {json_file_path} not found.")
-        return False
     except json.JSONDecodeError:
         print(f"Error: File {json_file_path} is not a valid JSON.")
-        return False
+    return None
 
-    # Load the back button image (replace with your own image path)
-    try:
-        back_button_img = pygame.image.load("assets/back_button.png").convert_alpha()
-        back_button_img = pygame.transform.scale(
-            back_button_img,
-            (int(100 * scale), int(50 * scale))
-        )
-    except:
-        # Fallback: Create a simple rectangle if the image is missing
-        back_button_img = None
 
-    back_button = button.Button(
-            x=int(50 * scale),
-            y=int(50 * scale),
-            width=int(150 * scale),
-            height=int(100 * scale),
-            text="BACK",
-            color=(100, 100, 100),
-            hover_color=(150, 150, 150),
-        )
+def _layout(cards, screen, start_x, start_y, gap):
+    """Place already created card buttons in a wrapping grid."""
+    x, y = start_x, start_y
+    for c in cards:
+        if x + c.rect.width > screen.get_width() - gap and x != start_x:
+            x = start_x
+            y += c.rect.height + gap
+        c.rect.topleft = (x, y)
+        x += c.rect.width + gap
 
-    # Positioning variables (scaled)
-    start_x = int(150 * scale)  # Start after the BACK button
-    start_y = int(150 * scale)
-    spacing_x = int(200 * scale)  # Horizontal spacing between enemies
-    spacing_y = int(200 * scale)  # Vertical spacing between rows
-    card_width = int(360 // 2 * scale)  # Width of the entity card
-    card_height = int(458 // 2 * scale)  # Height of the entity card
 
-    # Main loop for displaying enemies
-    running = True
-    while running:
+def _pedia_loop(screen, cards, draw_desc):
+    """
+    Shared loop: draws cards, shows draw_desc(card, screen) for the hovered one.
+    Returns True when left via BACK (or ESC), False when window was closed.
+    """
+    scale = SettingHelp.get_scale(screen)
+    back_button = _make_back_button(scale)
+    clock = pygame.time.Clock()
+
+    while True:
         mouse_pos = pygame.mouse.get_pos()
-        # Handle events
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:  # Left mouse button
-                    if back_button and back_button.rect.collidepoint(event.pos):
-                        return True  # Exited via BACK button
+                return False
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                return True
+            if back_button.is_clicked(event.pos if hasattr(event, "pos") else mouse_pos, event):
+                return True
 
-        # Clear the screen
-        screen.fill((0, 0, 0))  # Fill with black or your preferred background color
+        screen.fill((0, 0, 0))
 
-        # Draw all unlocked enemies
-        current_x = start_x
-        current_y = start_y
+        hovered = None
+        for c in cards:
+            c.is_hovered = c.rect.collidepoint(mouse_pos)
+            c.draw(screen)
+            if c.is_hovered:
+                hovered = c
 
-        for enemy_name, unlocked in enemies_data.items():
-            if unlocked == 1:
-                # Create a temporary enemy object to access its icon and name
-                temp_enemy = enemy(
-                    name=enemy_name,
-                    description="",  # Not used here
-                    hp=0,  # Not used here
-                    hand=[],  # Not used here
-                    DungeonName="",  # Not used here
-                    level=0  # Not used here
-                )
-
-                # Create an EntityCard for the enemy
-                enemy_card = button.EntityCards(
-                    x=current_x,
-                    y=current_y,
-                    name=enemy_name,
-                    color=(50, 50, 50),
-                    hover_color=(80, 80, 80),
-                    card=temp_enemy
-                )
-
-                # Draw the enemy card
-                enemy_card.draw(surface=screen)
-                if enemy_card.check_hover(mouse_pos, screen):
-                    enemy_card.drawDesc3(screen, scale)
-
-                # Move to the next position
-                current_x += spacing_x
-                if current_x > screen.get_width() - card_width:
-                    current_x = start_x
-                    current_y += spacing_y
-
-        # Draw the BACK button
-
+        back_button.check_hover(mouse_pos)
         back_button.draw(screen)
 
-        # Update the display
-        pygame.display.flip()
+        # description is drawn LAST so no card can cover it
+        if hovered is not None:
+            draw_desc(hovered, screen)
 
-    # Return False if the loop was interrupted (e.g., window closed)
-    return False
+        pygame.display.flip()
+        clock.tick(60)
+
+
+def display_unlocked_enemies(screen, back_button_callback=None):
+    """
+    Display all unlocked enemies (value = 1 in encyclopedia.json) as EntityCards.
+    Hovering a card shows enemy name, description and the names of cards in its hand.
+
+    Returns:
+        bool: True if exited via BACK button, False if window was closed / file error.
+    """
+    scale = SettingHelp.get_scale(screen)
+    data = _load_unlocked("encyclopedia.json")
+    if data is None:
+        return False
+
+    classes = _get_enemy_classes()
+    cards = []
+    for enemy_name, unlocked in data.items():
+        if unlocked != 1:
+            continue
+        cls = classes.get(enemy_name)
+        if cls is None:
+            print(f"Warning: no enemy class named {enemy_name}")
+            continue
+        real_enemy = cls()  # real enemy -> real description and hand
+        cards.append(button.EntityCards(
+            x=0, y=0, name=enemy_name,
+            color=(50, 50, 50), hover_color=(80, 80, 80),
+            card=real_enemy,
+        ))
+
+    gap = int(20 * scale)
+    _layout(cards, screen, int(250 * scale), int(50 * scale), gap)
+    return _pedia_loop(screen, cards, lambda c, surf: c.drawDesc3(surf, scale))
+
+
+def display_unlocked_weapons(screen, back_button_callback=None):
+    """
+    Display all discovered weapons (value = 1 in weapon_pedia.json) as CardButtons.
+    Hovering a card shows its stats (weight, type, attack, defs, heal, trick).
+
+    Returns:
+        bool: True if exited via BACK button, False if window was closed / file error.
+    """
+    scale = SettingHelp.get_scale(screen)
+    data = _load_unlocked("weapon_pedia.json")
+    if data is None:
+        return False
+
+    classes = _get_card_classes()
+    cards = []
+    for weapon_name, unlocked in data.items():
+        if unlocked != 1:
+            continue
+        cls = classes.get(weapon_name)
+        if cls is None:
+            print(f"Warning: no card class named {weapon_name}")
+            continue
+        card = cls()
+        cards.append(button.CardButton(
+            x=0, y=0, name=weapon_name,
+            color=(50, 50, 50), hover_color=(80, 80, 80),
+            card=card, d=False, card_type=card.card_type,
+        ))
+
+    gap = int(20 * scale)
+    _layout(cards, screen, int(250 * scale), int(50 * scale), gap)
+    return _pedia_loop(screen, cards, lambda c, surf: c.drawDesc4(surf, scale))
 
 
 
@@ -191,4 +243,3 @@ def unlock_enemy(enemy_name, json_file_path):
         return enemies_data
 
     return enemies_data
-

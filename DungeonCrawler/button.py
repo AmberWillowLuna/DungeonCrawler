@@ -67,7 +67,7 @@ class CardButton(Button):
         self.selected = False
         self.Rselected = False
         # Define base dimensions (unscaled)
-        if scale<1.25:
+        if scale>=1.0:
             base_width = 240*scale
             base_height = 340 * scale
             if d == False:
@@ -127,6 +127,7 @@ class CardButton(Button):
         self.is_hovered = self.rect.collidepoint(pos)
         if self.is_hovered:
             self.drawDesc2
+        return self.is_hovered
 
     def _load_image(self):
         """Load the card image from assets/{name}.png"""
@@ -239,26 +240,75 @@ class CardButton(Button):
         self.drawBorder(surface)
 
 
-    def drawDesc3(self, screen, scale):
-        """Draw the enemy card description and the names of all cards in enemy.hand."""
-        # Draw the enemy card's name
-        name_surface = self.font.render(self.card.name, True, colors.WHITE)
-        name_rect = name_surface.get_rect(
-            centerx=scale * 1200,
-            top=scale * 600
-        )
-        screen.blit(name_surface, name_rect)
+    def _wrap_text(self, text, font, max_width):
+        """Split text into lines that fit into max_width pixels."""
+        words = str(text).split()
+        lines, current = [], ""
+        for word in words:
+            test = word if not current else current + " " + word
+            if font.size(test)[0] <= max_width:
+                current = test
+            else:
+                if current:
+                    lines.append(current)
+                current = word
+        if current:
+            lines.append(current)
+        return lines or [""]
 
-        # Starting y position for the hand list (below the enemy card's name)
-        y_offset = scale * 700
+    def _draw_info_panel(self, surface, title, lines):
+        """
+        Draw a description panel centered at the bottom of the screen.
+        title - string shown on top (bigger font)
+        lines - list of strings (small font), already split, one per row
+        Panel is drawn with a background so it stays readable above other cards.
+        """
+        margin = int(20 * scale)
+        pad = int(15 * scale)
+        title_surf = self.font.render(title, True, colors.WHITE)
+        line_surfs = [self.small_font.render(t, True, colors.WHITE) for t in lines]
 
-        # Draw each card name in enemy.hand as a list
+        width = max([title_surf.get_width()] + [l.get_width() for l in line_surfs]) + 2 * pad
+        height = pad + title_surf.get_height() + sum(l.get_height() for l in line_surfs) + pad
+
+        panel = pygame.Rect(0, 0, width, height)
+        panel.centerx = surface.get_width() // 2
+        panel.bottom = surface.get_height() - margin
+
+        pygame.draw.rect(surface, (20, 20, 20), panel, border_radius=10)
+        pygame.draw.rect(surface, colors.GREEN, panel, 2, border_radius=10)
+
+        y = panel.top + pad
+        surface.blit(title_surf, title_surf.get_rect(centerx=panel.centerx, top=y))
+        y += title_surf.get_height()
+        for l in line_surfs:
+            surface.blit(l, l.get_rect(centerx=panel.centerx, top=y))
+            y += l.get_height()
+
+    def drawDesc3(self, screen, scale_unused=None):
+        """Enemy description: name, description and names of all cards in enemy.hand."""
+        max_w = int(screen.get_width() * 0.8)
+        lines = self._wrap_text(self.card.description, self.small_font, max_w)
+        lines.append("Hand:")
         for card in self.card.hand:
-            line_surface = self.small_font.render(f"- {card.name}", True, colors.WHITE)
-            screen.blit(line_surface, (scale * 1200 - line_surface.get_width() // 2, y_offset))
-            y_offset += line_surface.get_height()
+            lines.append(f"- {card.name}")
+        self._draw_info_panel(screen, self.card.name, lines)
+        self.drawBorder(screen)
 
-        # Draw the border
+    def drawDesc4(self, screen, scale_unused=None):
+        """Weapon description - same stats as drawDesc/drawDesc2, shown in the bottom panel."""
+        c = self.card
+        max_w = int(screen.get_width() * 0.8)
+        lines = [
+            f"weight - {c.weight}",
+            f"type - {c.card_type}",
+            f"attack - {c.Aval}",
+            f"Light def - {c.Dval}",
+            f"Heavy def - {c.D2val}",
+            f"Heal - {c.Hval}",
+        ]
+        lines += self._wrap_text(f"Trick - {c.desc}", self.small_font, max_w)
+        self._draw_info_panel(screen, c.name, lines)
         self.drawBorder(screen)
 
 

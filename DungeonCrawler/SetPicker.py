@@ -32,14 +32,13 @@ def ChooseSet(screen, player1):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if set1Button.is_clicked(mouse_pos, event):
                     player1.addItem(Cards.LightAxe())
-                    player1.addItem(Cards.Crown())
+                    player1.addItem(Cards.ChainMail())
                     running = False
                 elif set2Button.is_clicked(mouse_pos, event):
                     player1.addItem(Cards.Sword())
                     running = False
                 elif set3Button.is_clicked(mouse_pos, event):
-                    player1.addItem(Cards.Helmet())
-                    player1.addItem(Cards.Dagger())
+                    player1.addItem(Cards.Spear())
                     player1.addItem(Cards.Boomerang())
                     running = False
 

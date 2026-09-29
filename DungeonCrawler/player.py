@@ -6,6 +6,7 @@ import SettingHelp
 from Screen import screen
 import Cards
 import Encyclopedia
+import SaveAndRead
 
 class Player:
     def __init__(self, name):
@@ -161,7 +162,7 @@ class Player:
         self.gold += self.income
         self.heal(self.regeneration)
 
-
+        SaveAndRead.save_player(self)
 
         #print(f"{self.name} has ascended to level {self.level}!")
 

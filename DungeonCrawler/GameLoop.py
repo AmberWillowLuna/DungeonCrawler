@@ -8,6 +8,7 @@ import copy
 import Merchant
 import GetTrinkets
 import Escape
+import SaveAndRead
 
 def GameLoop(screen, player1):
     '''Main game loop for the dungeon crawler'''
@@ -20,6 +21,7 @@ def GameLoop(screen, player1):
     GoLeft = button.Button(200*scale, 500*scale, 300*scale, 200*scale, "Left", (0, 0, 128), (0, 255, 0))
     GoForward = button.Button(800*scale, 150*scale, 300*scale, 200*scale, "Forward", (0, 0, 128), (0, 255, 0))
     GoRight = button.Button(1500*scale, 500*scale, 300*scale, 200*scale, "Right", (0, 0, 128), (0, 255, 0))
+    SaveAndExit = button.Button(800*scale, 750*scale, 500*scale, 150*scale, "Save and Exit", (0, 0, 128), (0, 255, 0))
 
 
     dungeons = LoadDungeon(screen, player1)
@@ -64,6 +66,9 @@ def GameLoop(screen, player1):
                         move="Left"
                     elif event.key == pygame.K_d:
                         move="Right"
+                    elif event.key == pygame.K_x:
+                        move="Out"
+
                 
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -74,6 +79,9 @@ def GameLoop(screen, player1):
                             move="Forward"
                         elif GoRight.is_clicked(mouse_pos, event):
                             move="Right"
+                        elif SaveAndExit.is_clicked(mouse_pos, event):
+                            move="Out"
+
                 player1.handle_equipment_delete(mouse_pos, event)
 
             player1.handle_equipment_click(mouse_pos, event)
@@ -99,6 +107,7 @@ def GameLoop(screen, player1):
             GoLeft.draw(screen)
             GoForward.draw(screen)
             GoRight.draw(screen)
+            SaveAndExit.draw(screen)
 
 
             #MOVEMENT
@@ -111,14 +120,21 @@ def GameLoop(screen, player1):
                     Dir=0
                 elif move=="Right":
                     Dir=2
+                elif move=="Out":
+                    Dir=-1
+                    SaveAndRead.save_player(player1)
+                    running = False
+
                 
                 #IMPLEMENT THIS PLAYER MOVE PART
                 
                 move=""
 
                 #### get the dependency of the dungeon and the player and make a logic to move the player in the dungeon
-                sign = dungeons[player1.AdvLevel][player1.DungeonLevel].set[player1.level][Dir]
-
+                if Dir!=-1:
+                    sign = dungeons[player1.AdvLevel][player1.DungeonLevel].set[player1.level][Dir]
+                else:
+                    sign = " "
                 #CAPSULATE EVERY STATE!!!!!!!!!! IN A DIFFERENT FILES!
 
                 if sign == "P":
@@ -210,6 +226,154 @@ def GameLoop(screen, player1):
 
     #implementation of loss or win
     if Outcome:
-        pass #win
+        winning_screen(screen)
     else:
-        pass #lose
+        game_over_screen(screen)
+
+
+
+import pygame
+import json
+from player import Player
+import SaveAndRead
+
+def winning_screen(screen):
+    """
+    Display a WINNING screen, update state.json to mark the win, and wait for any input to exit.
+
+    Args:
+        screen: Pyggame surface to draw on.
+
+    Returns:
+        Player: A new default player (optional, adjust as needed).
+    """
+    # Load scale based on the screen
+    scale = SettingHelp.get_scale(screen)
+
+    # Update state.json to mark the win
+    try:
+        with open("state.json", "r") as file:
+            state_data = json.load(file)
+    except FileNotFoundError:
+        state_data = {"win": 0}
+    except json.JSONDecodeError:
+        state_data = {"win": 0}
+
+    state_data["win"] = 1
+
+    try:
+        with open("state.json", "w") as file:
+            json.dump(state_data, file, indent=4)
+        print("state.json updated: win = 1")
+    except Exception as e:
+        print(f"Error updating state.json: {e}")
+
+    # Load the winning background image (replace with your own image path)
+    try:
+        win_bg = pygame.image.load("assets/win_bg.png").convert_alpha()
+        win_bg = pygame.transform.scale(
+            win_bg,
+            (screen.get_width(), screen.get_height())
+        )
+    except:
+        # Fallback: Create a black background if the image is missing
+        win_bg = pygame.Surface((screen.get_width(), screen.get_height()))
+        win_bg.fill((0, 0, 0))
+
+    # Font for the winning message
+    font = pygame.font.SysFont("Arial", int(72 * scale))
+
+    # Render the winning message
+    win_text = font.render("YOU WIN", True, (0, 255, 0))
+    text_rect = win_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+
+    # Font for the continue message
+    small_font = pygame.font.SysFont("Arial", int(36 * scale))
+
+    # Render the continue message
+    continue_text = small_font.render("Click or press any key to continue", True, (255, 255, 255))
+    continue_rect = continue_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 100))
+
+    # Main loop for the winning screen
+    running = True
+    while running:
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
+                running = False
+
+        # Draw the winning screen
+        screen.blit(win_bg, (0, 0))
+        screen.blit(win_text, text_rect)
+        screen.blit(continue_text, continue_rect)
+
+        # Update the display
+        pygame.display.flip()
+
+    # Return a new default player (optional, adjust as needed)
+    return
+
+from player import Player
+import SaveAndRead
+
+def game_over_screen(screen):
+    """
+    Display a GAME OVER screen, create a new player, save it, and wait for any input to exit.
+
+    Args:
+        screen: Pygame surface to draw on.
+    """
+    # Load scale based on the screen
+    scale = SettingHelp.get_scale(screen)
+
+    # Create a new player with default stats
+    new_player = Player("Aurelius")
+    SaveAndRead.save_player(new_player, "player.json")
+
+    # Load the game over background image (replace with your own image path)
+    try:
+        game_over_bg = pygame.image.load("assets/game_over_bg.png").convert_alpha()
+        game_over_bg = pygame.transform.scale(
+            game_over_bg,
+            (screen.get_width(), screen.get_height())
+        )
+    except:
+        # Fallback: Create a black background if the image is missing
+        game_over_bg = pygame.Surface((screen.get_width(), screen.get_height()))
+        game_over_bg.fill((0, 0, 0))
+
+    # Font for the game over message
+    font = pygame.font.SysFont("Arial", int(72 * scale))
+
+    # Render the game over message
+    game_over_text = font.render("GAME OVER", True, (255, 0, 0))
+    text_rect = game_over_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+
+    # Font for the continue message
+    small_font = pygame.font.SysFont("Arial", int(36 * scale))
+
+    # Render the continue message
+    continue_text = small_font.render("Click or press any key to continue", True, (255, 255, 255))
+    continue_rect = continue_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 100))
+
+    # Main loop for the game over screen
+    running = True
+    while running:
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
+                running = False
+
+        # Draw the game over screen
+        screen.blit(game_over_bg, (0, 0))
+        screen.blit(game_over_text, text_rect)
+        screen.blit(continue_text, continue_rect)
+
+        # Update the display
+        pygame.display.flip()
+
+    return new_player

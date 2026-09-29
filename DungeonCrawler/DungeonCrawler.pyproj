@@ -21,6 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Background.py" />
     <Compile Include="Battle.py" />
     <Compile Include="button.py" />
     <Compile Include="Cards.py" />
@@ -33,12 +34,14 @@
     <Compile Include="EncounterLoops.py" />
     <Compile Include="Encyclopedia.py" />
     <Compile Include="enemies.py" />
+    <Compile Include="EraseAllData.py" />
     <Compile Include="Escape.py" />
     <Compile Include="GameLoop.py" />
     <Compile Include="GetTrinkets.py" />
     <Compile Include="Merchant.py" />
     <Compile Include="Options.py" />
     <Compile Include="player.py" />
+    <Compile Include="SaveAndRead.py" />
     <Compile Include="Screen.py" />
     <Compile Include="SetPicker.py" />
     <Compile Include="SettingHelp.py" />
@@ -51,6 +54,7 @@
     <Content Include="encyclopedia.json" />
     <Content Include="player.json" />
     <Content Include="settings.json" />
+    <Content Include="state.json" />
     <Content Include="weapon_pedia.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
