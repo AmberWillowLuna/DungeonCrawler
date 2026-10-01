@@ -10,7 +10,7 @@ import Trap
 import random
 from Screen import screen
 import Encyclopedia
-
+from copy import copy
 
 Discovered = Encyclopedia.read_enemies_map("encyclopedia.json")
 
@@ -192,23 +192,27 @@ def _resolve_round(player1, enemy, log):
 
 
     for tcard in player1.field:
-        tcard.disarmed_rounds -= 1
-        if tcard.disarmed_rounds <= 0:
-            for i, slot in enumerate(player1.hand):
-                if slot.name == "Nothing":
-                    player1.hand[i] = tcard
-                    player1.sync_hand()
-                    player1.field.remove(tcard)
-                    break
+        if tcard.disarmed_rounds>0:
+            tcard.disarmed_rounds -= 1
+            if tcard.disarmed_rounds <= 0:
+                for i, slot in enumerate(player1.hand):
+                    if slot.name == "Nothing":
+                        player1.hand[i] = copy(tcard)
+                        player1.hand[i].disarmed = 0
+                        player1.sync_hand()
+
+                        
 
     for tcard in enemy.field:
-        tcard.disarmed_rounds -= 1
-        if tcard.disarmed_rounds <= 0:
-            for i, slot in enumerate(enemy.hand):
-                if slot.name == "Nothing":
-                    enemy.hand[i] = tcard
-                    enemy.field.remove(tcard)
-                    break
+        if tcard.disarmed_rounds>0:
+            tcard.disarmed_rounds -= 1
+            if tcard.disarmed_rounds <= 0:
+                for i, slot in enumerate(enemy.hand):
+                    if slot.name == "Nothing":
+                        enemy.hand[i].disarmed = 0
+                        enemy.hand[i] = copy(tcard)
+
+                        
 
 
 

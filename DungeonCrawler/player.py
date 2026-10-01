@@ -171,18 +171,18 @@ class Player:
             if i < len(self.hand):  # Ensure the index is within bounds
                 card = self.hand[i]
                 card.disarmed_rounds = 0
-                #card.disarmed = 0
+                card.disarmed = 0
                 if card.m == False:
-                    self.addItem(card)
+                    self.addItem(copy(card))
                 self.hand[i] = Cards.Nothing()
 
         ####### FIELD TO DECK AS WELL #########
         for i in range(len(self.field)):
             card = self.field[i]
             card.disarmed_rounds = 0
-            #card.disarmed = 0
+            card.disarmed = 0
             if card.m == False:
-                    self.addItem(card)
+                    self.addItem(copy(card))
             self.field[i] = Cards.Nothing()
             
 
@@ -228,7 +228,7 @@ class Player:
     def fallOff(self, card):
         if card in self.hand:
             # Add the card to self.graveyard
-            self.graveyard.append(card)
+            self.graveyard.append(copy.copy(card))
 
             # Find the index of the card in self.hand
             index = self.hand.index(card)
@@ -249,10 +249,12 @@ class Player:
 
     def addItem(self, card):
         self.stripDeck()
+        card.disarmed_rounds = 0
+        card.disarmed = 0
         if len(self.deck)<=16:
             if card.name=="Chain Mail":
                 card.durability=2
-            self.deck.append(card)
+            self.deck.append(copy(card))
             Encyclopedia.unlock_enemy(card.name, "weapon_pedia.json")
             #put in the first nothing card button the card
             self.sync_deck()
