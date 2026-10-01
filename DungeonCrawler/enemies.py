@@ -135,7 +135,7 @@ class Ghoul(enemy):
 
 class MistyGhost(enemy):
         def __init__(self):
-            super().__init__("MistyGhost", "Agressive spirit of this dungeon", 7, [Cards.HealingAmulet(), Cards.Crown(), Cards.LongSword()], "Misty dungeon", 5)
+            super().__init__("MistyGhost", "Agressive spirit of this dungeon", 6, [Cards.HealingAmulet(), Cards.Crown(), Cards.LongSword()], "Misty dungeon", 5)
             self.lootTable = [Cards.HealingAmulet(), Cards.HealingAmulet(), Cards.HealingAmulet()]
             self.lootChance = 1
 
@@ -228,7 +228,7 @@ class TreeOfLife(enemy):
             super().__init__("Tree of life", 
                              "Huge tree pulsating with magic", 
                              12, 
-                             [Cards.Nothing(), Cards.GasBubble(), Cards.Halbard()], 
+                             [Cards.Nothing(), Cards.GasBubble(), Cards.Sword()], 
                              "Forest dungeon", 
                              4)
             self.lootTable = [Cards.GasBubble(), Cards.GasBubble(), Cards.Nothing()]
@@ -239,7 +239,7 @@ class ForestSpirit(enemy):
         def __init__(self):
             super().__init__("Forest Spirit", 
                              "Born from nature to rule the forest", 
-                             8, 
+                             7, 
                              [Cards.LongSword(), Cards.MagicMirror(), Cards.FishingRod()], 
                              "Forest dungeon", 
                              4)

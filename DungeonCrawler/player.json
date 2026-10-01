@@ -1,6 +1,12 @@
 {
     "name": "Aurelius",
-    "deck": [],
+    "deck": [
+        "Sword",
+        "HealingPotion",
+        "Bandage",
+        "Halbard",
+        "LightAxe"
+    ],
     "hand": [
         "Nothing",
         "Nothing",
@@ -8,26 +14,28 @@
     ],
     "field": [],
     "graveyard": [],
-    "trinkets": [],
+    "trinkets": [
+        "RingOfKnowledge"
+    ],
     "maxHp": 8,
-    "hp": 8,
-    "level": 0,
+    "hp": 2,
+    "level": 11,
     "et": "p",
     "DungeonLevel": 0,
     "AdvLevel": 0,
-    "gold": 0,
+    "gold": 25,
     "kills": 0,
-    "curD": "",
+    "curD": "Orc's dungeon",
     "maxweight": 10,
     "regeneration": 0,
     "last_clicked_button": null,
-    "wis": false,
+    "wis": true,
     "wisdom": false,
     "timePerk": false,
     "scout": false,
     "income": 0,
     "mode": 0,
-    "sync_delay_start": 0,
-    "sync_delay_active": false,
+    "sync_delay_start": 344997,
+    "sync_delay_active": true,
     "sync_delay_duration": 2000
 }

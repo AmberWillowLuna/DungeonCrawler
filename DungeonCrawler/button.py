@@ -287,7 +287,7 @@ class CardButton(Button):
 
     def drawDesc3(self, screen, scale_unused=None):
         """Enemy description: name, description and names of all cards in enemy.hand."""
-        max_w = int(screen.get_width() * 0.8)
+        max_w = int(screen.get_width() * scale)
         lines = self._wrap_text(self.card.description, self.small_font, max_w)
         lines.append("Hand:")
         for card in self.card.hand:

@@ -208,7 +208,7 @@ class Bow(Card):
         #FIX THIS ###############################
         for i, card in enumerate(player.hand):
             if card.name=="Arrow":
-                player.hand[i].disarmed_rounds = 3
+                player.hand[i].disarmed_rounds = 2
                 #Eq.append(Nothing())
                 dmg = oc.defend(self, player, enemy)
                 enemy.take_damage(dmg)
@@ -325,8 +325,7 @@ class ChainMail(Card):
             self.durability-=1
             if self.durability==0:
                 self.disarmed_rounds=-1
-
-            return oc.Aval
+            return halved(oc)
 
 class Spear(Card):
     def __init__(self):

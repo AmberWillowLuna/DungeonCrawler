@@ -10,7 +10,7 @@ def ChooseSet(screen, player1):
     # Create buttons for the set picker
     set1Button = button.Button(720*scale, 300*scale, 550*scale, 160*scale, "Lumberjack", (0, 0, 128), (0, 255, 0))
     set2Button = button.Button(720*scale, 500*scale, 550*scale, 160*scale, "Duelist", (0, 0, 128), (0, 255, 0))
-    set3Button = button.Button(720*scale, 700*scale, 550*scale, 160*scale, "Rouge", (0, 0, 128), (0, 255, 0))
+    set3Button = button.Button(720*scale, 700*scale, 550*scale, 160*scale, "Ranger", (0, 0, 128), (0, 255, 0))
 
     # Main loop for the set picker
     #set 1 - longsword
@@ -38,8 +38,8 @@ def ChooseSet(screen, player1):
                     player1.addItem(Cards.Sword())
                     running = False
                 elif set3Button.is_clicked(mouse_pos, event):
-                    player1.addItem(Cards.Spear())
-                    player1.addItem(Cards.Boomerang())
+                    player1.addItem(Cards.Bow())
+                    player1.addItem(Cards.Arrow())
                     running = False
 
         # Draw everything

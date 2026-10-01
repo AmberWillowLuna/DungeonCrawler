@@ -23,6 +23,7 @@ def GameLoop(screen, player1):
     GoRight = button.Button(1500*scale, 500*scale, 300*scale, 200*scale, "Right", (0, 0, 128), (0, 255, 0))
     SaveAndExit = button.Button(800*scale, 750*scale, 500*scale, 150*scale, "Save and Exit", (0, 0, 128), (0, 255, 0))
 
+    font = pygame.font.SysFont("Arial", int(64*scale))
 
     dungeons = LoadDungeon(screen, player1)
 
@@ -34,6 +35,16 @@ def GameLoop(screen, player1):
     # Merchant - in a merchant
     # Empty - a few miliseconds to skip cuz the room was empty
     move=""
+
+
+    #the front room alwyas known:
+
+
+
+
+
+
+
 
     backgroundImg = None
     running = True
@@ -109,6 +120,50 @@ def GameLoop(screen, player1):
             GoRight.draw(screen)
             SaveAndExit.draw(screen)
 
+            # Determine the room description based on the first letter of player1.curD
+            if player1.wisdom:
+                sign0 = dungeons[player1.AdvLevel][player1.DungeonLevel].set[player1.level][1]
+                first_letter = sign[0]
+                if first_letter == "L":
+                    room_description = "Enemy"
+                elif sign0 == "T":
+                    room_description = "Trap"
+                elif sign0 == "TR":
+                    room_description = "Trinket"
+                elif first_letter == "P":
+                    room_description = "Empty"
+                elif first_letter == "M":
+                    room_description = "Merchant"
+                elif first_letter == "E":
+                    room_description = "Exit"
+                else:
+                    room_description = "Unknown"
+
+                text_surface = font.render(f"Room: {room_description}", True, (255, 255, 255))
+                screen.blit(text_surface, (600*scale, 50*scale))
+
+
+            if player1.wis:
+                sign1 = dungeons[player1.AdvLevel][player1.DungeonLevel].set[player1.level][0]
+                sign2 = dungeons[player1.AdvLevel][player1.DungeonLevel].set[player1.level][2]
+                room_description1 = "Not Trap"
+                room_description2 = "Not Trap"
+                if sign1 == "T":
+                    room_description1 = "Trap"
+                    text_surface = font.render(f"Room: {room_description1}", True, (255, 255, 255))
+                    screen.blit(text_surface, (200*scale, 800*scale))
+
+                if sign2 == "T":
+                    room_description1 = "Trap"
+                    text_surface = font.render(f"Room: {room_description2}", True, (255, 255, 255))
+                    screen.blit(text_surface, (1000*scale, 800*scale))
+
+
+
+                text_surface = font.render(f"Room: {room_description1}", True, (255, 255, 255))
+                text_surface1 = font.render(f"Room: {room_description2}", True, (255, 255, 255))
+                screen.blit(text_surface, (200*scale, 550*scale))
+                screen.blit(text_surface1, (1700*scale, 550*scale))
 
             #MOVEMENT
             if move!="":
@@ -227,7 +282,7 @@ def GameLoop(screen, player1):
     #implementation of loss or win
     if Outcome:
         winning_screen(screen)
-    else:
+    elif Outcome is not None:
         game_over_screen(screen)
 
 

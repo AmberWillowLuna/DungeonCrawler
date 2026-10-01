@@ -250,7 +250,7 @@ class Player:
     def addItem(self, card):
         self.stripDeck()
         if len(self.deck)<=16:
-            if card.name=="Chain mail":
+            if card.name=="Chain Mail":
                 card.durability=2
             self.deck.append(card)
             Encyclopedia.unlock_enemy(card.name, "weapon_pedia.json")

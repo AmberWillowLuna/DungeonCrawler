@@ -44,7 +44,7 @@ def MerchantLoop(screen, player1):
         item_button = button.Button(
             button_x,
             button_y,
-            600 * scale,
+            700 * scale,
             100 * scale,
             f"{item['item'].name} - {item['price']} gold",
             (70, 70, 70),

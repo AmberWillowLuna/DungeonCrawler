@@ -42,7 +42,7 @@ def _make_back_button(scale):
     return button.Button(
         x=int(50 * scale),
         y=int(50 * scale),
-        width=int(150 * scale),
+        width=int(200 * scale),
         height=int(100 * scale),
         text="BACK",
         color=(100, 100, 100),
