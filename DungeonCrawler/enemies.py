@@ -127,7 +127,7 @@ class DarkCreature(enemy):
 
 class Skeleton(enemy):
         def __init__(self):
-            super().__init__("Skeleton", "Archer that looks like death", 5, [Cards.Bow(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 3)
+            super().__init__("Skeleton", "Archer that looks like death", 4, [Cards.Bow(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 3)
 
 class Ghoul(enemy):
         def __init__(self):
@@ -239,12 +239,13 @@ class ForestSpirit(enemy):
         def __init__(self):
             super().__init__("Forest Spirit", 
                              "Born from nature to rule the forest", 
-                             7, 
-                             [Cards.LongSword(), Cards.MagicMirror(), Cards.FishingRod()], 
+                             9, 
+                             [Cards.Sword(), Cards.MagicMirror(), Cards.PoisonousGas()], 
                              "Forest dungeon", 
                              4)
             self.lootTable = [Cards.MagicMirror(), Cards.MagicMirror(), Cards.MagicMirror()]
             self.lootChance = 1
+
 
 
 class LavaLarva(enemy):
@@ -310,7 +311,7 @@ class DarknessGhoul(enemy):
             super().__init__("Darkness ghoul", 
                              "A darker version of ghoul", 
                              6, 
-                             [Cards.MagicMirror(), Cards.MagicEye(), Cards.Knife()], 
+                             [Cards.MagicMirror(), Cards.MagicEye(), Cards.Nothing()], 
                              "darkness dungeon", 
                              2)
 
@@ -328,7 +329,7 @@ class DarknessSorcerer(enemy):
             super().__init__("Darkness sorcerer", 
                              "Very powerful shadowy creature, that maybe even was a human once", 
                              6, 
-                             [Cards.Club(), Cards.SpellBook(), Cards.Knife()], 
+                             [Cards.Club(), Cards.SpellBook(), Cards.Nothing()], 
                              "darkness dungeon", 
                              4)
 

@@ -8,8 +8,8 @@ def ChooseSet(screen, player1):
     scale = SettingHelp.get_scale(screen)
 
     # Create buttons for the set picker
-    set1Button = button.Button(720*scale, 300*scale, 550*scale, 160*scale, "Lumberjack", (0, 0, 128), (0, 255, 0))
-    set2Button = button.Button(720*scale, 500*scale, 550*scale, 160*scale, "Duelist", (0, 0, 128), (0, 255, 0))
+    set1Button = button.Button(720*scale, 300*scale, 550*scale, 160*scale, "Barbarian", (0, 0, 128), (0, 255, 0))
+    set2Button = button.Button(720*scale, 500*scale, 550*scale, 160*scale, "Palladin", (0, 0, 128), (0, 255, 0))
     set3Button = button.Button(720*scale, 700*scale, 550*scale, 160*scale, "Ranger", (0, 0, 128), (0, 255, 0))
 
     # Main loop for the set picker

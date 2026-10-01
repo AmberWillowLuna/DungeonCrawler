@@ -289,6 +289,7 @@ def Battle(screen, player1, enemy):
                    
                             if player1.hp <= 0:
                                 result = "lose"
+                                return result
                             elif enemy.hp <= 0:
                                 result = "win"
 

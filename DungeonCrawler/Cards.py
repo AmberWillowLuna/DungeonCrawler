@@ -208,7 +208,7 @@ class Bow(Card):
         #FIX THIS ###############################
         for i, card in enumerate(player.hand):
             if card.name=="Arrow":
-                player.hand[i].disarmed_rounds = 2
+                player.hand[i].disarmed_rounds = 3
                 #Eq.append(Nothing())
                 dmg = oc.defend(self, player, enemy)
                 enemy.take_damage(dmg)
@@ -413,7 +413,7 @@ class Sword(Card):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
     def defend(self,  oc, player, enemy):
-        if oc.card_type=="light":
+        if oc.card_type=="Light":
             return 0
         else:
             return  halved(oc)
@@ -476,7 +476,7 @@ class SpellShield(Card):
 
 class MagicEye(Card):
     def __init__(self):
-        super().__init__("Magic Eye", "Heavy", 6, "ATK: 3, DEF: L0, H0",3,0,0,0,0) 
+        super().__init__("Magic Eye", "Heavy", 4, "ATK: 3, DEF: L0, H0",3,0,0,0,0) 
         self.price=8+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
@@ -538,6 +538,7 @@ class GasBubble(Card):
         self.price=7+random.randint(0,2)
     def defend(self, oc, player, enemy):
         enemy.take_damage(1)
+        return oc.Aval
 
 class Fire(Card):
     def __init__(self):
@@ -546,16 +547,15 @@ class Fire(Card):
     def attack(self, oc, player, enemy):
         self.card_type="Heavy"
         dmg = oc.defend(self, player, enemy)
-        self.card_type="Light"
         self.trick(oc, player, enemy)
         enemy.take_damage(dmg)
+        self.card_type="Light"
     def trick(self, oc, player, enemy):
         self.disarmed_rounds=-1 # -1 means it will be removed FOREVER from hand after attack
-        pass
 
 class Fireball(Card):
     def __init__(self):
-        super().__init__("Fireball", "Heavy", 6, "'L': 6, DEF: 1", 0, 1, 1, 0, 0)
+        super().__init__("Fireball", "Heavy", 6, "'L': 6, DEF: 1", 0.33, 1, 1, 0, 0)
         self.price=10+random.randint(0,2)
     def attack(self, oc, player, enemy):
         self.trick(oc, player, enemy)
