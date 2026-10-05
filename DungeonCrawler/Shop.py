@@ -17,7 +17,8 @@ class Shop:
                 Cards.Dagger(),
                 Cards.Knife(),
                 Cards.Bow(),
-                Cards.Boomerang()
+                Cards.Boomerang(),
+                Cards.Machete()
             ]
             self.armors = [
                 Cards.ChainMail(),
@@ -73,7 +74,8 @@ class Shop:
                 Cards.PoisonousGas(),
                 Cards.Spear(),
                 Cards.Boomerang(),
-                Cards.KnifePack()
+                Cards.KnifePack(),
+                Cards.Machete()
             ]
             self.armors = [
                 Cards.Crown(),

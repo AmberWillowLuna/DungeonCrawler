@@ -87,6 +87,7 @@ def _resolve_round(player1, enemy, log):
         p_card = player1.HandButtons[i].card
         e_card = enemy.hand[i]
 
+
         #_ensure_trick_state(p_card)
         #_ensure_trick_state(e_card)
 
@@ -197,9 +198,11 @@ def _resolve_round(player1, enemy, log):
             if tcard.disarmed_rounds <= 0:
                 for i, slot in enumerate(player1.hand):
                     if slot.name == "Nothing":
-                        player1.hand[i] = copy(tcard)
+                        player1.hand[i] = tcard
                         player1.hand[i].disarmed = 0
+                        player1.field.remove(tcard)
                         player1.sync_hand()
+                        return
 
                         
 
@@ -210,8 +213,12 @@ def _resolve_round(player1, enemy, log):
                 for i, slot in enumerate(enemy.hand):
                     if slot.name == "Nothing":
                         enemy.hand[i].disarmed = 0
-                        enemy.hand[i] = copy(tcard)
-
+                        enemy.hand[i] = tcard
+                        try:
+                            enemy.field.remove(tcard)
+                            return
+                        except:
+                            pass
                         
 
 
@@ -293,7 +300,7 @@ def Battle(screen, player1, enemy):
                    
                             if player1.hp <= 0:
                                 result = "lose"
-                                return result
+                                
                             elif enemy.hp <= 0:
                                 result = "win"
 
@@ -301,6 +308,8 @@ def Battle(screen, player1, enemy):
                             _build_enemy_display(enemy)
                             player1.sync_delay_active = True
 
+                        elif event.key == pygame.K_g:
+                            player1.heal(5)
 
                         if event.key==pygame.K_2 and result!=None:
                             end = False
@@ -470,6 +479,11 @@ def TrapLoop(screen, player1, trap):
 
     player1.graveyardToDeck()
 
+    if player1.hp<=0:
+        return "lose"
+    else:
+        return "win"
+
 
 
 
@@ -550,7 +564,7 @@ def BattleLoop(screen, player1, enemy):
         clock.tick(60)
 
     # Player confirmed their set -> hand off to actual combat resolution
-    Battle(screen, player1, enemy)
-    return True
+    res = Battle(screen, player1, enemy)
+    return res
 
 

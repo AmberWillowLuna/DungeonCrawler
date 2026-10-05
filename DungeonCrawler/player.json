@@ -1,11 +1,6 @@
 {
     "name": "Aurelius",
-    "deck": [
-        "Bandage",
-        "FishingRod",
-        "LightAxe",
-        "ChainMail"
-    ],
+    "deck": [],
     "hand": [
         "Nothing",
         "Nothing",
@@ -15,14 +10,14 @@
     "graveyard": [],
     "trinkets": [],
     "maxHp": 8,
-    "hp": 6,
-    "level": 2,
+    "hp": 8,
+    "level": 0,
     "et": "p",
     "DungeonLevel": 0,
     "AdvLevel": 0,
-    "gold": 3,
+    "gold": 0,
     "kills": 0,
-    "curD": "Orc's dungeon",
+    "curD": "",
     "maxweight": 10,
     "regeneration": 0,
     "last_clicked_button": null,
@@ -32,7 +27,7 @@
     "scout": false,
     "income": 0,
     "mode": 0,
-    "sync_delay_start": 9957,
-    "sync_delay_active": true,
+    "sync_delay_start": 0,
+    "sync_delay_active": false,
     "sync_delay_duration": 2000
 }

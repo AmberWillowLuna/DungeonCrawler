@@ -407,7 +407,7 @@ class HealingPotion(Card):
 
 class Sword(Card):
     def __init__(self):
-        super().__init__("Sword", "Heavy", 3, "'H': 3, ATK: 1, DEF: L1, H0", 1, 1, 0, 0, 0)
+        super().__init__("Sword", "Heavy", 3, "'H': 3, ATK: 1, DEF: L1, H0.5", 1, 1, 0, 0, 0)
         self.price=4+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
@@ -417,6 +417,17 @@ class Sword(Card):
             return 0
         else:
             return  halved(oc)
+
+
+class Machete(Card):
+    def __init__(self):
+        super().__init__("Machete", "Light", 4, "'H': 4, ATK: 1, DEF: L0.5, H0.5", 1, 1, 0, 0, 0)
+        self.price=4+random.randint(0,2)
+    def attack(self, oc, player, enemy):
+        dmg = oc.defend(self, player, enemy)
+        enemy.take_damage(dmg)
+    def defend(self,  oc, player, enemy):
+        return  halved(oc)
 
 class Boomerang(Card):
     def __init__(self):

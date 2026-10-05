@@ -1,5 +1,4 @@
 
-from copy import copy
 import pygame
 import button
 import SettingHelp
@@ -173,7 +172,7 @@ class Player:
                 card.disarmed_rounds = 0
                 card.disarmed = 0
                 if card.m == False:
-                    self.addItem(copy(card))
+                    self.addItem(card)
                 self.hand[i] = Cards.Nothing()
 
         ####### FIELD TO DECK AS WELL #########
@@ -182,10 +181,10 @@ class Player:
             card.disarmed_rounds = 0
             card.disarmed = 0
             if card.m == False:
-                    self.addItem(copy(card))
+                    self.addItem(card)
             self.field[i] = Cards.Nothing()
             
-
+        self.stripDeck()
         self.sync_hand()
         self.sync_deck()
 
@@ -228,7 +227,7 @@ class Player:
     def fallOff(self, card):
         if card in self.hand:
             # Add the card to self.graveyard
-            self.graveyard.append(copy.copy(card))
+            self.graveyard.append(card)
 
             # Find the index of the card in self.hand
             index = self.hand.index(card)
@@ -245,31 +244,21 @@ class Player:
             self.hp = self.maxHp
         #print(f"{self.name} has healed {amount} points! Life points: {self.hp}")
 
-    from copy import copy
 
     def addItem(self, card):
         self.stripDeck()
         card.disarmed_rounds = 0
         card.disarmed = 0
-        if len(self.deck)<=16:
-            if card.name=="Chain Mail":
+        if card.name=="Chain Mail":
                 card.durability=2
-            self.deck.append(copy(card))
+        if len(self.deck)<=16:
+            self.deck.append(card)
             Encyclopedia.unlock_enemy(card.name, "weapon_pedia.json")
             #put in the first nothing card button the card
             self.sync_deck()
         #print(f"{card} has been added to {self.name}'s deck.")
 
-    def PlayCards(self, order):
-        new_hand = []
-        for o in order:
-            if o == "a":
-                new_hand.append(self.hand[0])
-            elif o == "s":
-                new_hand.append(self.hand[1])
-            elif o == "d":
-                new_hand.append(self.hand[2])
-        self.hand = new_hand
+
 
 
     def displayDeck(self, screen):

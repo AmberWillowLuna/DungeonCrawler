@@ -95,14 +95,15 @@ class enemy:
 class Goblin(enemy):
     def __init__(self):
         super().__init__("Goblin", "A small, green, mischievous creature.", 3, [Cards.Nothing(), Cards.LightAxe(), Cards.Nothing()], "Orc's dungeon", 1)
-
+        self.lootChance = 1
+        self.lootTable = [Cards.LightAxe(), Cards.LightAxe(), Cards.Nothing()]
 class Orc(enemy):
     def __init__(self):
         super().__init__("Orc", "Grey mischievous creature.", 4, [Cards.Nothing(), Cards.Helmet(), Cards.LightAxe()], "Orc's dungeon", 2)
 
 class ArmoredOrc(enemy):
     def __init__(self):
-        super().__init__("Armored Orc", "A grey orc with a chainmail.", 5, [Cards.Sword(), Cards.Knife(), Cards.ChainMail()], "Orc's dungeon", 3)
+        super().__init__("Armored Orc", "A grey orc with a chainmail.", 5, [Cards.Machete(), Cards.Knife(), Cards.ChainMail()], "Orc's dungeon", 3)
 
 class Ogre(enemy):
     def __init__(self):
@@ -120,10 +121,12 @@ class OrcWizard(enemy):
 class Slime(enemy):
         def __init__(self):
             super().__init__("Slime", "A goo that seems to be agresive", 3, [Cards.Boomerang(), Cards.Arrow(), Cards.Nothing()], "Misty dungeon", 1)
+            self.lootChance = 1
+            self.lootTable = [Cards.Boomerang(), Cards.Boomerang(), Cards.Boomerang()]
 
 class DarkCreature(enemy):
         def __init__(self):
-            super().__init__("DarkCreature", "Gives nightmares if you look too much at him", 4, [Cards.Sword(), Cards.Nothing(), Cards.Nothing()], "Misty dungeon", 2)
+            super().__init__("DarkCreature", "Gives nightmares if you look too much at him", 4, [Cards.Machete(), Cards.Nothing(), Cards.Nothing()], "Misty dungeon", 2)
 
 class Skeleton(enemy):
         def __init__(self):
@@ -164,7 +167,7 @@ class ThreeEyedBeast(enemy):
         def __init__(self):
             super().__init__("Three eyed beast", 
                              "Powerfull combination of beast and cyclop", 
-                             7, 
+                             6, 
                              [Cards.SpellBook(), Cards.Halbard(), Cards.Nothing()], 
                              "Library dungeon", 
                              3)
@@ -174,7 +177,7 @@ class TrophyHunter(enemy):
         def __init__(self):
             super().__init__("Trophy hunter", 
                              "Try-hard, willing to do a lot for gold", 
-                             6, 
+                             4, 
                              [Cards.SpellBook(), Cards.LongSword(), Cards.Boomerang()], 
                              "Library dungeon", 
                              4)
@@ -185,8 +188,8 @@ class ArcaneGuardian(enemy):
         def __init__(self):
             super().__init__("Arcane guardian", 
                              "Increadibly powerful cultist like person", 
-                             8, 
-                             [Cards.SpellBook(), Cards.RitualKnife(), Cards.Sword()], 
+                             7, 
+                             [Cards.SpellShield(), Cards.RitualKnife(), Cards.Sword()], 
                              "Library dungeon", 
                              5)
             self.lootTable = [Cards.RitualKnife(), Cards.RitualKnife(), Cards.RitualKnife()]
@@ -201,7 +204,7 @@ class Gremlin(enemy):
             super().__init__("Gremlin", 
                              "Small but grevious creature", 
                              4, 
-                             [Cards.LightAxe(), Cards.KnifePack(), Cards.Knife()], 
+                             [Cards.LightAxe(), Cards.KnifePack(), Cards.Nothing()], 
                              "Forest dungeon", 
                              1)
 
@@ -218,8 +221,8 @@ class Ent(enemy):
         def __init__(self):
             super().__init__("Ent", 
                              "Humanoid tree", 
-                             9, 
-                             [Cards.Sword(), Cards.Shield(), Cards.PoisonousGas()], 
+                             8, 
+                             [Cards.Machete(), Cards.Shield(), Cards.PoisonousGas()], 
                              "Forest dungeon", 
                              3)
 
@@ -227,7 +230,7 @@ class TreeOfLife(enemy):
         def __init__(self):
             super().__init__("Tree of life", 
                              "Huge tree pulsating with magic", 
-                             12, 
+                             10, 
                              [Cards.Nothing(), Cards.GasBubble(), Cards.Sword()], 
                              "Forest dungeon", 
                              4)
@@ -239,7 +242,7 @@ class ForestSpirit(enemy):
         def __init__(self):
             super().__init__("Forest Spirit", 
                              "Born from nature to rule the forest", 
-                             9, 
+                             8, 
                              [Cards.Sword(), Cards.MagicMirror(), Cards.PoisonousGas()], 
                              "Forest dungeon", 
                              4)
@@ -271,7 +274,7 @@ class FirerySpirit(enemy):
             super().__init__("Firery spirit", 
                              "Burning flame in humanoid form", 
                              5, 
-                             [Cards.FirerySword(), Cards.Nothing(), Cards.SpellShield()], 
+                             [Cards.FirerySword(), Cards.Nothing(), Cards.Nothing()], 
                              "Hell dungeon", 
                              3)
 
@@ -280,7 +283,7 @@ class Demon(enemy):
             super().__init__("Demon", 
                              "Hellish creature with dangerous aspirations", 
                              5, 
-                             [Cards.Halbard(), Cards.DevilHorns(), Cards.Fire()], 
+                             [Cards.LightAxe(), Cards.DevilHorns(), Cards.Fire()], 
                              "Hell dungeon", 
                              4)
             self.lootTable = [Cards.DevilHorns(), Cards.DevilHorns(), Cards.DevilHorns()]
@@ -311,7 +314,7 @@ class DarknessGhoul(enemy):
             super().__init__("Darkness ghoul", 
                              "A darker version of ghoul", 
                              6, 
-                             [Cards.MagicMirror(), Cards.MagicEye(), Cards.Nothing()], 
+                             [Cards.SpellShield(), Cards.MagicEye(), Cards.Nothing()], 
                              "darkness dungeon", 
                              2)
 
@@ -319,7 +322,7 @@ class DarkKnight(enemy):
         def __init__(self):
             super().__init__("Dark knight", 
                              "The slave of darkness", 
-                             7, 
+                             6, 
                              [Cards.LongSword(), Cards.Shield(), Cards.Nothing()], 
                              "darkness dungeon", 
                              3)
