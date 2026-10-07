@@ -212,6 +212,7 @@ def GameLoop(screen, player1):
                     State = "Battle"
                     enemy = copy.copy(dungeons[player1.AdvLevel][player1.DungeonLevel].get_random_enemy(sign))
                     enemy.ShuffleHand()
+                    enemy.ArmAll()
                     won = EncounterLoops.BattleLoop(screen, player1, enemy)
                     player1.ascend()
                     #get graveyard back to deck                 

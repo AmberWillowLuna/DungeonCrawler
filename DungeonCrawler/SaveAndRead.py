@@ -76,30 +76,30 @@ def load_player(file_path="player.json"):
         return None
 
     # Create a new Player object
-    player = player.player(player_data["name"])
+    player1 = player.Player(player_data["name"])
 
     # Load attributes
-    player.maxHp = player_data["maxHp"]
-    player.hp = player_data["hp"]
-    player.level = player_data["level"]
-    player.et = player_data["et"]
-    player.DungeonLevel = player_data["DungeonLevel"]
-    player.AdvLevel = player_data["AdvLevel"]
-    player.gold = player_data["gold"]
-    player.kills = player_data["kills"]
-    player.curD = player_data["curD"]
-    player.maxweight = player_data["maxweight"]
-    player.regeneration = player_data["regeneration"]
-    player.last_clicked_button = player_data["last_clicked_button"]
-    player.wis = player_data["wis"]
-    player.wisdom = player_data["wisdom"]
-    player.timePerk = player_data["timePerk"]
-    player.scout = player_data["scout"]
-    player.income = player_data["income"]
-    player.mode = player_data["mode"]
-    player.sync_delay_start = player_data["sync_delay_start"]
-    player.sync_delay_active = player_data["sync_delay_active"]
-    player.sync_delay_duration = player_data["sync_delay_duration"]
+    player1.maxHp = player_data["maxHp"]
+    player1.hp = player_data["hp"]
+    player1.level = player_data["level"]
+    player1.et = player_data["et"]
+    player1.DungeonLevel = player_data["DungeonLevel"]
+    player1.AdvLevel = player_data["AdvLevel"]
+    player1.gold = player_data["gold"]
+    player1.kills = player_data["kills"]
+    player1.curD = player_data["curD"]
+    player1.maxweight = player_data["maxweight"]
+    player1.regeneration = player_data["regeneration"]
+    player1.last_clicked_button = player_data["last_clicked_button"]
+    player1.wis = player_data["wis"]
+    player1.wisdom = player_data["wisdom"]
+    player1.timePerk = player_data["timePerk"]
+    player1.scout = player_data["scout"]
+    player1.income = player_data["income"]
+    player1.mode = player_data["mode"]
+    player1.sync_delay_start = player_data["sync_delay_start"]
+    player1.sync_delay_active = player_data["sync_delay_active"]
+    player1.sync_delay_duration = player_data["sync_delay_duration"]
 
     # Load cards and trinkets (assuming you have a way to map class names to objects)
     # Example: card_classes = {"Nothing": Nothing, "LightAxe": LightAxe, ...}
@@ -114,11 +114,11 @@ def load_player(file_path="player.json"):
                 pass
         return cards
 
-    player.deck = load_cards(player_data["deck"])
-    player.hand = load_cards(player_data["hand"])
-    player.field = load_cards(player_data["field"])
-    player.graveyard = load_cards(player_data["graveyard"])
-    player.trinkets = load_cards(player_data["trinkets"])  # Assuming trinkets are also cards
+    player1.deck = load_cards(player_data["deck"])
+    player1.hand = load_cards(player_data["hand"])
+    player1.field = load_cards(player_data["field"])
+    player1.graveyard = load_cards(player_data["graveyard"])
+    player1.trinkets = load_cards(player_data["trinkets"])  # Assuming trinkets are also cards
 
-    print(f"Player {player.name} loaded from {file_path}")
-    return player
+    #print(f"Player {player1.name} loaded from {file_path}")
+    return player1

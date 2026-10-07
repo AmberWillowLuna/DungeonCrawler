@@ -62,7 +62,7 @@ class EnchantedRingOfLife(Trinket):
 
 class NecklaceOfRegeneration(Trinket):
     def __init__(self):
-        super().__init__("Necklace of Regeneration", "Heals 1 HP each room.")
+        super().__init__("Regen Ring", "Heals 1 HP each room.")
 
     def apply_effect(self, player):
         player.regeneration += 1  # Assuming player has a regeneration attribute

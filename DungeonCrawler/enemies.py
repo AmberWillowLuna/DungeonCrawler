@@ -74,6 +74,12 @@ class enemy:
         for i in range(min(len(self.HandButtons), len(self.hand))):
             self.HandButtons[i].set_card(self.hand[i])
 
+    def ArmAll(self):
+        """Arm all cards in the enemy's hand."""
+        for card in self.hand:
+            card.disarmed_rounds=0
+
+
     def _build_enemy_display(self):
         """Build read-only CardButtons to show the enemy's hand, laid out in a row."""
         scale = SettingHelp.get_scale(screen)
@@ -293,7 +299,7 @@ class Satan(enemy):
             super().__init__("Satan", 
                              "Hellish creature with dangerous aspirations", 
                              7, 
-                             [Cards.Trident(), Cards.DevilHorns(), Cards.Fire()], 
+                             [Cards.Trident(), Cards.DevilHorns(), Cards.Nothing()], 
                              "Hell dungeon", 
                              5)
             self.lootTable = [Cards.Trident(), Cards.Trident(), Cards.Trident()]
@@ -340,8 +346,8 @@ class Lich(enemy):
         def __init__(self):
             super().__init__("Lich", 
                              "An deeply corrupted unhinged interpretation of evil in this world", 
-                             8, 
-                             [Cards.SwordOfDarkness(), Cards.Nothing(), Cards.Crown()], 
+                             7, 
+                             [Cards.SwordOfDarkness(), Cards.Nothing(), Cards.Nothing()], 
                              "darkness dungeon", 
                              5)
             self.lootTable = [Cards.SwordOfDarkness(), Cards.SwordOfDarkness(), Cards.SwordOfDarkness()]

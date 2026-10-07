@@ -26,7 +26,7 @@
     <Compile Include="button.py" />
     <Compile Include="Cards.py" />
     <Compile Include="colors.py" />
-    <Compile Include="continue.py" />
+    <Compile Include="Continue2.py" />
     <Compile Include="DungeonCrawler.py" />
     <Compile Include="DungeonLoader.py" />
     <Compile Include="dungeons.py" />

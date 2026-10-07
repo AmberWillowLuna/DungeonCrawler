@@ -84,8 +84,8 @@ class CardButton(Button):
 
 
         # Scale dimensions
-        width = int(base_width * scale)
-        height = int(base_height * scale)
+        width = int(base_width)
+        height = int(base_height)
 
         # Initialize Button with scaled dimensions
         super().__init__(x, y, width, height, "", color, hover_color)

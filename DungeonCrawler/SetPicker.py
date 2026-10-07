@@ -17,6 +17,7 @@ def ChooseSet(screen, player1):
     # set 2 - halbard and crown
     # set 3 - spear and light axe
 
+    #print(scale)
 
 
     running = True

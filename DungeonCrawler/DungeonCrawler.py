@@ -74,6 +74,7 @@ def main():
                 start.start(screen)
             elif options_button.is_clicked(mouse_pos, event):
                 Options.Options(screen)
+                running = None
             elif Encyclopedia_button.is_clicked(mouse_pos, event):
                 Encyclopedia.display_unlocked_enemies(screen)
             elif Weapons_button.is_clicked(mouse_pos, event):
@@ -102,6 +103,10 @@ def main():
 
         pygame.display.flip()
         clock.tick(60)
+
+    if running is None:
+        main()
+
 
     pygame.quit()
 

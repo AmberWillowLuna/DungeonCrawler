@@ -43,7 +43,7 @@ def DefineHardDungeon():
                           [enemies.Shadow(), enemies.DarknessGhoul(), enemies.DarkKnight(), enemies.DarknessSorcerer(), enemies.Lich()], 
                           [Trap.ClubTrap(), Trap.GasBubbleTrap(), Trap.GasTrap(), Trap.DestroyItem()])
     D2 = dungeons.dungeon("Hell dungeon", "Dungeon with full of fungi, ents and gremlins", 
-                          [enemies.LavaLarva(), enemies.LavaGolem(), enemies.Ent(), enemies.Demon(), enemies.Satan()], 
+                          [enemies.LavaLarva(), enemies.LavaGolem(), enemies.FirerySpirit(), enemies.Demon(), enemies.Satan()], 
                           [Trap.FireTrap(), Trap.ClubTrap(), Trap.DestroyItem(), Trap.DestroyItem()])
 
 

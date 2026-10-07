@@ -4,6 +4,7 @@ import SettingHelp
 import button
 import SetPicker
 import player
+import Continue2
 
 def start(screen):
     '''Start the game loop
@@ -41,7 +42,8 @@ def start(screen):
 
                 # Add your new game logic here
             elif continueButton.is_clicked(mouse_pos, event):
-                print("Continue button clicked")
+                 Continue2.ContinueTheGame(screen)
+                 return
                 # Add your continue game logic here
 
         #display elements
