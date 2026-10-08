@@ -125,7 +125,7 @@ class Player:
             else:
                 screen.blit(self.EmptyHeartIcon, (40*scale + i*50*scale, 800*scale))
 
-        screen.blit(self.gold_text, (200 * scale, 880 * scale))
+        screen.blit(self.gold_text, (200 * scale, 860 * scale))
         self.displayTrinkets(screen)
 
 

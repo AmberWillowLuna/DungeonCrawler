@@ -130,7 +130,7 @@ def GameLoop(screen, player1, w=True):
             # Determine the room description based on the first letter of player1.curD
             if player1.wisdom:
                 sign0 = dungeons[player1.AdvLevel][player1.DungeonLevel].set[player1.level][1]
-                first_letter = sign[0]
+                first_letter = sign0[0]
                 if first_letter == "L":
                     room_description = "Enemy"
                 elif sign0 == "T":
@@ -153,15 +153,15 @@ def GameLoop(screen, player1, w=True):
             if player1.wis:
                 sign1 = dungeons[player1.AdvLevel][player1.DungeonLevel].set[player1.level][0]
                 sign2 = dungeons[player1.AdvLevel][player1.DungeonLevel].set[player1.level][2]
+                text_surface = font.render(f"Trap !", True, (255, 255, 255))
+
                 if sign1 == "T":
-                    room_description1 = "Trap"
                     text_surface = font.render(f"Trap !", True, (255, 255, 255))
-                    screen.blit(text_surface, (150*scale, 600*scale))
+                    screen.blit(text_surface, (200*scale, 400*scale))
 
                 if sign2 == "T":
-                    room_description1 = "Trap"
                     text_surface = font.render(f"Trap !", True, (255, 255, 255))
-                    screen.blit(text_surface, (850*scale, 600*scale))
+                    screen.blit(text_surface, (1500*scale, 400*scale))
 
             #MOVEMENT
             if move!="":

@@ -49,7 +49,7 @@ class RingOfLife(Trinket):
 
 class EnchantedRingOfLife(Trinket):
     def __init__(self):
-        super().__init__("Enchanted Ring of Life", "Increases max HP by 2.")
+        super().__init__("Life Gem", "Increases max HP by 3.")
 
     def apply_effect(self, player):
         player.maxHp += 3
@@ -72,7 +72,7 @@ class NecklaceOfRegeneration(Trinket):
 
 class RingOfKnowledge(Trinket):
     def __init__(self):
-        super().__init__("Ring of knowledge", "You learn when trap is not ahead")
+        super().__init__("Ring of Wisdom", "You learn when trap is not ahead")
 
     def apply_effect(self, player):
         player.wis = True  # Assuming player has a regeneration attribute
@@ -82,7 +82,7 @@ class RingOfKnowledge(Trinket):
 
 class RingOfThief(Trinket):
     def __init__(self):
-        super().__init__("Ring of thief", "You get extra 2 gold per room")
+        super().__init__("Ring of Thief", "You get extra 2 gold per room")
 
     def apply_effect(self, player):
         player.income +=2
@@ -92,7 +92,7 @@ class RingOfThief(Trinket):
 
 class BraceletOfThief(Trinket):
     def __init__(self):
-        super().__init__("Bracelet of thief", "You get extra 4 gold per room")
+        super().__init__("Thief's Bracelet", "You get extra 4 gold per room")
 
     def apply_effect(self, player):
         player.income +=4
@@ -102,7 +102,7 @@ class BraceletOfThief(Trinket):
 
 class NecklaceOfTime(Trinket):
     def __init__(self):
-        super().__init__("Necklace of time", "You can reroll the merchant drop one time")
+        super().__init__("Magical Clock", "You can reroll the merchant drop one time")
 
     def apply_effect(self, player):
         player.timePerk =True
@@ -112,7 +112,7 @@ class NecklaceOfTime(Trinket):
 
 class NecklaceOfWisdom(Trinket):
     def __init__(self):
-        super().__init__("Necklace of wisdom", "You alwyas know what is in front room")
+        super().__init__("Owl totem", "You alwyas know what is in front room")
 
     def apply_effect(self, player):
         player.wisdom =True

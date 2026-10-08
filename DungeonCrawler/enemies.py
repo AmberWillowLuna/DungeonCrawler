@@ -44,7 +44,8 @@ class enemy:
             ]
 
     def _load_icon(self, size=None):
-        """Load assets/{name}.png as the enemy's display icon."""
+        """Load assets/{name}.png as the enemy's 
+       icon."""
         image_path = os.path.join("assets", f"{self.name}.png")
         if os.path.exists(image_path):
             img = pygame.image.load(image_path).convert_alpha()

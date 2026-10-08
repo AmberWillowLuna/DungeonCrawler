@@ -134,7 +134,9 @@ def trigger(player1, trap,screen):
             OkayButton.draw(screen)
             player1.displayDeck(screen)
             player1.displayHand(screen)
-            # Update the display
+            # Update the 
+
+
             pygame.display.flip()
 
 

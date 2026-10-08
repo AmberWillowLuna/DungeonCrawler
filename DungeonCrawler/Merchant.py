@@ -32,9 +32,18 @@ def MerchantLoop(screen, player1):
 
     # Button to proceed from the merchant screen
     ProceedButton = button.Button(
-        1000 * scale, 800 * scale, 500 * scale, 200 * scale,
+        1000 * scale, 750 * scale, 400 * scale, 150 * scale,
         "Proceed", (0, 100, 0), (0, 200, 0)
     )
+
+
+    reroll = True
+    RerollButton = button.Button(
+        1100 * scale, 600 * scale, 300 * scale, 120 * scale,
+        "Reroll", (0, 100, 0), (0, 200, 0)
+    )
+
+
 
     # Create buttons for each shop item
     item_buttons = []
@@ -91,6 +100,23 @@ def MerchantLoop(screen, player1):
                         else:
                             notification_text = "Not enough gold!"
                             notification_timer = 120  # Show for 2 seconds (60 FPS)
+                
+                if RerollButton.is_clicked(mouse_pos, event):
+                    if player1.timePerk and reroll:
+                        # Regenerate shop items
+                        shop_items = shop.generate_items(Modifier)
+                        # Update item buttons with new items
+                        for i, (item_button, _, item_type, _) in enumerate(item_buttons):
+                            new_item = shop_items[i]['item']
+                            new_price = shop_items[i]['price']
+                            item_button.setText(f"{new_item.name} - {new_price} gold")
+                            item_buttons[i] = (item_button, new_item, item_type, new_price)
+                        notification_text = "Shop items rerolled!"
+                        notification_timer = 120
+                        reroll = False
+
+
+
 
                 # Check if the proceed button is clicked
                 if ProceedButton.is_clicked(mouse_pos, event):
@@ -126,9 +152,12 @@ def MerchantLoop(screen, player1):
         if notification_timer > 0:
             notification_font = pygame.font.SysFont("Arial", int(36 * scale))
             notification_render = notification_font.render(notification_text, True, (255, 255, 255))
-            notification_rect = notification_render.get_rect(center=(screen.get_width() // 2, 550 * scale))
+            notification_rect = notification_render.get_rect(center=(1150*scale, 550 * scale))
             screen.blit(notification_render, notification_rect)
             notification_timer -= 1
+
+        if player1.timePerk and reroll:
+            RerollButton.draw(screen)
 
         # Draw proceed button
         ProceedButton.draw(screen)
