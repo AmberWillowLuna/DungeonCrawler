@@ -12,12 +12,12 @@
   "Librarian": 1,
   "Demonic eye": 1,
   "Three eyed beast": 1,
-  "Trophy hunter": 0,
+  "Trophy hunter": 1,
   "Arcane guardian": 1,
   "Gremlin": 1,
   "Fungis": 1,
   "Ent": 1,
-  "Tree of life": 0,
+  "Tree of life": 1,
   "Forest Spirit": 1,
   "Lava Larva": 1,
   "Lava golem": 1,
@@ -27,6 +27,6 @@
   "Shadow": 1,
   "Darkness ghoul": 1,
   "Dark knight": 1,
-  "Darkness sorcerer": 0,
+  "Darkness sorcerer": 1,
   "Lich": 1
 }

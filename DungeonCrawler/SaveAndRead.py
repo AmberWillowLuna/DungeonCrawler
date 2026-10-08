@@ -105,10 +105,42 @@ def load_player(file_path="player.json"):
     player1.hand = [create_card_from_name(card_name) for card_name in player_data["hand"]]
     player1.field = [create_card_from_name(card_name) for card_name in player_data["field"]]
     player1.graveyard = [create_card_from_name(card_name) for card_name in player_data["graveyard"]]
-    player1.trinkets = [create_card_from_name(card_name) for card_name in player_data["trinkets"]]
+    player1.trinkets = [create_trinket_from_name(card_name) for card_name in player_data["trinkets"]]
 
     player1.sync_deck()
 
 
 
     return player1
+
+import Trinkets
+
+def create_trinket_from_name(name):
+    """
+    Create a trinket object based on its name.
+
+    Args:
+        name (str): The name of the trinket.
+
+    Returns:
+        Trinket: An instance of the trinket class, or None if the trinket is unknown.
+    """
+    # Mapping of trinket names to their classes
+    trinket_classes = {
+        "Ring of Life": Trinkets.RingOfLife,
+        "Ring of Thief": Trinkets.RingOfThief,
+        "Ring of Wisdom": Trinkets.RingOfKnowledge,
+        "Regen Ring": Trinkets.NecklaceOfRegeneration,
+        "Life Gem": Trinkets.EnchantedRingOfLife,
+        "Thief's Bracelet": Trinkets.BraceletOfThief,
+        "Magical Clock": Trinkets.NecklaceOfTime,
+        "Owl Totem": Trinkets.NecklaceOfWisdom,
+    }
+
+    # Get the trinket class from the mapping
+    trinket_class = trinket_classes.get(name)
+    if trinket_class:
+        return trinket_class()
+    else:
+        print(f"Warning: Unknown trinket name '{name}'. Returning None.")
+        return None

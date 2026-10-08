@@ -89,7 +89,7 @@ class Shop:
         elif curD == "Hell dungeon":
             self.weapons = [
                 Cards.Fire(),
-                Cards.FirerySword(),
+                Cards.FierySword(),
                 Cards.LongSword(),
                 Cards.RitualKnife(),
                 Cards.MagicEye()

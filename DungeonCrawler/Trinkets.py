@@ -112,7 +112,7 @@ class NecklaceOfTime(Trinket):
 
 class NecklaceOfWisdom(Trinket):
     def __init__(self):
-        super().__init__("Owl totem", "You alwyas know what is in front room")
+        super().__init__("Owl Totem", "You alwyas know what is in front room")
 
     def apply_effect(self, player):
         player.wisdom =True
@@ -134,5 +134,25 @@ Tier1 = Tier1[:3]
 random.shuffle(Tier2)
 Tier2 = Tier2[:3]
 
-# Combine Tier1 and Tier2 into Trinkets
-Trinkets = Tier1 + Tier2
+
+
+import json
+
+def SaveTrinketOrder(trinkets, file_path="Trinket.json"):
+    """
+    Save the order of trinkets to a JSON file.
+
+    Args:
+        trinkets (list): List of trinket objects.
+        file_path (str): Path to the JSON file.
+    """
+    trinket_names = [trinket.name for trinket in trinkets]
+
+    print(trinket_names)
+
+    try:
+        with open(file_path, 'w') as file:
+            json.dump({"order": trinket_names}, file, indent=4)
+        print(f"Trinket order saved to {file_path}")
+    except Exception as e:
+        print(f"Error saving trinket order: {e}")

@@ -9,7 +9,8 @@ import Merchant
 import GetTrinkets
 import Escape
 import SaveAndRead
-
+import Continue2
+import Trinkets
 
 def GameLoop(screen, player1, w=True):
     '''Main game loop for the dungeon crawler'''
@@ -25,16 +26,19 @@ def GameLoop(screen, player1, w=True):
     SaveAndExit = button.Button(800*scale, 750*scale, 500*scale, 150*scale, "Save and Exit", (0, 0, 128), (0, 255, 0))
 
     font = pygame.font.SysFont("Arial", int(64*scale))
-    
+    TrinketsToFind = None
     backgroundImg = None
     dungeons=None
     if w:
         dungeons = LoadDungeon(screen, player1)
         SaveDungeonOrder(dungeons)
+        TrinketsToFind = Trinkets.Tier1+ Trinkets.Tier2
+        Trinkets.SaveTrinketOrder(TrinketsToFind)
     else:
         dungeons = LoadDungeonsFromFile()
         backgroundImg = pygame.image.load(dungeons[player1.AdvLevel][player1.DungeonLevel].background).convert()
         backgroundImg = pygame.transform.scale(backgroundImg, (1920*scale, 1080*scale))
+        TrinketsToFind = Continue2.LoadTrinkets()
     State = "Free"
     #States 
     # Free - free to go
@@ -238,9 +242,9 @@ def GameLoop(screen, player1, w=True):
 
                 elif sign == "TR":
                     State = "Trinket"
-                    
-
-                    GetTrinkets.GetTrinket(screen, player1)
+                    trinket_index = player1.AdvLevel * 2 + player1.DungeonLevel
+                    trinket = TrinketsToFind[trinket_index]
+                    GetTrinkets.GetTrinket(screen, player1, trinket)
 
                     player1.ascend()
                     State = "Free"

@@ -2,10 +2,9 @@
 import pygame
 import SettingHelp
 import button
-from Trinkets import Trinkets  # Import the list of trinkets
 
 
-def GetTrinket(screen, player1):
+def GetTrinket(screen, player1, trinket):
     """
     Display a trinket receive screen with the trinket's name and description.
     The player can choose to take the trinket, which will apply its effects.
@@ -14,8 +13,8 @@ def GetTrinket(screen, player1):
     clock = pygame.time.Clock()
 
     # Load the trinket based on player's AdvLevel and DungeonLevel
-    trinket_index = player1.AdvLevel * 2 + player1.DungeonLevel
-    trinket = Trinkets[trinket_index]
+
+
 
     # Button to take the trinket
     TakeButton = button.Button(

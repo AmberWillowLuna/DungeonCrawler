@@ -548,7 +548,7 @@ class GasBubble(Card):
         super().__init__("Gas Bubble", "Light", 3, "Recoil 1 non blockable dmg",0.2,0,0,0,1) 
         self.price=7+random.randint(0,2)
     def defend(self, oc, player, enemy):
-        enemy.take_damage(1)
+        player.take_damage(1)
         return oc.Aval
 
 class Fire(Card):

@@ -12,7 +12,6 @@ def ChooseSet(screen, player1):
     set2Button = button.Button(720*scale, 500*scale, 550*scale, 160*scale, "Palladin", (0, 0, 128), (0, 255, 0))
     set3Button = button.Button(720*scale, 700*scale, 550*scale, 160*scale, "Ranger", (0, 0, 128), (0, 255, 0))
 
-    # Main loop for the set picker
 
 
     running = True

@@ -1,6 +1,9 @@
 {
     "name": "Aurelius",
-    "deck": [],
+    "deck": [
+        "Sword",
+        "Bandage"
+    ],
     "hand": [
         "Nothing",
         "Nothing",
@@ -17,7 +20,7 @@
     "AdvLevel": 0,
     "gold": 0,
     "kills": 0,
-    "curD": "",
+    "curD": "Orc's dungeon",
     "maxweight": 10,
     "regeneration": 0,
     "last_clicked_button": null,
