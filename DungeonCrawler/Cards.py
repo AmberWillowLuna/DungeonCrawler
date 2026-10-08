@@ -200,7 +200,7 @@ class LightAxe(Card):
 
 class Bow(Card):
     def __init__(self):
-        super().__init__("Bow", "Heavy", 6, "Dmg is non halvable, needs an arrow", 2, 0, 0, 0,0)
+        super().__init__("Bow", "Heavy", 5, "Dmg is non halvable, needs an arrow", 2, 0, 0, 0,0)
         self.price=6+random.randint(0,2)
     def attack(self, oc, player, enemy):
         #if an arrow is in player eq then return 2

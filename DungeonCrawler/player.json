@@ -1,41 +1,33 @@
 {
-  "name": "Aurelius",
-  "deck": [
-    "LightAxe",
-    "Bandage",
-    "Sword",
-    "LightAxe"
-  ],
-  "hand": [
-    "Nothing",
-    "Nothing",
-    "Nothing"
-  ],
-  "field": [],
-  "graveyard": [],
-  "trinkets": [
-    "LightAxe"
-
-  ],
-  "maxHp": 8,
-  "hp": 7,
-  "level": 5,
-  "et": "p",
-  "DungeonLevel": 0,
-  "AdvLevel": 0,
-  "gold": 21,
-  "kills": 0,
-  "curD": "Misty's dungeon",
-  "maxweight": 10,
-  "regeneration": 0,
-  "last_clicked_button": null,
-  "wis": false,
-  "wisdom": false,
-  "timePerk": false,
-  "scout": false,
-  "income": 0,
-  "mode": 0,
-  "sync_delay_start": 89397,
-  "sync_delay_active": true,
-  "sync_delay_duration": 2000
+    "name": "Aurelius",
+    "deck": [],
+    "hand": [
+        "Nothing",
+        "Nothing",
+        "Nothing"
+    ],
+    "field": [],
+    "graveyard": [],
+    "trinkets": [],
+    "maxHp": 8,
+    "hp": 8,
+    "level": 0,
+    "et": "p",
+    "DungeonLevel": 0,
+    "AdvLevel": 0,
+    "gold": 0,
+    "kills": 0,
+    "curD": "",
+    "maxweight": 10,
+    "regeneration": 0,
+    "last_clicked_button": null,
+    "wis": false,
+    "wisdom": false,
+    "timePerk": false,
+    "scout": false,
+    "income": 0,
+    "mode": 0,
+    "sync_delay_start": 0,
+    "sync_delay_active": false,
+    "sync_delay_duration": 2000
 }
