@@ -1,5 +1,5 @@
 import pygame
-from DungeonLoader import LoadDungeon
+from DungeonLoader import LoadDungeon, SaveDungeonOrder, LoadDungeonsFromFile
 import SettingHelp
 import button
 import EncounterLoops
@@ -10,7 +10,8 @@ import GetTrinkets
 import Escape
 import SaveAndRead
 
-def GameLoop(screen, player1):
+
+def GameLoop(screen, player1, w=True):
     '''Main game loop for the dungeon crawler'''
     scale = SettingHelp.get_scale(screen)
     clock = pygame.time.Clock()
@@ -24,9 +25,16 @@ def GameLoop(screen, player1):
     SaveAndExit = button.Button(800*scale, 750*scale, 500*scale, 150*scale, "Save and Exit", (0, 0, 128), (0, 255, 0))
 
     font = pygame.font.SysFont("Arial", int(64*scale))
-
-    dungeons = LoadDungeon(screen, player1)
-
+    
+    backgroundImg = None
+    dungeons=None
+    if w:
+        dungeons = LoadDungeon(screen, player1)
+        SaveDungeonOrder(dungeons)
+    else:
+        dungeons = LoadDungeonsFromFile()
+        backgroundImg = pygame.image.load(dungeons[player1.AdvLevel][player1.DungeonLevel].background).convert()
+        backgroundImg = pygame.transform.scale(backgroundImg, (1920*scale, 1080*scale))
     State = "Free"
     #States 
     # Free - free to go
@@ -46,7 +54,6 @@ def GameLoop(screen, player1):
 
 
 
-    backgroundImg = None
     running = True
     while running:
         mouse_pos = pygame.mouse.get_pos()
@@ -146,24 +153,15 @@ def GameLoop(screen, player1):
             if player1.wis:
                 sign1 = dungeons[player1.AdvLevel][player1.DungeonLevel].set[player1.level][0]
                 sign2 = dungeons[player1.AdvLevel][player1.DungeonLevel].set[player1.level][2]
-                room_description1 = "Not Trap"
-                room_description2 = "Not Trap"
                 if sign1 == "T":
                     room_description1 = "Trap"
-                    text_surface = font.render(f"Room: {room_description1}", True, (255, 255, 255))
-                    screen.blit(text_surface, (200*scale, 800*scale))
+                    text_surface = font.render(f"Trap !", True, (255, 255, 255))
+                    screen.blit(text_surface, (150*scale, 600*scale))
 
                 if sign2 == "T":
                     room_description1 = "Trap"
-                    text_surface = font.render(f"Room: {room_description2}", True, (255, 255, 255))
-                    screen.blit(text_surface, (1000*scale, 800*scale))
-
-
-
-                text_surface = font.render(f"Room: {room_description1}", True, (255, 255, 255))
-                text_surface1 = font.render(f"Room: {room_description2}", True, (255, 255, 255))
-                screen.blit(text_surface, (200*scale, 550*scale))
-                screen.blit(text_surface1, (1700*scale, 550*scale))
+                    text_surface = font.render(f"Trap !", True, (255, 255, 255))
+                    screen.blit(text_surface, (850*scale, 600*scale))
 
             #MOVEMENT
             if move!="":
@@ -204,6 +202,10 @@ def GameLoop(screen, player1):
                     State = "Trap"
                     trap = dungeons[player1.AdvLevel][player1.DungeonLevel].get_random_trap()
                     won = EncounterLoops.TrapLoop(screen, player1, trap)
+                    player1.ascend()
+                    #get graveyard back to deck                 
+                    player1.graveyardToDeck()
+                    player1.stripDeck()
                     State = "Free"
                     if won == "lose":
                         running = False

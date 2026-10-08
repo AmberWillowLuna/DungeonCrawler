@@ -13,11 +13,6 @@ def ChooseSet(screen, player1):
     set3Button = button.Button(720*scale, 700*scale, 550*scale, 160*scale, "Ranger", (0, 0, 128), (0, 255, 0))
 
     # Main loop for the set picker
-    #set 1 - longsword
-    # set 2 - halbard and crown
-    # set 3 - spear and light axe
-
-    #print(scale)
 
 
     running = True

@@ -3,7 +3,7 @@ import pygame
 from Cards import Nothing  # Assuming Cards.Nothing() is defined in Cards.py
 import player
 
-def save_player(player, file_path="player.json"):
+def save_player(player,file_path="player.json"):
     """
     Save the player's data to a JSON file.
 
@@ -51,8 +51,7 @@ def save_player(player, file_path="player.json"):
         print(f"Error saving player data: {e}")
 
 
-
-
+from LoadHelper import create_card_from_name
 
 
 def load_player(file_path="player.json"):
@@ -101,24 +100,15 @@ def load_player(file_path="player.json"):
     player1.sync_delay_active = player_data["sync_delay_active"]
     player1.sync_delay_duration = player_data["sync_delay_duration"]
 
-    # Load cards and trinkets (assuming you have a way to map class names to objects)
-    # Example: card_classes = {"Nothing": Nothing, "LightAxe": LightAxe, ...}
-    def load_cards(card_names):
-        cards = []
-        for card_name in card_names:
-            if card_name == "Nothing":
-                cards.append(Nothing())
-            else:
-                # Add logic to map card names to their classes
-                # Example: cards.append(card_classes[card_name]())
-                pass
-        return cards
+    # Load cards and trinkets using the new function
+    player1.deck = [create_card_from_name(card_name) for card_name in player_data["deck"]]
+    player1.hand = [create_card_from_name(card_name) for card_name in player_data["hand"]]
+    player1.field = [create_card_from_name(card_name) for card_name in player_data["field"]]
+    player1.graveyard = [create_card_from_name(card_name) for card_name in player_data["graveyard"]]
+    player1.trinkets = [create_card_from_name(card_name) for card_name in player_data["trinkets"]]
 
-    player1.deck = load_cards(player_data["deck"])
-    player1.hand = load_cards(player_data["hand"])
-    player1.field = load_cards(player_data["field"])
-    player1.graveyard = load_cards(player_data["graveyard"])
-    player1.trinkets = load_cards(player_data["trinkets"])  # Assuming trinkets are also cards
+    player1.sync_deck()
 
-    #print(f"Player {player1.name} loaded from {file_path}")
+
+
     return player1

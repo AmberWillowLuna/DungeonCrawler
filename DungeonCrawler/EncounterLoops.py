@@ -16,8 +16,8 @@ Discovered = Encyclopedia.read_enemies_map("encyclopedia.json")
 
 scale = SettingHelp.get_scale(screen)
 
-font = pygame.font.SysFont("Arial", int(20*scale))
-desc_font = pygame.font.SysFont("Arial", int(13*scale))
+font = pygame.font.SysFont("Arial", int(64*scale))
+desc_font = pygame.font.SysFont("Arial", int(40*scale))
 
 
 
@@ -448,7 +448,7 @@ def TrapLoop(screen, player1, trap):
     #after trap is set 
 
     _build_enemy_display(trap)
-
+    _resolve_round(player1, trap, log)
     while running:
         mouse_pos = pygame.mouse.get_pos()
 
@@ -457,7 +457,7 @@ def TrapLoop(screen, player1, trap):
                 pygame.quit()
                 raise SystemExit
             
-            _resolve_round(player1, trap, log)
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 #player1.handle_equipment_click(mouse_pos, event)
                 if ReadyButton.is_clicked(mouse_pos, event):

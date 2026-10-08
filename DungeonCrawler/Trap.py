@@ -34,6 +34,14 @@ class Trap:
     def take_damage(self, dmg):
         pass
 
+    def ArmAll(self):
+        """Arm all cards in the enemy's hand."""
+        for card in self.hand:
+            card.disarmed_rounds=0
+            if card.name=="Chain Mail":
+                card.durability=2
+
+
 ''' 
 trick lists:
 1 - destroy item
@@ -52,7 +60,7 @@ class KnifeTrap(Trap):
 
 class HalbardTrap(Trap):
     def __init__(self):
-        super().__init__("Halbard Trap", "A trap that swings a halbard at the player.", [Cards.Halbard(), Cards.Nothing(), Cards.Nothing()], "Orc's dungeon", 0)
+        super().__init__("Halberd Trap", "A trap that swings a halbard at the player.", [Cards.Halberd(), Cards.Nothing(), Cards.Nothing()], "Orc's dungeon", 0)
         self.shuffleHand()
 
 class GasTrap(Trap):
@@ -78,11 +86,9 @@ class ClubTrap(Trap):
 
 class DestroyItem(Trap):
     def __init__(self):
-        super().__init__("Destroy Item Trap", "A trap that destroys one of the player's items.", [Cards.Nothing(), Cards.Nothing(), Cards.Nothing()], "Orc's dungeon", 1)
-        Index= random.randint(0, 2)
-        
-    def trick(self, player1):
-        player1.hand[self.Index]= Cards.Nothing()
+        super().__init__("Destroy Item Trap", "A trap that destroys one of the player's items.", [Cards.Nothing(), Cards.Void(), Cards.Nothing()], "Orc's dungeon", 0)
+        self.shuffleHand()
+
 
 
 
@@ -98,6 +104,9 @@ def trigger(player1, trap,screen):
     #make a one turn battle with the trap - player should have a chance to play cards and then the trap will play its cards
     #if trap.trick == 0 then it is a one turn battle
     scale = SettingHelp.get_scale(screen)
+
+    trap.ArmAll()
+
     if trap.trick==0:
         #one round battle
         OkayButton = button.Button(screen.get_width() // 2 - 50, 400*scale, 300*scale, 150*scale, "Okay", colors.PINK, colors.WHITE)

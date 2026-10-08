@@ -78,6 +78,8 @@ class enemy:
         """Arm all cards in the enemy's hand."""
         for card in self.hand:
             card.disarmed_rounds=0
+            if card.name=="Chain Mail":
+                card.durability=2
 
 
     def _build_enemy_display(self):
@@ -174,7 +176,7 @@ class ThreeEyedBeast(enemy):
             super().__init__("Three eyed beast", 
                              "Powerfull combination of beast and cyclop", 
                              6, 
-                             [Cards.SpellBook(), Cards.Halbard(), Cards.Nothing()], 
+                             [Cards.SpellBook(), Cards.Halberd(), Cards.Nothing()], 
                              "Library dungeon", 
                              3)
 
@@ -280,7 +282,7 @@ class FirerySpirit(enemy):
             super().__init__("Firery spirit", 
                              "Burning flame in humanoid form", 
                              5, 
-                             [Cards.FirerySword(), Cards.Nothing(), Cards.Nothing()], 
+                             [Cards.FierySword(), Cards.Nothing(), Cards.Nothing()], 
                              "Hell dungeon", 
                              3)
 
@@ -288,7 +290,7 @@ class Demon(enemy):
         def __init__(self):
             super().__init__("Demon", 
                              "Hellish creature with dangerous aspirations", 
-                             5, 
+                             6, 
                              [Cards.LightAxe(), Cards.DevilHorns(), Cards.Fire()], 
                              "Hell dungeon", 
                              4)
@@ -298,7 +300,7 @@ class Satan(enemy):
         def __init__(self):
             super().__init__("Satan", 
                              "Hellish creature with dangerous aspirations", 
-                             7, 
+                             8, 
                              [Cards.Trident(), Cards.DevilHorns(), Cards.Nothing()], 
                              "Hell dungeon", 
                              5)
@@ -346,8 +348,8 @@ class Lich(enemy):
         def __init__(self):
             super().__init__("Lich", 
                              "An deeply corrupted unhinged interpretation of evil in this world", 
-                             7, 
-                             [Cards.SwordOfDarkness(), Cards.Nothing(), Cards.Nothing()], 
+                             9, 
+                             [Cards.SwordOfDarkness(), Cards.Crown(), Cards.Nothing()], 
                              "darkness dungeon", 
                              5)
             self.lootTable = [Cards.SwordOfDarkness(), Cards.SwordOfDarkness(), Cards.SwordOfDarkness()]

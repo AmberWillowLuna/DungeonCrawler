@@ -14,13 +14,13 @@ class dungeon:
             ["L1","L1","L1"],
             ["L1", "P", "T"],
             ["L2","L2","T"],
-            ["P","L2","T"],
+            ["P","L2","L2"],
             ["L2","L2","L1"],
             ["M","M","M"],
 
             ["P","P","T"],
-            ["L2","L3","L1"],
-            ["P","L3","L3"],
+            ["L2","L3","L2"],
+            ["L3","L3","L3"],
             ["TR","TR","TR"],
 
             ["L3","L3","L4"],
@@ -29,6 +29,9 @@ class dungeon:
             ["L5","L5","L5"],
             ["E", "E", "E"] #escape and heal
             ]
+
+        for i in range(len(self.set)):
+            random.shuffle(self.set[i])
 
 
     def get_random_enemy(self, level):

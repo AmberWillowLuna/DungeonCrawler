@@ -176,7 +176,7 @@ class Shield(Card):
     def defend(self, oc, player, enemy):
         return 0
 
-class Halbard(Card):
+class Halberd(Card):
     def __init__(self):
         super().__init__("Halberd", "Heavy", 4, "None", 2, 1, 0, 0, 0)
         self.price=6+random.randint(0,2)
@@ -407,7 +407,7 @@ class HealingPotion(Card):
 
 class Sword(Card):
     def __init__(self):
-        super().__init__("Sword", "Heavy", 3, "None", 1, 1, 0, 0, 0)
+        super().__init__("Sword", "Heavy", 3, "None", 1, 1, 0.5, 0, 0)
         self.price=4+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
@@ -421,7 +421,7 @@ class Sword(Card):
 
 class Machete(Card):
     def __init__(self):
-        super().__init__("Machete", "Light", 4, "None", 1, 1, 0, 0, 0)
+        super().__init__("Machete", "Light", 4, "None", 1, 0.5, 0.5, 0, 0)
         self.price=4+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
@@ -502,7 +502,7 @@ class RitualKnife(Card):
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
-        if oc.Dval <=0.5:
+        if oc.Dval <0.5:
             player.heal(1) #low key I should put it in self.heal() but that is simply one line
 
 
@@ -583,7 +583,7 @@ class Fireball(Card):
                 player.sync_hand()  # Synchronize the hand after the change
                 return  # Exit the function after the first replacement
 
-class FirerySword(Card):
+class FierySword(Card):
     def __init__(self):
         super().__init__("Fiery Sword", "Heavy", 7, "None", 3, 1, 0.5, 0, 0)
         self.price=14+random.randint(0,2)
@@ -598,7 +598,7 @@ class FirerySword(Card):
 
 class DevilHorns(Card):
     def __init__(self):
-        super().__init__("Devil Horns", "Heavy", 4, "None", 2, 1, 1, 0, 0)
+        super().__init__("Devil Horns", "Heavy", 4, "None", 1, 1, 1, 0, 0)
         self.price=15+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
@@ -608,20 +608,17 @@ class DevilHorns(Card):
 
 class Trident(Card):
     def __init__(self):
-        super().__init__("Trident", "Light", 5, "Fiery cracks from within...", 2, 0.5, 0.5, 0, 0)
+        super().__init__("Trident", "Light", 6, "Fiery cracks from within...", 2, 0.5, 0.5, 0, 0)
         self.price=15+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
         enemy.take_damage(dmg)
     def defend(self, oc, player, enemy):
-        if oc.card_type=="Heavy":
-            return 0
-        else:
-            return halved(oc.Aval)
+            return halved(oc)
 
 class SwordOfDarkness(Card):
     def __init__(self):
-        super().__init__("Sword of Darkness", "Heavy", 10, "You hear the void humming...", 2, 1, 1, 0, 9)
+        super().__init__("Sword of Darkness", "Heavy", 10, "You hear the void humming...", 3, 1, 1, 0, 9)
         self.price=20+random.randint(0,2)
     def attack(self, oc, player, enemy):
         dmg = oc.defend(self, player, enemy)
@@ -666,12 +663,12 @@ class CrownOfDarkness(Card):
 
 
 # TRAP CARDS #################################################################
-'''class Spike(Card):
+class Void(Card):
     def __init__(self):
-        super().__init__("Spike", "Light", 10, "ATK: 1, DEF: L0, H0",1,0,0,0,0) 
+        super().__init__("Void", "Light", 12, "Destroys opposing card",0,0,0,0,0) 
     def attack(self, oc, player, enemy):
-        dmg = oc.defend(self, player, enemy)
-        enemy.take_damage(dmg)
+        enemy.hand[enemy.hand.index(oc)] = Nothing()
+        enemy.sync_hand()
         #THIS IS A TRAP CARD ###################'''
 
 

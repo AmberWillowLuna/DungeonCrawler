@@ -4,6 +4,6 @@ import SaveAndRead
 
 def ContinueTheGame(screen):
     player1 = SaveAndRead.load_player()
-    GameLoop(screen, player1)
+    GameLoop(screen, player1, False)
 
 

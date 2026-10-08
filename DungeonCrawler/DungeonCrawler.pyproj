@@ -38,6 +38,7 @@
     <Compile Include="Escape.py" />
     <Compile Include="GameLoop.py" />
     <Compile Include="GetTrinkets.py" />
+    <Compile Include="LoadHelper.py" />
     <Compile Include="Merchant.py" />
     <Compile Include="Options.py" />
     <Compile Include="player.py" />
@@ -51,6 +52,7 @@
     <Compile Include="Trinkets.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="dungeons.json" />
     <Content Include="encyclopedia.json" />
     <Content Include="player.json" />
     <Content Include="settings.json" />

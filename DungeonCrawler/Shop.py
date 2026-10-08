@@ -12,7 +12,7 @@ class Shop:
         if curD == "Orc's dungeon":
             self.weapons = [
                 Cards.LongSword(),
-                Cards.Halbard(),
+                Cards.Halberd(),
                 Cards.LightAxe(),
                 Cards.Dagger(),
                 Cards.Knife(),
@@ -32,7 +32,7 @@ class Shop:
         elif curD == "Misty's dungeon":
             self.weapons = [
                 Cards.Sword(),
-                Cards.Halbard(),
+                Cards.Halberd(),
                 Cards.LongSword(),
                 Cards.Dagger(),
                 Cards.KnifePack(),
@@ -54,7 +54,7 @@ class Shop:
                 Cards.FishingRod(),
                 Cards.Dagger(),
                 Cards.LongSword(),
-                Cards.Halbard(),
+                Cards.Halberd(),
                 Cards.Spear(),
                 Cards.MagicEye()
             ]
@@ -109,7 +109,7 @@ class Shop:
                 Cards.PoisonousGas(),
                 Cards.Dagger(),
                 Cards.FishingRod(),
-                Cards.Halbard()
+                Cards.Halberd()
             ]
             self.armors = [
                 Cards.Crown(),
