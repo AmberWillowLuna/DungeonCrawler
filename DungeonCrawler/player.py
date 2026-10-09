@@ -94,7 +94,8 @@ class Player:
         # Start with "Trinkets: " and add each trinket's name on a new line
         text_lines = ["Trinkets:"]
         for trinket in self.trinkets:
-            text_lines.append(trinket.name)
+            if trinket is not None:
+                text_lines.append(trinket.name)
 
         # Render each line separately
         self.Trinket_text = [
@@ -156,6 +157,8 @@ class Player:
                 self.AdvLevel += 1
                 if self.AdvLevel==3:
                     self.AdvLevel=10
+                    winning_screen(screen)
+                    
 
 
         self.gold += self.income
@@ -589,3 +592,89 @@ def LoadPlayerFromJson():
     player.curD = player_data["curD"]
 
     return player
+
+
+
+
+
+import pygame
+import json
+import SaveAndRead
+
+def winning_screen(screen):
+    """
+    Display a WINNING screen, update state.json to mark the win, and wait for any input to exit.
+
+    Args:
+        screen: Pyggame surface to draw on.
+
+    Returns:
+        Player: A new default player (optional, adjust as needed).
+    """
+    # Load scale based on the screen
+    scale = SettingHelp.get_scale(screen)
+
+    # Update state.json to mark the win
+    try:
+        with open("state.json", "r") as file:
+            state_data = json.load(file)
+    except FileNotFoundError:
+        state_data = {"win": 0}
+    except json.JSONDecodeError:
+        state_data = {"win": 0}
+
+    state_data["win"] = 1
+
+    try:
+        with open("state.json", "w") as file:
+            json.dump(state_data, file, indent=4)
+        print("state.json updated: win = 1")
+    except Exception as e:
+        print(f"Error updating state.json: {e}")
+
+    # Load the winning background image (replace with your own image path)
+    try:
+        win_bg = pygame.image.load("assets/win_bg.png").convert_alpha()
+        win_bg = pygame.transform.scale(
+            win_bg,
+            (screen.get_width(), screen.get_height())
+        )
+    except:
+        # Fallback: Create a black background if the image is missing
+        win_bg = pygame.Surface((screen.get_width(), screen.get_height()))
+        win_bg.fill((0, 0, 0))
+
+    # Font for the winning message
+    font = pygame.font.SysFont("Arial", int(72 * scale))
+
+    # Render the winning message
+    win_text = font.render("YOU WIN", True, (0, 255, 0))
+    text_rect = win_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+
+    # Font for the continue message
+    small_font = pygame.font.SysFont("Arial", int(36 * scale))
+
+    # Render the continue message
+    continue_text = small_font.render("Click or press any key to continue", True, (255, 255, 255))
+    continue_rect = continue_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 100))
+
+    # Main loop for the winning screen
+    running = True
+    while running:
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
+                running = False
+
+        # Draw the winning screen
+        screen.blit(win_bg, (0, 0))
+        screen.blit(win_text, text_rect)
+        screen.blit(continue_text, continue_rect)
+
+        # Update the display
+        pygame.display.flip()
+
+    # Return a new default player (optional, adjust as needed)
+    return

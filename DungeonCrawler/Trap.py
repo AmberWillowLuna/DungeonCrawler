@@ -55,17 +55,17 @@ class ArrowTrap(Trap):
 
 class KnifeTrap(Trap):
     def __init__(self):
-        super().__init__("Knife Trap", "A trap that throws knife at the player.", [Cards.Knife(), Cards.Nothing(), Cards.Nothing()], "Orc's dungeon", 0)
+        super().__init__("Knife Trap", "A trap that throws knife at the player.", [Cards.Knife(), Cards.Nothing(), Cards.Void()], "Orc's dungeon", 0)
         self.shuffleHand()
 
 class HalbardTrap(Trap):
     def __init__(self):
-        super().__init__("Halberd Trap", "A trap that swings a halbard at the player.", [Cards.Halberd(), Cards.Nothing(), Cards.Nothing()], "Orc's dungeon", 0)
+        super().__init__("Halberd Trap", "A trap that swings a halbard at the player.", [Cards.Halberd(), Cards.Nothing(), Cards.Void()], "Orc's dungeon", 0)
         self.shuffleHand()
 
 class GasTrap(Trap):
     def __init__(self):
-        super().__init__("Poisonous Trap", "A trap that throws knife at the player.", [Cards.PoisonousGas(), Cards.Nothing(), Cards.Nothing()], "Orc's dungeon", 0)
+        super().__init__("Poisonous Trap", "A trap that throws knife at the player.", [Cards.PoisonousGas(), Cards.Nothing(), Cards.Void()], "Orc's dungeon", 0)
         self.shuffleHand()
 
 class GasBubbleTrap(Trap):
@@ -86,7 +86,7 @@ class ClubTrap(Trap):
 
 class DestroyItem(Trap):
     def __init__(self):
-        super().__init__("Destroy Item Trap", "A trap that destroys one of the player's items.", [Cards.Nothing(), Cards.Void(), Cards.Nothing()], "Orc's dungeon", 0)
+        super().__init__("Destroy Item Trap", "A trap that destroys one of the player's items.", [Cards.Nothing(), Cards.Void(), Cards.Void()], "Orc's dungeon", 0)
         self.shuffleHand()
 
 

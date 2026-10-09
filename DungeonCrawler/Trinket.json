@@ -1,10 +1,10 @@
 {
     "order": [
-        "Ring of Life",
         "Ring of Thief",
-        "Ring of Wisdom",
+        "Ring of Life",
+        "Regen Ring",
+        "Life Gem",
         "Magical Clock",
-        "Owl Totem",
-        "Life Gem"
+        "Thief's Bracelet"
     ]
 }

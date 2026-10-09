@@ -128,13 +128,21 @@ def create_trinket_from_name(name):
     # Mapping of trinket names to their classes
     trinket_classes = {
         "Ring of Life": Trinkets.RingOfLife,
+        "RingOfLife": Trinkets.RingOfLife,
         "Ring of Thief": Trinkets.RingOfThief,
+        "RingOfThief": Trinkets.RingOfThief,  # Handle potential typo
         "Ring of Wisdom": Trinkets.RingOfKnowledge,
+        "RingOfKnowledge": Trinkets.RingOfKnowledge,
         "Regen Ring": Trinkets.NecklaceOfRegeneration,
+        "NecklaceOfRegeneration": Trinkets.NecklaceOfRegeneration,
         "Life Gem": Trinkets.EnchantedRingOfLife,
+        "EnchantedRingOfLife": Trinkets.EnchantedRingOfLife,
         "Thief's Bracelet": Trinkets.BraceletOfThief,
+        "BraceletOfThief": Trinkets.BraceletOfThief,       
         "Magical Clock": Trinkets.NecklaceOfTime,
+        "NecklaceOfTime": Trinkets.NecklaceOfTime,
         "Owl Totem": Trinkets.NecklaceOfWisdom,
+        "NecklaceOfWisdom": Trinkets.NecklaceOfWisdom,
     }
 
     # Get the trinket class from the mapping

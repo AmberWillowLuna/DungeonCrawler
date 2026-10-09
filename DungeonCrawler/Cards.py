@@ -321,7 +321,7 @@ class ChainMail(Card):
 
         if oc.card_type=="Light":
             return 0
-        else:
+        elif oc.card_type=="Heavy":
             self.durability-=1
             if self.durability==0:
                 self.disarmed_rounds=-1
@@ -449,7 +449,7 @@ class Boomerang(Card):
 
 class MagicMirror(Card):
     def __init__(self):
-        super().__init__("Magic mirror", "Light", 4, "Simulates opposing card", 0.44, 0, 0, 0, 8)
+        super().__init__("Magic mirror", "Light", 3, "Simulates opposing card", 0.44, 0, 0, 0, 8)
         self.price=14+random.randint(0,2)
     def attack(self,  oc, player, enemy):
         dmg = oc.defend(oc, player, enemy) # tu jest w argumentach oc zamiast self i essa

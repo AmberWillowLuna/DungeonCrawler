@@ -158,6 +158,7 @@ def _resolve_round(player1, enemy, log):
             if p_card.m == False:
                 player1.graveyard.append(p_card)
             player1.hand[i] = Cards.Nothing()
+            player1.sync_hand()
 
 
         if e_card.disarmed_rounds == -1:

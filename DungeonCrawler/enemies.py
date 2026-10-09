@@ -301,7 +301,7 @@ class Satan(enemy):
         def __init__(self):
             super().__init__("Satan", 
                              "Hellish creature with dangerous aspirations", 
-                             8, 
+                             10, 
                              [Cards.Trident(), Cards.DevilHorns(), Cards.Nothing()], 
                              "Hell dungeon", 
                              5)
@@ -349,7 +349,7 @@ class Lich(enemy):
         def __init__(self):
             super().__init__("Lich", 
                              "An deeply corrupted unhinged interpretation of evil in this world", 
-                             9, 
+                             8, 
                              [Cards.SwordOfDarkness(), Cards.Crown(), Cards.Nothing()], 
                              "darkness dungeon", 
                              5)
