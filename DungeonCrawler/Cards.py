@@ -226,7 +226,7 @@ class Bow(Card):
 
 class Arrow(Card):
     def __init__(self):
-        super().__init__("Arrow", "Light", 2, "U need it for bows", 0, -1, 0, 0,3)
+        super().__init__("Arrow", "Light", 2, "U need it for bows, recoils 1 dmg", 0, 0, 0, 0,3)
         self.price=2+random.randint(0,2)
     def defend(self, oc, player, enemy):
         #find a way for recoil dmg - i dunno maybe put a player class for this function
@@ -665,7 +665,7 @@ class CrownOfDarkness(Card):
 # TRAP CARDS #################################################################
 class Void(Card):
     def __init__(self):
-        super().__init__("Void", "Light", 12, "Destroys opposing card",0,0,0,0,0) 
+        super().__init__("Void", "Light", 12, "Destroys opposing card",0.7,0,0,0,0) 
     def attack(self, oc, player, enemy):
         enemy.hand[enemy.hand.index(oc)] = Nothing()
         enemy.sync_hand()
